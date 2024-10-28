@@ -12,40 +12,14 @@ import java.util.ArrayList;
 public class Game extends Canvas {
 
 
-    private BufferStrategy strategy;   // take advantage of accelerated graphics
-    private boolean waitingForKeyPress = true;  // true if game held up until
-    // a key is pressed
-    private boolean leftPressed = false;  // true if left arrow key currently pressed
-    private boolean rightPressed = false; // true if right arrow key currently pressed
-    private boolean firePressed = false; // true if firing
-
+    private BufferStrategy strategy;
     private boolean gameRunning = true;
-    private ArrayList entities = new ArrayList(); // list of entities
-    // in game
-    private ArrayList removeEntities = new ArrayList(); // list of entities
-    // to remove this loop
-    private Entity ship;  // the ship
-    private double moveSpeed = 600; // hor. vel. of ship (px/s)
-    private long lastFire = 0; // time last shot fired
-    private long firingInterval = 300; // interval between shots (ms)
-    private int alienCount; // # of aliens left on screen
-
-    private String message = ""; // message to display while waiting
-    // for a key press
-
-    private boolean logicRequiredThisLoop = false; // true if logic
-    // needs to be
-    // applied this loop
-
-    // TODO new stuff
-    private boolean upPressed = false; // true if up arrow key currently pressed
-    private boolean isPaused = false;
-    public static final int width = 1000;
-    public static final int height = 1000;
-    private Entity shield;  // the shield
-    private boolean bombPressed = false;
-    private long lastBomb = 0; // time last shot fired
-    private long bombInterval = 5000; // interval between shots (ms)
+    private ArrayList entities = new ArrayList();
+    private ArrayList removeEntities = new ArrayList();
+    private String message = "";
+    private boolean logicRequiredThisLoop = false;
+    private int width =  1600;
+    private int height = 900;
 
     /*
      * Construct our game and set it running.
@@ -107,25 +81,9 @@ public class Game extends Canvas {
      *          Each entity will be added to the array of entities in the game.
      */
     private void initEntities() {
-        // create the ship and put in center of screen
-        ship = new ShipEntity(this, "sprites/ship.png", 30, height - 50);
-        entities.add(ship);
+        // TODO Entities
+        entities.add();
 
-        // create the ship and put in center of screen
-        shield = new ShieldEntity(this, "sprites/shield.png", 40, height - 150);
-        entities.add(shield);
-
-        // create a block of aliens (5x12)
-        alienCount = 0;
-        for (int row = 0; row < 7; row++) {
-            for (int col = 0; col < 12; col++) {
-                Entity alien = new AlienEntity(this, "sprites/alien.png",
-                        100 + (col * 40),
-                        50 + (row * 30));
-                entities.add(alien);
-                alienCount++;
-            } // for
-        } // outer for
     } // initEntities
 
     /* Notification from a game entity that the logic of the game
@@ -144,73 +102,6 @@ public class Game extends Canvas {
 
     /* Notification that the player has died.
      */
-
-    public void notifyDeath() {
-        message = "You DIED! Try again";
-        waitingForKeyPress = true;
-    } // notifyDeath
-
-
-    /* Notification that the play has killed all aliens
-     */
-    public void notifyWin() {
-        message = "Aliens Eliminated. Play again?";
-        waitingForKeyPress = true;
-    } // notifyWin
-
-    /* Notification than an alien has been killed
-     */
-    public void notifyAlienKilled() {
-        alienCount--;
-
-        if (alienCount == 0) {
-            notifyWin();
-        } // if
-
-        // speed up existing aliens
-        for (int i = 0; i < entities.size(); i++) {
-            Entity entity = (Entity) entities.get(i);
-            if (entity instanceof AlienEntity) {
-                // speed up by 2%
-                entity.setHorizontalMovement(entity.getHorizontalMovement() * 1.04);
-            } // if
-        } // for
-    } // notifyAlienKilled
-
-    /* Attempt to fire.*/
-    public void tryToFire() {
-        // check that we've waited long enough to fire
-        if ((System.currentTimeMillis() - lastFire) < firingInterval) {
-            return;
-        } // if
-
-        // otherwise add a shot
-        lastFire = System.currentTimeMillis();
-        ShotEntity shot = new ShotEntity(this, "sprites/shot.png",
-                ship.getX() + 10, ship.getY() - 30);
-        entities.add(shot);
-    } // tryToFire
-
-    /* Attempt to fire.*/
-    public void tryToBomb() {
-        // check that we've waited long enough to fire
-        if ((System.currentTimeMillis() - lastBomb) < bombInterval) {
-            return;
-        } // if
-
-        // otherwise add a shot
-        lastBomb = System.currentTimeMillis();
-        BombEntity bomb = new BombEntity(this, "sprites/bomb.png",
-                ship.getX() + 10, ship.getY() - 30);
-        entities.add(bomb);
-    } // tryToBomb
-
-    /* Alien fires.*/
-    public void alienFire(double x, double y) {
-        AlienShotEntity alienShot = new AlienShotEntity(this, "sprites/enemyShot.png",
-                (int) x + 10, (int) y - 30);
-        entities.add(alienShot);
-    } // tryToFire
 
     /*
      * gameLoop
@@ -241,12 +132,10 @@ public class Game extends Canvas {
             g.fillRect(0, 0, width, height);
 
             // move each entity
-            if (!waitingForKeyPress && !isPaused) {
-                for (int i = 0; i < entities.size(); i++) {
-                    Entity entity = (Entity) entities.get(i);
-                    entity.move(delta);
-                } // for
-            } // if
+            for (int i = 0; i < entities.size(); i++) {
+                Entity entity = (Entity) entities.get(i);
+                entity.move(delta);
+            } // for
 
             // draw all entities
             for (int i = 0; i < entities.size(); i++) {
@@ -254,6 +143,7 @@ public class Game extends Canvas {
                 entity.draw(g);
             } // for
 
+            // TODO Optimize
             // brute force collisions, compare every entity
             // against every other entity.  If any collisions
             // are detected notify both entities that it has
@@ -274,6 +164,7 @@ public class Game extends Canvas {
             entities.removeAll(removeEntities);
             removeEntities.clear();
 
+            // TODO Optimize
             // run logic if required
             if (logicRequiredThisLoop) {
                 for (int i = 0; i < entities.size(); i++) {
@@ -282,18 +173,6 @@ public class Game extends Canvas {
                 } // for
                 logicRequiredThisLoop = false;
             } // if
-
-            // if waiting for "any key press", draw message
-            if (waitingForKeyPress) {
-                g.setColor(Color.white);
-                g.drawString(message, (width - g.getFontMetrics().stringWidth(message)) / 2, height / 2);
-                g.drawString("Press any key", (width - g.getFontMetrics().stringWidth("Press any key")) / 2, height / 2 + 50);
-            }  // if
-
-            if (isPaused) {
-                g.setColor(Color.white);
-                g.drawString("Paused. Press P to Continue", (width - g.getFontMetrics().stringWidth("Paused. Press P to Continue")) / 2, height / 2 + 50);
-            }
 
             // clear graphics and flip buffer
             g.dispose();
@@ -333,11 +212,8 @@ public class Game extends Canvas {
             // pause
             try {
                 Thread.sleep(17);
-            } catch (Exception e) {
-            }
-
+            } catch (Exception e) {}
         } // while
-
     } // gameLoop
 
 
@@ -353,11 +229,7 @@ public class Game extends Canvas {
         initEntities();
 
         // blank out any keyboard settings that might exist
-        leftPressed = false;
-        rightPressed = false;
-        upPressed = false;
-        firePressed = false;
-        isPaused = false;
+
     } // startGame
 
 
@@ -434,27 +306,6 @@ public class Game extends Canvas {
         } // keyReleased
 
         public void keyTyped(KeyEvent e) {
-
-            // if waiting for key press to start game
-            if (waitingForKeyPress) {
-                if (pressCount == 1) {
-                    waitingForKeyPress = false;
-                    startGame();
-                    pressCount = 0;
-                } else {
-                    pressCount++;
-                } // else
-            } // if waitingForKeyPress
-
-            // respond to Pause
-            if (e.getKeyChar() == 'p') {
-                isPaused = !isPaused;
-            } // if
-
-            // if escape is pressed, end game
-            if (e.getKeyChar() == 27) {
-                System.exit(0);
-            } // if escape pressed
 
         } // keyTyped
 
