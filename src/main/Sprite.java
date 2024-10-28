@@ -1,4 +1,4 @@
-/* Sprite.java
+package main;/* main.Sprite.java
  * March 23, 2006
  * Store no state information, this allows the image to be stored only
  * once, but to be used in many different places.  For example, one
@@ -32,4 +32,4 @@ public class Sprite {
         g.drawImage(image, x, y, null);
     } // draw
 
-} // Sprite
+} // main.Sprite

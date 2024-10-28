@@ -1,0 +1,116 @@
+package main;
+
+import main.utility.Mask;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import main.entities.Character;
+import static main.Game.height;
+import static main.Game.width;
+
+public class GameScene extends Scene {
+    private long lastLoopTime = System.currentTimeMillis();
+    private final ArrayList<Entity> entities = new ArrayList<>();
+    private final ArrayList<Entity> removeEntities = new ArrayList<>();
+    private Sprite background;
+    private Mask wall;
+
+    GameScene(Game game) {
+        super(game);
+        background = SpriteStore.get().getSprite("wall.png");
+        try {
+            URL url = this.getClass().getClassLoader().getResource("main/sprites/"+"wall"+".png");
+            BufferedImage maskImage = ImageIO.read(url);
+            wall = new Mask(maskImage);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void init() {
+        // Initialize game components, load assets, etc.
+        System.out.println("e");
+        game.addKeyListener(new KeyInputHandler());
+
+        entities.add(new Character(this, "rambo.png", 220, 250, 1, 100));
+    }
+
+    @Override
+    public void update() {
+        // calc. time since last update, will be used to calculate
+        // entities movement
+        long delta = System.currentTimeMillis() - lastLoopTime;
+        lastLoopTime = System.currentTimeMillis();
+
+        // get graphics context for the accelerated surface and make it black
+        Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
+        g.setColor(Color.black);
+        g.fillRect(0, 0, width, height);
+        background.draw(g, 0, 0);
+
+
+        // move each entity
+        for (Entity e : entities) {
+            e.move(delta);
+        }
+
+
+        // draw all entities
+        for (Entity e : entities) {
+            e.draw(g);
+        }
+
+        // TODO Optimize collisions
+
+        // remove dead entities
+        entities.removeAll(removeEntities);
+        removeEntities.clear();
+
+
+        // clear graphics and flip buffer
+        g.dispose();
+        game.strategy.show();
+    }
+
+    /* inner class KeyInputHandler
+     * handles keyboard input from the user
+     */
+    private class KeyInputHandler extends KeyAdapter {
+
+        /* The following methods are required
+         * for any class that extends the abstract
+         * class KeyAdapter.  They handle keyPressed,
+         * keyReleased and keyTyped events.
+         */
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+        } // keyPressed
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        } // keyReleased
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // if escape is pressed, end game
+            if (e.getKeyChar() == 27) {
+                System.exit(0);
+            } // if escape pressed
+        } // keyTyped
+
+    } // class KeyInputHandler
+
+    public boolean touchingWall(Entity e) {
+        return wall.overlaps(e.hitbox);
+    }
+}

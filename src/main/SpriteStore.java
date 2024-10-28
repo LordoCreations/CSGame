@@ -1,5 +1,5 @@
-/* SpriteStore.java
- * Manages the sprites in the game.
+package main;/* main.SpriteStore.java
+ * Manages the main.sprites in the game.
  * Caches them for future use.
  */
 
@@ -13,10 +13,10 @@ import javax.imageio.ImageIO;
 public class SpriteStore {
 
     // one instance of this class will exist
-    // this instance will be accessed by Game.java
+    // this instance will be accessed by main.Game.java
     private static SpriteStore single = new SpriteStore();
     private HashMap sprites = new HashMap();  // key,value pairs that stores
-    // the three sprites (alien, ship, shot)
+    // the three main.sprites (alien, ship, shot)
 
     // returns the single instance of this class
     public static SpriteStore get() {
@@ -30,6 +30,7 @@ public class SpriteStore {
      * purpose: to return a specific sprite
      */
     public Sprite getSprite(String ref) {
+        ref = "main/sprites/" + ref;
 
         // if the sprite is already in the HashMap
         // then return it
@@ -38,7 +39,7 @@ public class SpriteStore {
             return (Sprite) sprites.get(ref);
         } // if
 
-        // else, load the inmage into the HashMap off the
+        // else, load the image into the HashMap off the
         // hard drive (and hence, into memory)
 
         BufferedImage sourceImage = null;
@@ -70,4 +71,4 @@ public class SpriteStore {
         return sprite;
     } // getSprite
 
-} // SpriteStore
+} // main.SpriteStore

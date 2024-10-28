@@ -1,4 +1,4 @@
-/* Entity.java
+package main;/* main.Entity.java
  * An entity is any object that appears in the game.
  * It is responsible for resolving collisions and movement.
  */
@@ -33,7 +33,7 @@ public abstract class Entity {
         x = newX;
         y = newY;
         sprite = (SpriteStore.get()).getSprite(r);
-        hitbox.setRect(0, 0, sprite.getWidth(), sprite.getHeight());
+        hitbox.setRect(newX, newY, sprite.getWidth(), sprite.getHeight());
     } // constructor
 
     /* move
@@ -46,6 +46,8 @@ public abstract class Entity {
         // update location of entity based ov move speeds
         x += (delta * dx) / 1000;
         y += (delta * dy) / 1000;
+        hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
+
     } // move
 
     // get and set velocities
@@ -107,4 +109,4 @@ public abstract class Entity {
      */
     public abstract void collidedWith(Entity other);
 
-} // Entity class
+} // main.Entity class
