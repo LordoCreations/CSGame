@@ -7,9 +7,9 @@ public class Weapon extends Entity {
     private int bulletspeed;
     private int xOffset;
     private int yOffset;
-    private Character c;
+    private Player c;
 
-    public Weapon(String r, int newX, int newY, int firingInterval, int capacity, int bulletspeed, Character c){
+    public Weapon(String r, int newX, int newY, int firingInterval, int capacity, int bulletspeed, Player c){
         super(r, newX, newY);
         this.firingInterval = firingInterval;
         this.capacity = capacity;

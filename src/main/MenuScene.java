@@ -57,10 +57,9 @@ public class MenuScene extends Scene {
         background.draw(g, 0, 0);
         g.setColor(Color.white);
 
-
         startButton.render(g);
         settingsButton.render(g);
-        System.out.println("MENU");
+
         // clear graphics and flip buffer
         g.dispose();
         game.strategy.show();

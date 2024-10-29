@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 public class Sprite {
-
+    private boolean flip;
     public Image image;  // the image to be drawn for this sprite
 
     // constructor
@@ -29,7 +29,15 @@ public class Sprite {
 
     // draw the sprite in the graphics object provided at location (x,y)
     public void draw(Graphics g, int x, int y) {
-        g.drawImage(image, x, y, null);
+        if (flip) {
+            g.drawImage(image, x + image.getWidth(null), y, -image.getWidth(null), image.getHeight(null), null);
+        } else {
+            g.drawImage(image, x, y, null);
+        }
     } // draw
+
+    public void setDirection(boolean flip) {
+        this.flip = flip;
+    }
 
 } // main.Sprite

@@ -44,11 +44,23 @@ public abstract class Entity {
      */
     public void move(long delta) {
         // update location of entity based ov move speeds
-        x += (delta * dx) / 1000;
-        y += (delta * dy) / 1000;
-        hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
-
+        moveX(delta);
+        moveY(delta);
     } // move
+
+    public void moveX(double delta) {
+        x += (delta * dx) / 1000;
+        update();
+    }
+
+    public void moveY(double delta) {
+        y += (delta * dy) / 1000;
+        update();
+    }
+
+    public void update() {
+        hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
+    }
 
     // get and set velocities
     public void setHorizontalMovement(double newDX) {

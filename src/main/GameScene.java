@@ -10,8 +10,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import main.entities.Character;
+import main.entities.Player;
 import static main.Game.height;
 import static main.Game.width;
 
@@ -21,6 +23,7 @@ public class GameScene extends Scene {
     private final ArrayList<Entity> removeEntities = new ArrayList<>();
     private Sprite background;
     private Mask wall;
+    public Set<Character> keysDown = new HashSet<>();
 
     GameScene(Game game) {
         super(game);
@@ -40,7 +43,7 @@ public class GameScene extends Scene {
         System.out.println("e");
         game.addKeyListener(new KeyInputHandler());
 
-        entities.add(new Character(this, "rambo.png", 220, 250, 1, 100));
+        entities.add(new Player(this, "rambo.png", 220, 250, 1, 100));
     }
 
     @Override
@@ -92,12 +95,12 @@ public class GameScene extends Scene {
          */
         @Override
         public void keyPressed(KeyEvent e) {
-
+            keysDown.add(e.getKeyChar());
         } // keyPressed
 
         @Override
         public void keyReleased(KeyEvent e) {
-
+            keysDown.remove(e.getKeyChar());
         } // keyReleased
 
         @Override
