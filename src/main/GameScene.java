@@ -22,7 +22,7 @@ import static main.Game.width;
 
 public class GameScene extends Scene {
     private long lastLoopTime = System.currentTimeMillis();
-    private final ArrayList<Entity> entities = new ArrayList<>();
+    public final ArrayList<Entity> entities = new ArrayList<>();
     private final ArrayList<Entity> removeEntities = new ArrayList<>();
     private Sprite background;
     private Mask wall;
@@ -46,7 +46,7 @@ public class GameScene extends Scene {
         System.out.println("e");
         game.addKeyListener(new KeyInputHandler());
 
-        Player player = new Player(this, "rambo.png", 220, 250, 1, 100);
+        Player player = new Player(this, "rambo.png", 220, 250, 100, 1);
         entities.add(player);
         entities.add(new Bar(player));
         entities.add(new AmmoBar(player));
@@ -67,16 +67,33 @@ public class GameScene extends Scene {
         background.draw(g, 0, 0);
 
 
-        // move each entity
-        for (Entity e : entities) {
-            e.move(delta);
+        try {
+
+            // move each entity
+            for (int i = 0; i < entities.size(); i++) {
+                Entity e = entities.get(i);
+                e.move(delta);
+            }
+
+            // draw all entities
+            for (int i = 0; i < entities.size(); i++) {
+                Entity e = entities.get(i);
+                e.draw(g);
+            }
+
+            // ! adding stuff
+//            for (Entity e : entities) {
+//                e.move(delta);
+//            }
+//
+//            // draw all entities
+//            for (Entity e : entities) {
+//                e.draw(g);
+//            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
-
-        // draw all entities
-        for (Entity e : entities) {
-            e.draw(g);
-        }
 
         // TODO Optimize collisions
 
@@ -122,5 +139,9 @@ public class GameScene extends Scene {
 
     public boolean touchingWall(Entity e) {
         return wall.overlaps(e.hitbox);
+    }
+
+    public void removeEntity(Entity e) {
+        removeEntities.add(e);
     }
 }

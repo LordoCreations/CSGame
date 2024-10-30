@@ -3,25 +3,28 @@ package main.entities;
 import main.Entity;
 import main.GameScene;
 
+import java.awt.*;
+
 public class Player extends Entity {
     protected double hp;
     private double maxHp;
     protected int corpseID;
     protected int weaponID;
+    protected Weapon weapon;
     protected GameScene scene;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
     private int maxAmmo;
 
-    public Player(GameScene s, String r, int newX, int newY, int weapon, int hp) {
+    public Player(GameScene s, String r, int newX, int newY, int hp, int team) {
         super(r, newX, newY);
         this.hp = hp;
         this.maxHp = hp + 20;
-        this.weaponID = weapon;
+        this.weaponID = 0;
+        this.weapon = new Weapon(0, this);
         this.scene = s;
 
-        // TODO replace with weapon ammo and stuff
         this.maxAmmo = 90;
         this.ammo = 15;
 
@@ -52,7 +55,14 @@ public class Player extends Entity {
 
     public void setWeapon(int w) {
         weaponID = w;
+        weapon = new Weapon(w, this);
     } // setWeapon
+
+    @Override public void draw(Graphics g) {
+        super.draw(g);
+        weapon.move();
+        weapon.draw(g);
+    }
 
     public int getWidth() {
         return sprite.getWidth();
@@ -76,12 +86,18 @@ public class Player extends Entity {
 
         if (scene.keysDown.contains('d')) {
             this.sprite.setDirection(false);
+            this.weapon.setDirection(false);
             dx = 300;
         } else if (scene.keysDown.contains('a')) {
             this.sprite.setDirection(true);
+            this.weapon.setDirection(true);
             dx = -300;
         } else {
             dx = 0;
+        }
+
+        if (scene.keysDown.contains('s')) {
+            this.weapon.tryShoot(scene.entities);
         }
 
         y += 1;

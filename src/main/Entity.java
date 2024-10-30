@@ -36,6 +36,16 @@ public abstract class Entity {
         hitbox.setRect(newX, newY, sprite.getWidth(), sprite.getHeight());
     } // constructor
 
+    public Entity() {
+        x = 0;
+        y = 0;
+    } // constructor
+
+    public void setSprite(String r) {
+        this.sprite = (SpriteStore.get()).getSprite(r);
+        hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
+    }
+
     /* move
      * input: delta - the amount of time passed in ms
      * output: none

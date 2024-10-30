@@ -1,7 +1,5 @@
 package main.utility;
 
-import main.Sprite;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -13,11 +11,14 @@ public class Mask {
     }
 
     public boolean overlaps(Rectangle spriteRect) {
+
         // Iterate over the sprite's rectangle
         for (int x = spriteRect.x; x < spriteRect.x + spriteRect.width; x++) {
             for (int y = spriteRect.y; y < spriteRect.y + spriteRect.height; y++) {
+
                 // Check if the coordinates are within the image bounds
                 if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
+
                     // Get the pixel's color
                     int pixel = image.getRGB(x, y);
                     int alpha = (pixel >> 24) & 0xff; // Extract alpha channel

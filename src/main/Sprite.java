@@ -39,5 +39,8 @@ public class Sprite {
     public void setDirection(boolean flip) {
         this.flip = flip;
     }
+    public boolean getDirection() {
+        return flip;
+    }
 
 } // main.Sprite
