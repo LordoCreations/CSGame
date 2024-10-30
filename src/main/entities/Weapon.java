@@ -11,7 +11,7 @@ public class Weapon extends Entity {
     private int firingInterval = 100;
     private long lastFired = -5000;
 
-    private final static int[] firingIntervals = {200, 80, 100, 90, 400, 1000};
+    private final static int[] FIRING_INTERVALS = {200, 80, 100, 90, 400, 1000};
 
     public Weapon(int id, Player c){
         super();
