@@ -4,16 +4,26 @@ import main.Entity;
 import main.GameScene;
 
 public class Player extends Entity {
-    protected int hp;
+    protected double hp;
+    private double maxHp;
     protected int corpseID;
-    protected int weapon;
+    protected int weaponID;
     protected GameScene scene;
+
+    // TODO replace with weapon ammo and stuff
+    private int ammo;
+    private int maxAmmo;
 
     public Player(GameScene s, String r, int newX, int newY, int weapon, int hp) {
         super(r, newX, newY);
         this.hp = hp;
-        this.weapon = weapon;
+        this.maxHp = hp + 20;
+        this.weaponID = weapon;
         this.scene = s;
+
+        // TODO replace with weapon ammo and stuff
+        this.maxAmmo = 90;
+        this.ammo = 15;
 
         // assigns corpse id based on skin
         if (r.equals("rambo.png")) {
@@ -24,13 +34,29 @@ public class Player extends Entity {
         } // else
     } // Character
 
-    public int getHp() {
+    public double getHp() {
         return hp;
     } // getHp
 
+    public double getMaxHp() {
+        return maxHp;
+    } // getHp
+
+    public double getAmmo() {
+        return ammo;
+    } // getHp
+
+    public double getMaxAmmo() {
+        return maxAmmo;
+    } // getHp
+
     public void setWeapon(int w) {
-        weapon = w;
+        weaponID = w;
     } // setWeapon
+
+    public int getWidth() {
+        return sprite.getWidth();
+    }
 
     @Override
     public void collidedWith(Entity o) {
@@ -76,5 +102,10 @@ public class Player extends Entity {
             dy = 0;
         }
 
+    }
+
+    @Override
+    public void update() {
+        hitbox.setRect(x+4, y+8, 48, 48);
     }
 } // class

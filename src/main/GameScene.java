@@ -1,5 +1,8 @@
 package main;
 
+import main.entities.Weapon;
+import main.utility.AmmoBar;
+import main.utility.Bar;
 import main.utility.Mask;
 
 import javax.imageio.ImageIO;
@@ -43,7 +46,11 @@ public class GameScene extends Scene {
         System.out.println("e");
         game.addKeyListener(new KeyInputHandler());
 
-        entities.add(new Player(this, "rambo.png", 220, 250, 1, 100));
+        Player player = new Player(this, "rambo.png", 220, 250, 1, 100);
+        entities.add(player);
+        entities.add(new Bar(player));
+        entities.add(new AmmoBar(player));
+
     }
 
     @Override
