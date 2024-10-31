@@ -7,20 +7,30 @@ public class Weapon extends Entity {
     private int[] offsets;
     private Player following;
     protected int id;
-    private int speed = 100;
-    private int firingInterval = 100;
+    private int bulletSpeed;
+    private int firingInterval;
     private long lastFired = -5000;
+    private int bulletLife;
+    private int bulletSpread;
 
-    private final static int[] FIRING_INTERVALS = {200, 80, 100, 90, 400, 1000};
+    // weapon stats based on id
+    private final static int[] FIRING_INTERVALS = {400, 80, 100, 90, 600, 1000};
+    private final static int[] BULLET_SPEED = {800, 800, 1600, 1000, 1000};
+    private final static int[] BULLET_LIFE = {500, 500, 1000, 500, 500};
+    private final static int[] BULLET_SPREAD = {25, 50, 25, 40, 100};
 
-    public Weapon(int id, Player c){
+    public Weapon(int id, Player p){
         super();
 
         super.setSprite(getWeaponURL(id));
         following = p;
         this.id = id;
-
         offsets = getOffsets(id);
+        firingInterval = FIRING_INTERVALS[id];
+        bulletSpeed = BULLET_SPEED[id];
+        bulletLife = BULLET_LIFE[id];
+        bulletSpread = BULLET_SPREAD[id];
+
     } // Weapon
 
     // follows the player
@@ -32,7 +42,13 @@ public class Weapon extends Entity {
     private String getWeaponURL(int id) {
         switch (id) {
             case 1:
-                return "smg.png";
+                return "mp5.png";
+            case 2:
+                return "ak47.png";
+            case 3:
+                return "honeybadger.png";
+            case 4:
+                return "defriender.png";
             default:
                 return "m9.png";
         }

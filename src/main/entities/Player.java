@@ -13,6 +13,8 @@ public class Player extends Entity {
     protected int weaponID;
     protected Weapon weapon;
     protected GameScene scene;
+    protected int team;
+    private int id;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
@@ -25,9 +27,13 @@ public class Player extends Entity {
         this.hp = hp;
         this.maxHp = hp;
         this.weaponID = 0;
-        this.weapon = new Weapon(0, this);
+        this.weapon = new Weapon(4, this);
         this.scene = s;
+        this.team = team;
+        this.id = id;
+        setControls(id);
 
+        // TODO get ammo from weapon
         this.maxAmmo = 90;
         this.ammo = this.maxAmmo;
 
@@ -149,5 +155,5 @@ public class Player extends Entity {
     @Override
     public void update() {
         hitbox.setRect(x+4, y+8, 48, 48);
-    }
+    } // update
 } // class
