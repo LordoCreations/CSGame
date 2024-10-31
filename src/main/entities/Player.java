@@ -4,9 +4,10 @@ import main.Entity;
 import main.GameScene;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
-    protected double hp;
+    public double hp;
     private double maxHp;
     protected int corpseID;
     protected int weaponID;
@@ -17,16 +18,18 @@ public class Player extends Entity {
     private int ammo;
     private int maxAmmo;
 
-    public Player(GameScene s, String r, int newX, int newY, int hp, int team) {
+    private int[] controls = new int[4];
+
+    public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
         this.hp = hp;
-        this.maxHp = hp + 20;
+        this.maxHp = hp;
         this.weaponID = 0;
         this.weapon = new Weapon(0, this);
         this.scene = s;
 
         this.maxAmmo = 90;
-        this.ammo = 15;
+        this.ammo = this.maxAmmo;
 
         // assigns corpse id based on skin
         if (r.equals("rambo.png")) {
@@ -56,6 +59,8 @@ public class Player extends Entity {
     public void setWeapon(int w) {
         weaponID = w;
         weapon = new Weapon(w, this);
+
+        // TODO get ammo from weapon
     } // setWeapon
 
     @Override public void draw(Graphics g) {
@@ -67,6 +72,27 @@ public class Player extends Entity {
     public int getWidth() {
         return sprite.getWidth();
     }
+
+    public int getTeam() {
+        return team;
+    }
+
+    private void setControls(int id) {
+        switch (id) {
+            case 1:
+                controls[0] = KeyEvent.VK_A;
+                controls[1] = KeyEvent.VK_W;
+                controls[2] = KeyEvent.VK_D;
+                controls[3] = KeyEvent.VK_S;
+                break;
+            default:
+                controls[0] = 37;
+                controls[1] = 38;
+                controls[2] = 39;
+                controls[3] = 40;
+        }
+    }
+
 
     @Override
     public void collidedWith(Entity o) {
@@ -84,11 +110,11 @@ public class Player extends Entity {
             dx = 0;
         }
 
-        if (scene.keysDown.contains('d')) {
+        if (scene.keysDown.contains(controls[2])) {
             this.sprite.setDirection(false);
             this.weapon.setDirection(false);
             dx = 300;
-        } else if (scene.keysDown.contains('a')) {
+        } else if (scene.keysDown.contains(controls[0])) {
             this.sprite.setDirection(true);
             this.weapon.setDirection(true);
             dx = -300;
@@ -96,13 +122,13 @@ public class Player extends Entity {
             dx = 0;
         }
 
-        if (scene.keysDown.contains('s')) {
+        if (scene.keysDown.contains(controls[3])) {
             this.weapon.tryShoot(scene.entities);
         }
 
         y += 1;
         update();
-        if (scene.keysDown.contains('w') && scene.touchingWall(this)) {
+        if (scene.keysDown.contains(controls[1]) && scene.touchingWall(this)) {
             dy = -900;
         }
         y -= 1;

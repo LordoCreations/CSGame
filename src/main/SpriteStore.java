@@ -15,7 +15,7 @@ public class SpriteStore {
     // one instance of this class will exist
     // this instance will be accessed by main.Game.java
     private static SpriteStore single = new SpriteStore();
-    private HashMap sprites = new HashMap();  // key,value pairs that stores
+    private HashMap<String, Image> images = new HashMap();  // key,value pairs that stores
     // the three main.sprites (alien, ship, shot)
 
     // returns the single instance of this class
@@ -35,8 +35,8 @@ public class SpriteStore {
         // if the sprite is already in the HashMap
         // then return it
         // Note:
-        if (sprites.get(ref) != null) {
-            return (Sprite) sprites.get(ref);
+        if (images.get(ref) != null) {
+            return new Sprite(images.get(ref));
         } // if
 
         // else, load the image into the HashMap off the
@@ -66,7 +66,7 @@ public class SpriteStore {
 
         // create a sprite, add it to the cache and return it
         Sprite sprite = new Sprite(image);
-        sprites.put(ref, sprite);
+        images.put(ref, image);
 
         return sprite;
     } // getSprite

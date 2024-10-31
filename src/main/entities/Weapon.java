@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Weapon extends Entity {
     private int[] offsets;
-    private Player c;
+    private Player following;
     protected int id;
     private int speed = 100;
     private int firingInterval = 100;
@@ -17,7 +17,7 @@ public class Weapon extends Entity {
         super();
 
         super.setSprite(getWeaponURL(id));
-        this.c = c;
+        following = p;
         this.id = id;
 
         offsets = getOffsets(id);
@@ -25,8 +25,8 @@ public class Weapon extends Entity {
 
     // follows the player
     public void move() {
-        x = c.getX() + offsets[0] + (sprite.getDirection() ? -38 : 28);
-        y = c.getY() + offsets[1];
+        x = following.getX() + offsets[0] + (sprite.getDirection() ? -38 : 28);
+        y = following.getY() + offsets[1];
     } // move
 
     private String getWeaponURL(int id) {
@@ -62,8 +62,20 @@ public class Weapon extends Entity {
         lastFired = System.currentTimeMillis();
         
         // TODO get actual weapon data, fix direction
-        Bullet bullet = new Bullet("test.png", (int) x, (int) y, (sprite.getDirection() ? -speed : speed), 100, 100);
-        entities.add(bullet);
+        int randomSpread = (int)(Math.random() * 2 * bulletSpread + 1) - bulletSpread;
+        switch (id) {
+            case 4: // TODO shotgun has multple bullets
+                for(int i = 0; i < 12; i++) {
+                    int randomSpeed = (int)((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
+                    Bullet bullet = new Bullet("bullet.png", (int) x, (int) y, following.getTeam(), bulletLife, (sprite.getDirection() ? -randomSpeed : randomSpeed), randomSpread);
+                    entities.add(bullet);
+                    randomSpread = (int)(Math.random() * 2 * bulletSpread + 1) - bulletSpread;
+                } // for
+                break;
+            default:
+                Bullet bullet = new Bullet("bullet.png", (int) x, (int) y, following.getTeam(), bulletLife, (sprite.getDirection() ? -bulletSpeed : bulletSpeed), randomSpread);
+                entities.add(bullet);
+        }
     }
 
     @Override

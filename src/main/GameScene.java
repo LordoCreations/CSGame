@@ -1,5 +1,6 @@
 package main;
 
+import main.entities.Bullet;
 import main.entities.Weapon;
 import main.utility.AmmoBar;
 import main.utility.Bar;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import main.entities.Player;
+
 import static main.Game.height;
 import static main.Game.width;
 
@@ -26,13 +28,13 @@ public class GameScene extends Scene {
     private final ArrayList<Entity> removeEntities = new ArrayList<>();
     private Sprite background;
     private Mask wall;
-    public Set<Character> keysDown = new HashSet<>();
+    public Set<Integer> keysDown = new HashSet<>();
 
     GameScene(Game game) {
         super(game);
         background = SpriteStore.get().getSprite("wall.png");
         try {
-            URL url = this.getClass().getClassLoader().getResource("main/sprites/"+"wall"+".png");
+            URL url = this.getClass().getClassLoader().getResource("main/sprites/" + "wall" + ".png");
             BufferedImage maskImage = ImageIO.read(url);
             wall = new Mask(maskImage);
         } catch (IOException e) {
@@ -46,10 +48,16 @@ public class GameScene extends Scene {
         System.out.println("e");
         game.addKeyListener(new KeyInputHandler());
 
-        Player player = new Player(this, "rambo.png", 220, 250, 100, 1);
+        Player player = new Player(this, "rambo.png", 220, 250, 100, 1, 0);
+        Player player2 = new Player(this, "globey.png", 220, 250, 100, 2, 1);
+
         entities.add(player);
         entities.add(new Bar(player));
         entities.add(new AmmoBar(player));
+
+        entities.add(player2);
+        entities.add(new Bar(player2));
+        entities.add(new AmmoBar(player2));
 
     }
 
@@ -67,35 +75,35 @@ public class GameScene extends Scene {
         background.draw(g, 0, 0);
 
 
-        try {
-
-            // move each entity
-            for (int i = 0; i < entities.size(); i++) {
-                Entity e = entities.get(i);
-                e.move(delta);
-            }
-
-            // draw all entities
-            for (int i = 0; i < entities.size(); i++) {
-                Entity e = entities.get(i);
-                e.draw(g);
-            }
-
-            // ! adding stuff
-//            for (Entity e : entities) {
-//                e.move(delta);
-//            }
-//
-//            // draw all entities
-//            for (Entity e : entities) {
-//                e.draw(g);
-//            }
-        } catch (Exception e) {
-            System.out.println(e);
+        // move each entity
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            e.move(delta);
         }
 
-
         // TODO Optimize collisions
+        for (int i = 0; i < entities.size(); i++) {
+            Entity me = entities.get(i);
+            if (me instanceof Bullet) {
+                if (touchingWall(me)) {
+                    removeEntities.add(me);
+                }
+                for (int j = 0; j < entities.size(); j++) {
+                    Entity him = entities.get(j);
+                    if (him instanceof Player && me.collidesWith(him) && ((Player) him).getTeam() != ((Bullet) me).getTeam()) {
+                        me.collidedWith(him);
+                        removeEntities.add(me);
+                    }
+                }
+            }
+        }
+
+        // draw all entities
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            e.draw(g);
+        }
+
 
         // remove dead entities
         entities.removeAll(removeEntities);
@@ -119,12 +127,12 @@ public class GameScene extends Scene {
          */
         @Override
         public void keyPressed(KeyEvent e) {
-            keysDown.add(e.getKeyChar());
+            keysDown.add(e.getKeyCode());
         } // keyPressed
 
         @Override
         public void keyReleased(KeyEvent e) {
-            keysDown.remove(e.getKeyChar());
+            keysDown.remove(e.getKeyCode());
         } // keyReleased
 
         @Override
