@@ -13,8 +13,11 @@ public class Weapon extends Entity {
     private long lastFired = -5000;
     private int bulletLife;
     private int bulletSpread;
+    private int bulletDamage;
+    private int[] bulletOffsets;
 
     // weapon stats based on id
+    // m9, mp5, ak47, honeybadger, defriender, barrettm82,
     private final static int[] FIRING_INTERVALS = {400, 80, 100, 90, 600, 1000};
     private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1000, 2000, 2800};
     private final static int[] BULLET_LIFE = {500, 500, 1000, 500, 80, 2000};
@@ -71,7 +74,15 @@ public class Weapon extends Entity {
             case 0:
                 return new int[]{8, 32};
             case 1:
+                return new int[]{-28, 34};
+            case 2:
+                return new int[]{-26, 2};
+            case 3:
                 return new int[]{0, 0};
+            case 4:
+                return new int[]{-11, 28};
+            case 5:
+                return new int[]{-17, 25};
         }
         return new int[]{0, 0};
     } // getOffsets
@@ -96,6 +107,8 @@ public class Weapon extends Entity {
                     createBullet("buckshot.png", randomSpeed, entities);
                 } // for
                 break;
+            case 5:
+                createBullet("50bmg.png", bulletSpeed, entities);
             default:
                 createBullet("9mm.png", bulletSpeed, entities);
         }

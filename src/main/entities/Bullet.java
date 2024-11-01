@@ -27,7 +27,18 @@ public class Bullet extends Entity {
 
     public int getTeam() {
         return team;
+    } // getTeam
+
+    public int getWidth() {
+        return sprite.getWidth();
+    } // getTeam
+
+
+    public void setX(int x) {
+        this.x = x;
     }
+
+    public int getDamage() { return damage; } // getDamage
 
     @Override
     public void move(long delta){
