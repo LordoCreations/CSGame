@@ -23,7 +23,7 @@ public class Weapon extends Entity {
     private final static int[] BULLET_LIFE = {500, 500, 1000, 500, 80, 2000};
     private final static int[] BULLET_SPREAD = {25, 50, 25, 40, 600, 0};
     private final static int[] BULLET_DAMAGE = {10, 10, 40, 10, 5, 100};
-    private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {0, 0}, {0, 0}, {48, 7}, {68, 6}};
+    private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {0, 0}, {48, 7}, {68, 6}};
 
     private final GameScene scene;
 
