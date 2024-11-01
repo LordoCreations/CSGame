@@ -1,22 +1,28 @@
 package main.entities;
 
 import main.Entity;
-import main.Game;
+import main.GameScene;
 
 public class Bullet extends Entity {
     private int team;
     private int lifeTime;
     private long spawnTime = System.currentTimeMillis();
-    // TODO set damage to weapon dmg
+    private int damage;
 
-    private int damage = 5;
+    private final GameScene scene;
 
-    public Bullet(String r, int x, int y, int team, int lifeTime, int speed, int spread) {
+    public Bullet(String r, int x, int y, int team, int lifeTime, int speed, int spread, GameScene scene, int damage) {
         super(r, x, y);
         this.team = team;
         this.lifeTime = lifeTime;
         dx = speed;
         dy = spread;
+        this.damage = damage;
+        this.scene = scene;
+
+        if (speed < 0) {
+            sprite.setDirection(true);
+        }
     } // Bullet
 
     public int getTeam() {
@@ -25,10 +31,9 @@ public class Bullet extends Entity {
 
     @Override
     public void move(long delta){
-        moveX(delta);
-        moveY(delta);
+        super.move(delta);
         if(System.currentTimeMillis() > spawnTime + lifeTime){
-//            Game.removeEntity(this);
+            scene.removeEntity(this);
         } // if
     } // move
 
@@ -36,6 +41,7 @@ public class Bullet extends Entity {
     public void collidedWith(Entity o){
         ((Player) o).hp -= damage;
     }  // collidedWith
+
 } // class
 
 

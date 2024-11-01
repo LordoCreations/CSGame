@@ -29,6 +29,9 @@ public class GameScene extends Scene {
     private Sprite background;
     private Mask wall;
     public Set<Integer> keysDown = new HashSet<>();
+    private Player[] players = new Player[4];
+
+    private static int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}};
 
     GameScene(Game game) {
         super(game);
@@ -48,16 +51,18 @@ public class GameScene extends Scene {
         System.out.println("e");
         game.addKeyListener(new KeyInputHandler());
 
-        Player player = new Player(this, "rambo.png", 220, 250, 100, 1, 0);
-        Player player2 = new Player(this, "globey.png", 220, 250, 100, 2, 1);
+        players[0] = new Player(this, "rambo.png", 220, 250, 100, 1, 0);
+        players[1] = new Player(this, "globey.png", 220, 250, 100, 2, 1);
 
-        entities.add(player);
-        entities.add(new Bar(player));
-        entities.add(new AmmoBar(player));
+        for (Player player : players) {
+            if (player == null) continue;
+            entities.add(player);
+            entities.add(new Bar(player));
+            entities.add(new AmmoBar(player));
+        }
 
-        entities.add(player2);
-        entities.add(new Bar(player2));
-        entities.add(new AmmoBar(player2));
+        players[0].setWeapon(4);
+        players[1].setWeapon(5);
 
     }
 
@@ -92,6 +97,7 @@ public class GameScene extends Scene {
                     Entity him = entities.get(j);
                     if (him instanceof Player && me.collidesWith(him) && ((Player) him).getTeam() != ((Bullet) me).getTeam()) {
                         me.collidedWith(him);
+                        him.collidedWith(me);
                         removeEntities.add(me);
                     }
                 }
@@ -151,5 +157,13 @@ public class GameScene extends Scene {
 
     public void removeEntity(Entity e) {
         removeEntities.add(e);
+    }
+
+    public void playerDied(Player p, int killCredit) {
+        System.out.printf("Player %d died to team %d%n", p.getID(), killCredit);
+        p.setDirection(false);
+        p.setWeapon((int) (Math.random() * 6));
+        p.hp = p.getMaxHp();
+        p.setCoord(SPAWN_POINTS[(int) (Math.random() * SPAWN_POINTS.length)]);
     }
 }

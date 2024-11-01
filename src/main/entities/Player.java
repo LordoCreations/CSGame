@@ -27,8 +27,8 @@ public class Player extends Entity {
         this.hp = hp;
         this.maxHp = hp;
         this.weaponID = 0;
-        this.weapon = new Weapon(4, this);
         this.scene = s;
+        this.weapon = new Weapon(0, this, scene);
         this.team = team;
         this.id = id;
         setControls(id);
@@ -64,7 +64,7 @@ public class Player extends Entity {
 
     public void setWeapon(int w) {
         weaponID = w;
-        weapon = new Weapon(w, this);
+        weapon = new Weapon(w, this, scene);
 
         // TODO get ammo from weapon
     } // setWeapon
@@ -81,6 +81,20 @@ public class Player extends Entity {
 
     public int getTeam() {
         return team;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public void setCoord(int[] coord) {
+        this.x = coord[0];
+        this.y = coord[1];
+    }
+
+    public void setDirection(boolean dir) {
+        this.sprite.setDirection(dir);
+        this.weapon.setDirection(dir);
     }
 
     private void setControls(int id) {
@@ -102,11 +116,17 @@ public class Player extends Entity {
 
     @Override
     public void collidedWith(Entity o) {
-
+        if (o instanceof Bullet) {
+            if (hp <= 0) {
+                scene.playerDied(this, ((Bullet) o).getTeam());
+            }
+        }
     } // collidedWith
 
     @Override
     public void move(long delta) {
+
+
         moveX(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
@@ -139,7 +159,7 @@ public class Player extends Entity {
         }
         y -= 1;
         update();
-        dy += 30;
+        dy += 1.75*delta;
 
         moveY(delta);
         if (scene.touchingWall(this)) {
