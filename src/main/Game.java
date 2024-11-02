@@ -11,14 +11,15 @@ import java.util.ArrayList;
 
 public class Game extends Canvas {
     BufferStrategy strategy;
-    private boolean gameRunning = true;
-    private ArrayList removeEntities = new ArrayList();
-    private String message = "";
-    private boolean logicRequiredThisLoop = false;
+    private final boolean gameRunning = true;
+    private final ArrayList removeEntities = new ArrayList();
+    private final String message = "";
+    private final boolean logicRequiredThisLoop = false;
     static int width =  1600;
     static int height = 900;
+    public int[] skins = new int[4];
 
-    private SceneManager sceneManager;
+    private final SceneManager sceneManager;
 
     /*
      * Construct our game and set it running.

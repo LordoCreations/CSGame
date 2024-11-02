@@ -5,16 +5,16 @@ import main.GameScene;
 import java.util.ArrayList;
 
 public class Weapon extends Entity {
-    private int[] offsets;
-    private Player following;
+    private final int[] offsets;
+    private final Player following;
     protected int id;
-    private int bulletSpeed;
-    private int firingInterval;
+    private final int bulletSpeed;
+    private final int firingInterval;
     private long lastFired = -5000;
-    private int bulletLife;
-    private int bulletSpread;
-    private int bulletDamage;
-    private int[] bulletOffsets;
+    private final int bulletLife;
+    private final int bulletSpread;
+    private final int bulletDamage;
+    private final int[] bulletOffsets;
     private int ammo;
 
     // weapon stats based on id
@@ -25,7 +25,7 @@ public class Weapon extends Entity {
     private final static int[] BULLET_SPREAD = {25, 50, 25, 20, 600, 0};
     private final static int[] BULLET_DAMAGE = {20, 15, 25, 10, 5, 100};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 6}, {48, 7}, {68, 6}};
-    private final static int[] MAX_AMMO = {0, 30, 30, 30, 10, 5};
+    private final static int[] MAX_AMMO = {1, 30, 30, 30, 10, 5};
 
     private final GameScene scene;
 
@@ -44,8 +44,17 @@ public class Weapon extends Entity {
         bulletOffsets = BULLET_OFFSETS[id];
 
         this.scene = scene;
+        ammo = getMaxAmmo();
 
     } // Weapon
+
+    public int getAmmo() {
+        return ammo;
+    } // getHp
+
+    public int getMaxAmmo() {
+        return MAX_AMMO[id];
+    } // getMaxAmmo
 
     // follows the player
     public void move() {
@@ -98,6 +107,8 @@ public class Weapon extends Entity {
             return;
         } // if
 
+        if (id != 0) ammo -= 1;
+
         // otherwise add a shot
         lastFired = System.currentTimeMillis();
         
@@ -129,7 +140,6 @@ public class Weapon extends Entity {
                 (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage);
         bullet.setX((int) x + sprite.getWidth()/2 +(sprite.getDirection() ? -bulletOffsets[0]-bullet.getWidth() : bulletOffsets[0]));
         entities.add(bullet);
-
     }
 
     @Override

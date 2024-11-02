@@ -4,10 +4,10 @@ import main.Entity;
 import main.GameScene;
 
 public class Bullet extends Entity {
-    private int team;
-    private int lifeTime;
-    private long spawnTime = System.currentTimeMillis();
-    private int damage;
+    private final int team;
+    private final int lifeTime;
+    private final long spawnTime = System.currentTimeMillis();
+    private final int damage;
 
     private final GameScene scene;
 

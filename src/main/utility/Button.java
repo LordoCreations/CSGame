@@ -5,21 +5,16 @@ import java.awt.Graphics;
 
 
 public class Button extends Entity {
-    private int x;
-    private int y;
-    private String text;
+    private final int x;
+    private final int y;
     private boolean hovered = false;
-    private Runnable action;
+    private final Runnable action;
 
     public Button(String r, int x, int y, Runnable action) {
         super(r, x, y);
         this.x = x;
         this.y = y;
         this.action = action;
-    }
-
-    public void render(Graphics g) {
-        super.draw(g);
     }
 
     public void update(int mouseX, int mouseY, boolean mousePressed) {

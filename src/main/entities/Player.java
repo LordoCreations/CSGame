@@ -8,37 +8,39 @@ import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
     public double hp;
-    private double maxHp;
-    protected int corpseID;
+    private final double maxHp;
+    private int corpseID;
     protected int weaponID;
     protected Weapon weapon;
     protected GameScene scene;
     protected int team;
-    private int id;
+    private final int id;
+    private long respawnTime;
     private long spawntime;
     public boolean spawnProt;
+    private String skin;
+    public boolean isDead;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
     private int maxAmmo;
 
-    private int[] controls = new int[4];
+    private final int[] controls = new int[4];
 
     public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
+        skin = r;
         this.hp = hp;
         this.maxHp = hp;
         this.weaponID = 0;
         this.scene = s;
-        this.weapon = new Weapon(0, this, scene);
+        this.weapon = new Weapon(weaponID, this, scene);
         this.team = team;
         this.id = id;
         spawntime = System.currentTimeMillis();
+        respawnTime = System.currentTimeMillis();
         setControls(id);
-
-        // TODO get ammo from weapon
-        this.maxAmmo = 90;
-        this.ammo = this.maxAmmo;
+        isDead = false;
 
         // assigns corpse id based on skin
         if (r.equals("rambo.png")) {
@@ -59,24 +61,9 @@ public class Player extends Entity {
 
     public double getAmmo() {
         return ammo;
-    } // getHp
+    } // getAmmo
 
-    public double getMaxAmmo() {
-        return maxAmmo;
-    } // getHp
-
-    public void setWeapon(int w) {
-        weaponID = w;
-        weapon = new Weapon(w, this, scene);
-
-        // TODO get ammo from weapon
-    } // setWeapon
-
-    @Override public void draw(Graphics g) {
-        super.draw(g);
-        weapon.move();
-        weapon.draw(g);
-    }
+    public double getMaxAmmo() { return maxAmmo; } // getMaxAmmo
 
     public int getWidth() {
         return sprite.getWidth();
@@ -90,7 +77,18 @@ public class Player extends Entity {
         return id;
     }
 
+    public int getCorpseID() { return corpseID; }
+
     public void setSpawntime(long spawntime) { this.spawntime = spawntime; }
+
+    public void setRespawnTime(long respawnTime) { this.respawnTime = respawnTime; }
+
+    public long getRespawnTime() { return respawnTime; }
+
+    public void setSkin(String r){
+        skin = r; // TODO remove cuz its useless?
+        this.setSprite(r);
+    }
 
     public void setCoord(int[] coord) {
         this.x = coord[0];
@@ -118,6 +116,24 @@ public class Player extends Entity {
         }
     }
 
+    public void setWeapon(int w) {
+        weaponID = w;
+        weapon = new Weapon(w, this, scene);
+
+        // TODO get ammo from weapon
+        this.maxAmmo = weapon.getMaxAmmo();
+        this.ammo = maxAmmo;
+        setDirection(sprite.getDirection());
+    } // setWeapon
+
+    @Override
+    public void draw(Graphics g) {
+        super.draw(g);
+        ammo = weapon.getAmmo();
+        weapon.move();
+        weapon.draw(g);
+    }
+
     @Override
     public void collidedWith(Entity o) {
         if (o instanceof Bullet) {
@@ -129,52 +145,56 @@ public class Player extends Entity {
 
     @Override
     public void move(long delta) {
-        if (System.currentTimeMillis() <= spawntime + 3000){
+        if (isDead) {
+            spawnProt = true; // players can't be hurt if dead
+        } else if (System.currentTimeMillis() <= spawntime + 3000) {
             // TODO overlay shield sprite or other spawn protection effect
+            // current implementation is flashing
+            sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0)));
             spawnProt = true;
         } else {
+            sprite.setOpacity(1);
             spawnProt = false;
         } // if else
 
         moveX(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
-                x -= dx/999;
+                x -= dx / 999;
                 update();
             }
             dx = 0;
         }
 
         if (scene.keysDown.contains(controls[2])) {
-            this.sprite.setDirection(false);
-            this.weapon.setDirection(false);
+            setDirection(false);
             dx = 300;
         } else if (scene.keysDown.contains(controls[0])) {
-            this.sprite.setDirection(true);
-            this.weapon.setDirection(true);
+            setDirection(true);
             dx = -300;
         } else {
             dx = 0;
         }
 
-        if (scene.keysDown.contains(controls[3])) {
-            spawntime = -3000;
-            this.weapon.tryShoot(scene.entities);
+        if (!isDead && !spawnProt && scene.keysDown.contains(controls[3])) {
+            weapon.tryShoot(scene.entities);
+            if (weapon.getAmmo() <= 0) {
+                setWeapon(0);
+            }
         }
 
         y += 1;
         update();
-        if (scene.keysDown.contains(controls[1]) && scene.touchingWall(this)) {
-            dy = -900;
-        }
+        if (scene.keysDown.contains(controls[1]) && scene.touchingWall(this)) dy = -900;
+
         y -= 1;
         update();
-        dy += 1.75*delta;
+        dy += 1.75 * delta;
 
         moveY(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
-                y -= dy/999;
+                y -= dy / 999;
                 update();
             }
             dy = 0;
@@ -184,6 +204,6 @@ public class Player extends Entity {
 
     @Override
     public void update() {
-        hitbox.setRect(x+4, y+8, 48, 48);
+        hitbox.setRect(x + 4, y + 8, 48, 48);
     } // update
 } // class

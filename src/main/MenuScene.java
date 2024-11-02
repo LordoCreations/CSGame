@@ -11,9 +11,9 @@ import static main.Game.width;
 
 public class MenuScene extends Scene {
     private final ArrayList<Entity> entities = new ArrayList<>();
-    private Button startButton;
-    private Button settingsButton;
-    private Sprite background;
+    private final Button startButton;
+    private final Button settingsButton;
+    private final Sprite background;
 
     MenuScene(Game game) {
         super(game);
@@ -48,17 +48,14 @@ public class MenuScene extends Scene {
 
     @Override
     public void update() {
-        // calc. time since last update, will be used to calculate
-        // entities movement
-        // get graphics context for the accelerated surface and make it black
         Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
         background.draw(g, 0, 0);
         g.setColor(Color.white);
 
-        startButton.render(g);
-        settingsButton.render(g);
+        startButton.draw(g);
+        settingsButton.draw(g);
 
         // clear graphics and flip buffer
         g.dispose();
@@ -66,8 +63,7 @@ public class MenuScene extends Scene {
     }
 
     private void startGame() {
-        System.out.println("Starting main game");
-        game.setScene(new GameScene(game));
+        game.setScene(new CustomizationScene(game));
     }
 
     private void openSettings() {

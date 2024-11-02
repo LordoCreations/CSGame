@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Mask {
-    private BufferedImage image;
+    private final BufferedImage image;
 
     public Mask(BufferedImage image) {
         this.image = image;

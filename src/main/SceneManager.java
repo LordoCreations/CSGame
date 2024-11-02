@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 
 public class SceneManager {
     private Scene currentScene;
-    private Game game;
+    private final Game game;
 
     SceneManager(Game game) {
         this.game = game;

@@ -5,12 +5,12 @@ package main;/* main.Sprite.java
  * copy of alien.gif can be used over and over.
  */
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 
 public class Sprite {
     private boolean flip;
     public Image image;  // the image to be drawn for this sprite
+    private float opacity = 1f;
 
     // constructor
     public Sprite(Image i) {
@@ -29,6 +29,7 @@ public class Sprite {
 
     // draw the sprite in the graphics object provided at location (x,y)
     public void draw(Graphics g, int x, int y) {
+        ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         if (flip) {
             g.drawImage(image, x + image.getWidth(null), y, -image.getWidth(null), image.getHeight(null), null);
         } else {
@@ -43,4 +44,11 @@ public class Sprite {
         return flip;
     }
 
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
 } // main.Sprite

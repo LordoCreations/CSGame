@@ -14,8 +14,8 @@ public class SpriteStore {
 
     // one instance of this class will exist
     // this instance will be accessed by main.Game.java
-    private static SpriteStore single = new SpriteStore();
-    private HashMap<String, Image> images = new HashMap();  // key,value pairs that stores
+    private static final SpriteStore single = new SpriteStore();
+    private final HashMap<String, Image> images = new HashMap();  // key,value pairs that stores
     // the three main.sprites (alien, ship, shot)
 
     // returns the single instance of this class
