@@ -165,5 +165,6 @@ public class GameScene extends Scene {
         p.setWeapon((int) (Math.random() * 6));
         p.hp = p.getMaxHp();
         p.setCoord(SPAWN_POINTS[(int) (Math.random() * SPAWN_POINTS.length)]);
+        p.setSpawntime(System.currentTimeMillis());
     }
 }

@@ -24,7 +24,7 @@ public class Game extends Canvas {
      * Construct our game and set it running.
      */
     public Game() {
-        JFrame container = new JFrame("Strike Force Heroes");
+        JFrame container = new JFrame("Cube Force");
 
         JPanel panel = (JPanel) container.getContentPane();
 

@@ -15,6 +15,8 @@ public class Player extends Entity {
     protected GameScene scene;
     protected int team;
     private int id;
+    private long spawntime;
+    public boolean spawnProt;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
@@ -31,6 +33,7 @@ public class Player extends Entity {
         this.weapon = new Weapon(0, this, scene);
         this.team = team;
         this.id = id;
+        spawntime = System.currentTimeMillis();
         setControls(id);
 
         // TODO get ammo from weapon
@@ -87,6 +90,8 @@ public class Player extends Entity {
         return id;
     }
 
+    public void setSpawntime(long spawntime) { this.spawntime = spawntime; }
+
     public void setCoord(int[] coord) {
         this.x = coord[0];
         this.y = coord[1];
@@ -113,7 +118,6 @@ public class Player extends Entity {
         }
     }
 
-
     @Override
     public void collidedWith(Entity o) {
         if (o instanceof Bullet) {
@@ -125,7 +129,12 @@ public class Player extends Entity {
 
     @Override
     public void move(long delta) {
-
+        if (System.currentTimeMillis() <= spawntime + 3000){
+            // TODO overlay shield sprite or other spawn protection effect
+            spawnProt = true;
+        } else {
+            spawnProt = false;
+        } // if else
 
         moveX(delta);
         if (scene.touchingWall(this)) {
@@ -149,6 +158,7 @@ public class Player extends Entity {
         }
 
         if (scene.keysDown.contains(controls[3])) {
+            spawntime = -3000;
             this.weapon.tryShoot(scene.entities);
         }
 

@@ -15,15 +15,17 @@ public class Weapon extends Entity {
     private int bulletSpread;
     private int bulletDamage;
     private int[] bulletOffsets;
+    private int ammo;
 
     // weapon stats based on id
-    // m9, mp5, ak47, honeybadger, defriender, barrettm82,
-    private final static int[] FIRING_INTERVALS = {400, 80, 100, 90, 600, 1000};
-    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1000, 2000, 2800};
-    private final static int[] BULLET_LIFE = {500, 500, 1000, 500, 80, 2000};
-    private final static int[] BULLET_SPREAD = {25, 50, 25, 40, 600, 0};
-    private final static int[] BULLET_DAMAGE = {10, 10, 40, 10, 5, 100};
-    private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {0, 0}, {48, 7}, {68, 6}};
+    // m9, mp5, ak47, honeybadger, defriender, barrettm82
+    private final static int[] FIRING_INTERVALS = {400, 80, 160, 90, 600, 2000};
+    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 2400};
+    private final static int[] BULLET_LIFE = {550, 500, 1000, 650, 80, 2000};
+    private final static int[] BULLET_SPREAD = {25, 50, 25, 20, 600, 0};
+    private final static int[] BULLET_DAMAGE = {20, 15, 25, 10, 5, 100};
+    private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 6}, {48, 7}, {68, 6}};
+    private final static int[] MAX_AMMO = {0, 30, 30, 30, 10, 5};
 
     private final GameScene scene;
 
@@ -76,9 +78,9 @@ public class Weapon extends Entity {
             case 1:
                 return new int[]{-28, 34};
             case 2:
-                return new int[]{-26, 2};
-            case 3:
                 return new int[]{-26, 35};
+            case 3:
+                return new int[]{-43, 32};
             case 4:
                 return new int[]{-11, 28};
             case 5:
@@ -101,6 +103,12 @@ public class Weapon extends Entity {
         
         // TODO get actual weapon data
         switch (id) {
+            case 2:
+                createBullet("762.png", bulletSpeed, entities);
+                break;
+            case 3:
+                createBullet("300blk.png", bulletSpeed, entities);
+                break;
             case 4: // Shotgun has multiple bullets
                 for(int i = 0; i < 28; i++) {
                     int randomSpeed = (int)((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
@@ -109,6 +117,7 @@ public class Weapon extends Entity {
                 break;
             case 5:
                 createBullet("50bmg.png", bulletSpeed, entities);
+                break;
             default:
                 createBullet("9mm.png", bulletSpeed, entities);
         }
