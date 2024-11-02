@@ -99,8 +99,6 @@ public class Game extends Canvas {
     } // gameLoop
 
 
-
-
     /**
      * Main Program
      */

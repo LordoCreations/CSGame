@@ -16,6 +16,8 @@ public class Weapon extends Entity {
     private final int bulletDamage;
     private final int[] bulletOffsets;
     private int ammo;
+    private int recoil;
+    private int weight;
 
     // weapon stats based on id
     // m9, mp5, ak47, honeybadger, defriender, barrettm82
@@ -26,6 +28,7 @@ public class Weapon extends Entity {
     private final static int[] BULLET_DAMAGE = {20, 15, 25, 10, 5, 100};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 6}, {48, 7}, {68, 6}};
     private final static int[] MAX_AMMO = {1, 30, 30, 30, 10, 5};
+    private final static int[] RECOIL = {10, 10, 25, 5, 25, 50};
 
     private final GameScene scene;
 
