@@ -4,8 +4,8 @@ import main.Entity;
 import main.GameScene;
 
 public class Corpse extends Entity {
-    private long spawntime;
-    private GameScene scene;
+    protected long spawntime;
+    protected GameScene scene;
 
     public Corpse(GameScene s, String r, int x, int y) {
         super(r, x, y);
@@ -16,7 +16,11 @@ public class Corpse extends Entity {
     @Override
     public void move(long delta){
         if (System.currentTimeMillis() >= spawntime + 3000) { scene.removeEntity(this); };
-        
+        applyGravity(delta);
+
+    } // move
+
+    protected void applyGravity(long delta) {
         update();
         dy += 1.75 * delta;
 
@@ -28,7 +32,7 @@ public class Corpse extends Entity {
             }
             dy = 0;
         }
-    } // move
+    }
 
     @Override
     public void collidedWith(Entity o){} // collidedWith

@@ -90,7 +90,7 @@ public class Game extends Canvas {
 
             // pause
             try {
-                Thread.sleep(0);
+                Thread.sleep(1);
             } catch (Exception e) {}
         } // while
     } // gameLoop

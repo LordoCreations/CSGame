@@ -170,7 +170,7 @@ public class Player extends Entity {
             sprite.setOpacity(1);
             spawnProt = false;
         } // if else
-
+        hp = Math.min(maxHp, hp + 0.005 * delta);
         moveX(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {

@@ -13,6 +13,8 @@ public class AIPlayer extends Player {
     private double[] theirCoord = new double[2];
     private double currentDistance;
     private double horizontalThreshold;
+    private double horizontalDistance;
+    private double verticalDistance;
 
     public AIPlayer(GameScene s, String r, int newX, int newY, int hp, int team, int id, Player[] players) {
         super(s, r, newX, newY, hp, team, id);
@@ -29,18 +31,22 @@ public class AIPlayer extends Player {
             System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), minDistance, theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
         }
 
-        if (Math.random() < 0.00001 || theirCoord[1] - myCoord[1] < 50 && Math.random() < 0.05) {
+        verticalDistance = theirCoord[1] - myCoord[1];
+
+        if (Math.random() < 0.001 * delta || verticalDistance > 50 && Math.random() < 0.05) {
             input.add(KeyEvent.VK_UP);
         } else {
             input.remove(KeyEvent.VK_UP);
         }
 
         horizontalThreshold = Math.min(input.contains(KeyEvent.VK_UP) || Math.abs(theirCoord[1] - myCoord[1]) > 50 ? 0 : 300, weapon.getFiringDistance() / 2.0);
+        horizontalDistance = theirCoord[0] - myCoord[0];
 
-        if (theirCoord[0] - myCoord[0] > horizontalThreshold) {
+
+        if (horizontalDistance > horizontalThreshold) {
             input.remove(KeyEvent.VK_LEFT);
             input.add(KeyEvent.VK_RIGHT);
-        } else if (theirCoord[0] - myCoord[0] < -horizontalThreshold) {
+        } else if (horizontalDistance < -horizontalThreshold) {
             input.remove(KeyEvent.VK_RIGHT);
             input.add(KeyEvent.VK_LEFT);
         } else {
@@ -48,7 +54,13 @@ public class AIPlayer extends Player {
             input.remove(KeyEvent.VK_LEFT);
         }
 
-        if (Math.abs(theirCoord[1] - myCoord[1]) < 50 && Math.random() < 0.1 && theirCoord[0] - myCoord[0] < weapon.getFiringDistance()) {
+        if (minDistance > 9999) {
+            input.remove(KeyEvent.VK_RIGHT);
+            input.remove(KeyEvent.VK_LEFT);
+            input.remove(KeyEvent.VK_UP);
+        }
+
+        if (Math.abs(verticalDistance) < 20 && Math.random() < 0.05 * delta && horizontalDistance < weapon.getFiringDistance()) {
             input.add(KeyEvent.VK_DOWN);
         } else {
             input.remove(KeyEvent.VK_DOWN);

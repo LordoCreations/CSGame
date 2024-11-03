@@ -1,8 +1,6 @@
 package main;
 
-import main.entities.AIPlayer;
-import main.entities.Bullet;
-import main.entities.Corpse;
+import main.entities.*;
 import main.utility.AmmoBar;
 import main.utility.Bar;
 import main.utility.Display;
@@ -18,8 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import main.entities.Player;
 
 import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
@@ -90,6 +86,11 @@ public class GameScene extends Scene {
             } // if
         } // for
 
+        // add Chest
+        if (Math.random() < 0.0001 * delta) {
+            entities.add(new Chest(this, "chest.png", (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
+        }
+
         // move each entity
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -103,10 +104,18 @@ public class GameScene extends Scene {
                 if (touchingWall(me)) {
                     removeEntities.add(me);
                 }
-                for (int j = 0; j < players.length; j++) {
-                    if (players[j] == null) continue;
-                    Player him = players[j];
+                for (Player him : players) {
+                    if (him == null) continue;
                     if (me.collidesWith(him) && ((Bullet) me).getTeam() != him.getTeam()) {
+                        me.collidedWith(him);
+                        him.collidedWith(me);
+                        removeEntities.add(me);
+                    }
+                }
+            } else if (me instanceof Chest) {
+                for (Player him : players) {
+                    if (him == null) continue;
+                    if (me.collidesWith(him)) {
                         me.collidedWith(him);
                         him.collidedWith(me);
                         removeEntities.add(me);
@@ -116,7 +125,7 @@ public class GameScene extends Scene {
         }
 
         // draw all entities
-        for (int i = 0; i < entities.size(); i++) {
+        for (int i = entities.size()-1; i >= 0; i--) {
             Entity e = entities.get(i);
             e.draw(g);
         }
