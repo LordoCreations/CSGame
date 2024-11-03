@@ -32,14 +32,15 @@ public class GameScene extends Scene {
     private Mask wall;
     public Set<Integer> keysDown = new HashSet<>();
     private final Player[] players = new Player[4];
+    private final Color backgroundColor = new Color(30, 32, 35);
 
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
 
     GameScene(Game game) {
         super(game);
-        background = SpriteStore.get().getSprite("wall.png");
+        background = SpriteStore.get().getSprite("city_hitbox.png");
         try {
-            URL url = this.getClass().getClassLoader().getResource("main/sprites/" + "wall" + ".png");
+            URL url = this.getClass().getClassLoader().getResource("main/sprites/" + "city_hitbox" + ".png");
             BufferedImage maskImage = ImageIO.read(url);
             wall = new Mask(maskImage);
         } catch (IOException e) {
@@ -78,7 +79,7 @@ public class GameScene extends Scene {
 
         // get graphics context for the accelerated surface and make it black
         Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
-        g.setColor(Color.black);
+        g.setColor(backgroundColor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
 

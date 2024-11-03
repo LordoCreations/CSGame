@@ -219,9 +219,9 @@ public class Player extends Entity {
             dy = 0;
         }
 
-        if (y > HEIGHT) {
-            y = -100;
-            // TODO set X to hole width
+        if (y > HEIGHT ) {
+            y = -10;
+            x = Math.min(Math.max(650, x), 950);
         }
     }
 
