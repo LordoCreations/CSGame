@@ -204,11 +204,14 @@ public class Player extends Entity {
 
         y += 1;
         update();
-        if (input.contains(controls[1]) && scene.touchingWall(this)) dy = -900;
+        if (!scene.touchingWall(this)) {
+            dy += 1.75 * delta;
+        } else if (input.contains(controls[1]) ) {
+            dy = -900;
+        }
 
         y -= 1;
         update();
-        dy += 1.75 * delta;
 
         moveY(delta);
         if (scene.touchingWall(this)) {
@@ -221,7 +224,7 @@ public class Player extends Entity {
 
         if (y > HEIGHT ) {
             y = -10;
-            x = Math.min(Math.max(650, x), 950);
+            x = Math.min(Math.max(650, x), 950-sprite.getWidth());
         }
     }
 
