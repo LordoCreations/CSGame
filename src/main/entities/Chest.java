@@ -21,12 +21,13 @@ public class Chest extends Corpse {
         super.applyGravity(delta);
         if (y > HEIGHT) scene.removeEntity(this);
         if (System.currentTimeMillis() >= spawntime + 9000) scene.removeEntity(this);
+        else if (System.currentTimeMillis() >= spawntime + 7000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0))); }
     }
 
     @Override
     public void collidedWith(Entity o) {
         if (o instanceof Player) {
-            ((Player) o).setWeapon((int) (Math.random() * 6));
+            ((Player) o).setWeapon((int) (Math.random() * 5) + 1);
         }
 
     }

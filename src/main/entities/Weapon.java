@@ -22,7 +22,7 @@ public class Weapon extends Entity {
     // weapon stats based on id
     // m9, mp5, ak47, honeybadger, defriender, barrettm82
     private final static int[] FIRING_INTERVALS = {400, 80, 160, 90, 600, 1500};
-    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 4800};
+    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 4000};
     private final static int[] BULLET_LIFE = {550, 500, 1000, 650, 80, 2000};
     private final static int[] BULLET_SPREAD = {35, 60, 35, 45, 800, 0};
     private final static int[] BULLET_DAMAGE = {20, 15, 25, 12, 5, 100};

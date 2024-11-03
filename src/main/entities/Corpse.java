@@ -15,7 +15,9 @@ public class Corpse extends Entity {
 
     @Override
     public void move(long delta){
-        if (System.currentTimeMillis() >= spawntime + 3000) { scene.removeEntity(this); };
+        if (System.currentTimeMillis() >= spawntime + 3000) { scene.removeEntity(this); }
+        else if (System.currentTimeMillis() >= spawntime + 2000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0))); }
+
         applyGravity(delta);
 
     } // move
