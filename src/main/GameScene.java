@@ -38,7 +38,7 @@ public class GameScene extends Scene {
 
     GameScene(Game game) {
         super(game);
-        background = SpriteStore.get().getSprite("city_hitbox.png");
+        background = SpriteStore.get().getSprite("city.png");
         try {
             URL url = this.getClass().getClassLoader().getResource("main/sprites/" + "city_hitbox" + ".png");
             BufferedImage maskImage = ImageIO.read(url);

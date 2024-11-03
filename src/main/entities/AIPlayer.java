@@ -69,7 +69,7 @@ public class AIPlayer extends Player {
         getCenter(this, myCoord);
         for (Player p : players) {
             if (p == null) continue;
-            if (p.team != this.team) {
+            if (p.team != this.team && !p.spawnProt && !p.isDead) {
                 currentDistance = distance(p);
                 if (currentDistance < minDistance) {
                     minDistance = currentDistance;
