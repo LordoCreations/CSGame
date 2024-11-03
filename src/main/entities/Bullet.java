@@ -49,9 +49,7 @@ public class Bullet extends Entity {
     } // move
 
     @Override
-    public void collidedWith(Entity o){
-        if(!((Player) o).spawnProt) { ((Player) o).hp -= damage; }
-    }  // collidedWith
+    public void collidedWith(Entity o){ if(!((Player) o).spawnProt) { ((Player) o).hp -= damage; }}  // collidedWith
 
 } // class
 

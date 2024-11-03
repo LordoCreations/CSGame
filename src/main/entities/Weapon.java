@@ -95,7 +95,7 @@ public class Weapon extends Entity {
             case 2:
                 return new int[]{-26, 35};
             case 3:
-                return new int[]{-43, 32};
+                return new int[]{-23, 32};
             case 4:
                 return new int[]{-11, 28};
             case 5:
