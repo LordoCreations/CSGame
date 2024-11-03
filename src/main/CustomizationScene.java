@@ -2,6 +2,7 @@ package main;
 
 import main.utility.Button;
 import main.utility.Carousel;
+import main.utility.Display;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -27,6 +28,7 @@ public class CustomizationScene extends Scene {
         menuButton = new Button("menu.png", 895, 735, this::goToMenu);
 
         for (int i = 0; i < game.skins.length; i++) {
+            Display d = new Display("default.png", 137 + 360 * i, 600);
             Carousel c = new Carousel(137 + 360 * i, 600, 280, i, skins);
             c.setChoice(i);
             entities.add(c);

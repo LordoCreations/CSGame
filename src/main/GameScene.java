@@ -171,6 +171,8 @@ public class GameScene extends Scene {
         entities.add(c);
         p.setRespawnTime(System.currentTimeMillis() + 3000);
         p.setCoord(new int[]{100, -100});
+        p.setWeapon(0);
+
     }
 
     private void spawnPlayer(Player p, int[] location) {

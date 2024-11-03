@@ -20,6 +20,8 @@ public class Player extends Entity {
     public boolean spawnProt;
     private String skin;
     public boolean isDead;
+    int speed;
+    double recoilDx;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
@@ -44,7 +46,7 @@ public class Player extends Entity {
 
         // assigns corpse id based on skin
         if (r.equals("rambo.png")) {
-            corpseID = 1;
+            corpseID = 4;
         } // if
         else {
             corpseID = 0;
@@ -85,10 +87,7 @@ public class Player extends Entity {
 
     public long getRespawnTime() { return respawnTime; }
 
-    public void setSkin(String r){
-        skin = r; // TODO remove cuz its useless?
-        this.setSprite(r);
-    }
+    public void setRecoilDx (double dx) { recoilDx = dx; }
 
     public void setCoord(int[] coord) {
         this.x = coord[0];
@@ -99,6 +98,8 @@ public class Player extends Entity {
         this.sprite.setDirection(dir);
         this.weapon.setDirection(dir);
     }
+
+    public boolean getDirection() { return sprite.getDirection(); }
 
     private void setControls(int id) {
         switch (id) {
@@ -120,7 +121,7 @@ public class Player extends Entity {
         weaponID = w;
         weapon = new Weapon(w, this, scene);
 
-        // TODO get ammo from weapon
+        speed = 300 - weapon.getWeight();
         this.maxAmmo = weapon.getMaxAmmo();
         this.ammo = maxAmmo;
         setDirection(sprite.getDirection());
@@ -168,12 +169,17 @@ public class Player extends Entity {
 
         if (scene.keysDown.contains(controls[2])) {
             setDirection(false);
-            dx = 300;
+            dx = speed + recoilDx;
         } else if (scene.keysDown.contains(controls[0])) {
             setDirection(true);
-            dx = -300;
+            dx = -speed + recoilDx;
         } else {
-            dx = 0;
+            dx = 0 + recoilDx;
+        } // if else
+
+        recoilDx *= 0.9;
+        if(recoilDx > 0) {
+            recoilDx -= 1;
         }
 
         if (!isDead && !spawnProt && scene.keysDown.contains(controls[3])) {

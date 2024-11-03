@@ -21,14 +21,15 @@ public class Weapon extends Entity {
 
     // weapon stats based on id
     // m9, mp5, ak47, honeybadger, defriender, barrettm82
-    private final static int[] FIRING_INTERVALS = {400, 80, 160, 90, 600, 2000};
-    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 2400};
+    private final static int[] FIRING_INTERVALS = {400, 80, 160, 90, 600, 1500};
+    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 2800};
     private final static int[] BULLET_LIFE = {550, 500, 1000, 650, 80, 2000};
-    private final static int[] BULLET_SPREAD = {25, 50, 25, 20, 600, 0};
+    private final static int[] BULLET_SPREAD = {35, 60, 35, 45, 600, 0};
     private final static int[] BULLET_DAMAGE = {20, 15, 25, 10, 5, 100};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 6}, {48, 7}, {68, 6}};
     private final static int[] MAX_AMMO = {1, 30, 30, 30, 10, 5};
-    private final static int[] RECOIL = {10, 10, 25, 5, 25, 50};
+    private final static int[] RECOIL = {320, 320, 720, 160, 1280, 1600};
+    private final static int[] WEIGHT = {0, 20, 50, 30, 40, 80};
 
     private final GameScene scene;
 
@@ -45,6 +46,8 @@ public class Weapon extends Entity {
         bulletSpread = BULLET_SPREAD[id];
         bulletDamage = BULLET_DAMAGE[id];
         bulletOffsets = BULLET_OFFSETS[id];
+        recoil = RECOIL[id];
+        weight = WEIGHT[id];
 
         this.scene = scene;
         ammo = getMaxAmmo();
@@ -105,12 +108,16 @@ public class Weapon extends Entity {
         this.sprite.setDirection(direction);
     }
 
+    public int getWeight() { return weight; }
+
     public void tryShoot(ArrayList<Entity> entities) {
         if ((System.currentTimeMillis() - lastFired) < firingInterval) {
             return;
         } // if
 
         if (id != 0) ammo -= 1;
+
+        following.setRecoilDx(following.getDirection() ? recoil : - recoil);
 
         // otherwise add a shot
         lastFired = System.currentTimeMillis();
