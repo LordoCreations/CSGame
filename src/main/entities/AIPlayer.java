@@ -24,7 +24,10 @@ public class AIPlayer extends Player {
     @Override
     public void move(long delta) {
         findNearestTarget();
-        System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), minDistance, theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
+
+        if(target != null) { // TODO implement better later?
+            System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), minDistance, theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
+        }
 
         if (Math.random() < 0.00001 || theirCoord[1] - myCoord[1] < 50 && Math.random() < 0.05) {
             input.add(KeyEvent.VK_UP);
@@ -44,8 +47,6 @@ public class AIPlayer extends Player {
             input.remove(KeyEvent.VK_RIGHT);
             input.remove(KeyEvent.VK_LEFT);
         }
-
-
 
         if (Math.abs(theirCoord[1] - myCoord[1]) < 50 && Math.random() < 0.1 && theirCoord[0] - myCoord[0] < weapon.getFiringDistance()) {
             input.add(KeyEvent.VK_DOWN);
@@ -77,7 +78,9 @@ public class AIPlayer extends Player {
                 }
             }
         }
-        getCenter(target, theirCoord);
+        if(target != null) { // TODO implement better later?
+            getCenter(target, theirCoord);
+        }
     }
 
     private double distance(Player other) {
