@@ -19,7 +19,7 @@ public class CustomizationScene extends Scene {
     private final Sprite background;
 
 
-    private final String[] skins = {"1/5", "2/5", "3/5", "4/5", "5/5"};
+    private final String[] skins = {"Default", "Locked In", "Terrorist", "Soldier", "Rambo"};
 
     CustomizationScene(Game game) {
         super(game);
