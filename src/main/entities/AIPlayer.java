@@ -32,7 +32,7 @@ public class AIPlayer extends Player {
             input.remove(KeyEvent.VK_UP);
         }
 
-        horizontalThreshold = Math.min(input.contains(KeyEvent.VK_UP) || Math.abs(theirCoord[1] - myCoord[1]) < 50 ? 0 : 300, weapon.getFiringDistance() / 2.0);
+        horizontalThreshold = Math.min(input.contains(KeyEvent.VK_UP) || Math.abs(theirCoord[1] - myCoord[1]) > 50 ? 0 : 300, weapon.getFiringDistance() / 2.0);
 
         if (theirCoord[0] - myCoord[0] > horizontalThreshold) {
             input.remove(KeyEvent.VK_LEFT);
