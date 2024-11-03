@@ -4,10 +4,13 @@ import main.Entity;
 
 public class Display extends Entity {
     private String r;
+    private int id;
+    private int choice;
 
-    public Display(String r, int x, int y){
+    public Display(String r, int x, int y, int id){
         super(r, x, y);
         this.r = r;
+        this.id = id;
     } // Display
 
 
@@ -29,6 +32,14 @@ public class Display extends Entity {
             default:
                 return "default.png";
         }
+    }
+
+    public String getR() {
+        return r;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override

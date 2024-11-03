@@ -4,6 +4,7 @@ import main.entities.Bullet;
 import main.entities.Corpse;
 import main.utility.AmmoBar;
 import main.utility.Bar;
+import main.utility.Display;
 import main.utility.Mask;
 
 import javax.imageio.ImageIO;
@@ -51,8 +52,8 @@ public class GameScene extends Scene {
         // Initialize game components, load assets, etc.
         game.addKeyListener(new KeyInputHandler());
 
-        players[0] = new Player(this, "default.png", 220, 250, 100, 1, 0);
-        players[1] = new Player(this, "default.png", 220, 250, 100, 2, 1);
+        players[0] = new Player(this, Display.getSkinURL(game.skins[0]), 220, 250, 100, 1, 0);
+        players[1] = new Player(this, Display.getSkinURL(game.skins[1]), 220, 250, 100, 2, 1);
 
         for (Player player : players) {
             if (player == null) continue;
@@ -99,14 +100,14 @@ public class GameScene extends Scene {
                 if (touchingWall(me)) {
                     removeEntities.add(me);
                 }
-                for (int j = 0; j < entities.size(); j++) {
-                    Entity him = entities.get(j);
-                    if (him instanceof Player && me.collidesWith(him) && ((Bullet) me).getTeam() != ((Player) him).getTeam()) {
+                for (int j = 0; j < players.length; j++) {
+                    if (players[j] == null) continue;
+                    Player him = players[j];
+                    if (me.collidesWith(him) && ((Bullet) me).getTeam() != him.getTeam()) {
                         me.collidedWith(him);
                         him.collidedWith(me);
                         removeEntities.add(me);
                     }
-
                 }
             }
         }
