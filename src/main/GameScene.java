@@ -1,5 +1,6 @@
 package main;
 
+import main.entities.AIPlayer;
 import main.entities.Bullet;
 import main.entities.Corpse;
 import main.utility.AmmoBar;
@@ -20,8 +21,8 @@ import java.util.Set;
 
 import main.entities.Player;
 
-import static main.Game.height;
-import static main.Game.width;
+import static main.Game.HEIGHT;
+import static main.Game.WIDTH;
 
 public class GameScene extends Scene {
     private long lastLoopTime = System.currentTimeMillis();
@@ -32,7 +33,7 @@ public class GameScene extends Scene {
     public Set<Integer> keysDown = new HashSet<>();
     private final Player[] players = new Player[4];
 
-    private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}};
+    private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
 
     GameScene(Game game) {
         super(game);
@@ -52,8 +53,9 @@ public class GameScene extends Scene {
         // Initialize game components, load assets, etc.
         game.addKeyListener(new KeyInputHandler());
 
-        players[0] = new Player(this, Display.getSkinURL(game.skins[0]), 220, 250, 100, 1, 0);
-        players[1] = new Player(this, Display.getSkinURL(game.skins[1]), 220, 250, 100, 2, 1);
+        players[0] = new Player(this, Display.getSkinURL(game.skins[0]), 220, 250, 100, 0, 0);
+        players[1] = new Player(this, Display.getSkinURL(game.skins[1]), 220, 250, 100, 1, 1);
+        players[2] = new AIPlayer(this, Display.getSkinURL(game.skins[2]), 220, 250, 100, 2, 2, players);
 
         for (Player player : players) {
             if (player == null) continue;
@@ -77,7 +79,7 @@ public class GameScene extends Scene {
         // get graphics context for the accelerated surface and make it black
         Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
         g.setColor(Color.black);
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
 
         // respawn dead players

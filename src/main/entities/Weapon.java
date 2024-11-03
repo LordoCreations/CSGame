@@ -62,6 +62,14 @@ public class Weapon extends Entity {
         return MAX_AMMO[id];
     } // getMaxAmmo
 
+    public int getFiringDistance() {
+        return bulletLife * bulletSpeed;
+    }
+
+    public int getWeaponSpread() {
+        return 50 + 30*bulletSpread/bulletSpeed;
+    }
+
     // follows the player
     public void move() {
         x = following.getX() + 28 +(sprite.getDirection() ? -offsets[0]-sprite.getWidth() : offsets[0]);

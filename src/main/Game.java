@@ -12,11 +12,8 @@ import java.util.ArrayList;
 public class Game extends Canvas {
     BufferStrategy strategy;
     private final boolean gameRunning = true;
-    private final ArrayList removeEntities = new ArrayList();
-    private final String message = "";
-    private final boolean logicRequiredThisLoop = false;
-    static int width =  1600;
-    static int height = 900;
+    public static int WIDTH =  1600;
+    public static int HEIGHT = 900;
     public int[] skins = new int[4];
 
     private final SceneManager sceneManager;
@@ -30,11 +27,11 @@ public class Game extends Canvas {
         JPanel panel = (JPanel) container.getContentPane();
 
         // set up the resolution of the game
-        panel.setPreferredSize(new Dimension(width, height));
+        panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         panel.setLayout(null);
 
         // set up canvas size (this) and add to frame
-        setBounds(0, 0, width, height);
+        setBounds(0, 0, WIDTH, HEIGHT);
         panel.add(this);
 
         // Tell AWT not to bother repainting canvas since that will

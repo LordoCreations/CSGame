@@ -1,10 +1,14 @@
 package main.entities;
 
-import main.Entity;
-import main.GameScene;
+import main.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Set;
+
+import static main.Game.HEIGHT;
+import static main.Game.WIDTH;
+
 
 public class Player extends Entity {
     public double hp;
@@ -20,14 +24,15 @@ public class Player extends Entity {
     public boolean spawnProt;
     private String skin;
     public boolean isDead;
-    int speed;
-    double recoilDx;
+    private int speed;
+    private double recoilDx;
+    protected Set<Integer> input;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
     private int maxAmmo;
 
-    private final int[] controls = new int[4];
+    protected final int[] controls = new int[4];
 
     public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
@@ -42,6 +47,7 @@ public class Player extends Entity {
         spawntime = System.currentTimeMillis();
         respawnTime = System.currentTimeMillis();
         setControls(id);
+        input = scene.keysDown;
         isDead = false;
 
         // assigns corpse id based on skin
@@ -70,6 +76,11 @@ public class Player extends Entity {
     public int getWidth() {
         return sprite.getWidth();
     }
+
+    public int getHeight() {
+        return sprite.getHeight();
+    }
+
 
     public int getTeam() {
         return team;
@@ -101,7 +112,7 @@ public class Player extends Entity {
 
     public boolean getDirection() { return sprite.getDirection(); }
 
-    private void setControls(int id) {
+    protected void setControls(int id) {
         switch (id) {
             case 1:
                 controls[0] = KeyEvent.VK_A;
@@ -110,10 +121,10 @@ public class Player extends Entity {
                 controls[3] = KeyEvent.VK_S;
                 break;
             default:
-                controls[0] = 37;
-                controls[1] = 38;
-                controls[2] = 39;
-                controls[3] = 40;
+                controls[0] = KeyEvent.VK_LEFT;
+                controls[1] = KeyEvent.VK_UP;
+                controls[2] = KeyEvent.VK_RIGHT;
+                controls[3] = KeyEvent.VK_DOWN;
         }
     }
 
@@ -148,7 +159,9 @@ public class Player extends Entity {
     public void move(long delta) {
         if (isDead) {
             spawnProt = true; // players can't be hurt if dead
+            return;
         } else if (System.currentTimeMillis() <= spawntime + 3000) {
+
             // TODO overlay shield sprite or other spawn protection effect
             // current implementation is flashing
             sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0)));
@@ -167,10 +180,10 @@ public class Player extends Entity {
             dx = 0;
         }
 
-        if (scene.keysDown.contains(controls[2])) {
+        if (input.contains(controls[2])) {
             setDirection(false);
             dx = speed + recoilDx;
-        } else if (scene.keysDown.contains(controls[0])) {
+        } else if (input.contains(controls[0])) {
             setDirection(true);
             dx = -speed + recoilDx;
         } else {
@@ -182,7 +195,7 @@ public class Player extends Entity {
             recoilDx -= 1;
         }
 
-        if (!isDead && !spawnProt && scene.keysDown.contains(controls[3])) {
+        if (!spawnProt && input.contains(controls[3])) {
             weapon.tryShoot(scene.entities);
             if (weapon.getAmmo() <= 0) {
                 setWeapon(0);
@@ -191,7 +204,7 @@ public class Player extends Entity {
 
         y += 1;
         update();
-        if (scene.keysDown.contains(controls[1]) && scene.touchingWall(this)) dy = -900;
+        if (input.contains(controls[1]) && scene.touchingWall(this)) dy = -900;
 
         y -= 1;
         update();
@@ -206,6 +219,10 @@ public class Player extends Entity {
             dy = 0;
         }
 
+        if (y > HEIGHT) {
+            y = -100;
+            // TODO set X to hole width
+        }
     }
 
     @Override

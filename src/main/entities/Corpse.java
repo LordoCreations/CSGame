@@ -16,6 +16,18 @@ public class Corpse extends Entity {
     @Override
     public void move(long delta){
         if (System.currentTimeMillis() >= spawntime + 3000) { scene.removeEntity(this); };
+        
+        update();
+        dy += 1.75 * delta;
+
+        moveY(delta);
+        if (scene.touchingWall(this)) {
+            while (scene.touchingWall(this)) {
+                y -= dy / 999;
+                update();
+            }
+            dy = 0;
+        }
     } // move
 
     @Override

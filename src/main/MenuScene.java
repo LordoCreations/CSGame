@@ -6,8 +6,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import main.utility.Button;
 
-import static main.Game.height;
-import static main.Game.width;
+import static main.Game.HEIGHT;
+import static main.Game.WIDTH;
 
 public class MenuScene extends Scene {
     private final ArrayList<Entity> entities = new ArrayList<>();
@@ -50,7 +50,7 @@ public class MenuScene extends Scene {
     public void update() {
         Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
         g.setColor(Color.black);
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
         g.setColor(Color.white);
 
