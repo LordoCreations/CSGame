@@ -23,7 +23,7 @@ public class Carousel extends Entity {
         this.id = id;
         choice = 0;
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(24f);
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(36f);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);

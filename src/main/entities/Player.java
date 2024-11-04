@@ -150,9 +150,9 @@ public class Player extends Entity {
     public void collidedWith(Entity o) {
         if (o instanceof Bullet) {
             if (hp <= 0) {
-                scene.playerDied(this, ((Bullet) o).getTeam());
-            }
-        }
+                scene.playerDied(this, ((Bullet) o).getTeam(), ((Bullet) o).getDx());
+            } // if
+        } // if
     } // collidedWith
 
     @Override
@@ -192,8 +192,8 @@ public class Player extends Entity {
 
         recoilDx *= 0.9;
         if(recoilDx > 0) {
-            recoilDx -= 1;
-        }
+            recoilDx = Math.max(0, recoilDx - 1);
+        } // if
 
         if (!spawnProt && input.contains(controls[3])) {
             weapon.tryShoot(scene.entities);

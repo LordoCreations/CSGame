@@ -18,7 +18,6 @@ public class CustomizationScene extends Scene {
     private final Button menuButton;
     private final Sprite background;
 
-
     private final String[] skins = {"Default", "Locked In", "Stormtrooper", "Soldier", "Rambo"};
 
     CustomizationScene(Game game) {

@@ -1,10 +1,7 @@
 package main;
 
 import main.entities.*;
-import main.utility.AmmoBar;
-import main.utility.Bar;
-import main.utility.Display;
-import main.utility.Mask;
+import main.utility.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,6 +26,8 @@ public class GameScene extends Scene {
     public Set<Integer> keysDown = new HashSet<>();
     private final Player[] players = new Player[4];
     private final Color backgroundColor = new Color(30, 32, 35);
+    private int[] killCount = new int[4];
+    public static final int KILLS_TO_WIN = 30;
 
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
 
@@ -49,10 +48,13 @@ public class GameScene extends Scene {
 
         // Initialize game components, load assets, etc.
         game.addKeyListener(new KeyInputHandler());
-
+        killCount = new int[] {0, 0, 0, 0};
         players[0] = new Player(this, Display.getSkinURL(game.skins[0]), 220, 250, 100, 0, 0);
         players[1] = new Player(this, Display.getSkinURL(game.skins[1]), 220, 250, 100, 1, 1);
         players[2] = new AIPlayer(this, Display.getSkinURL(game.skins[2]), 220, 250, 100, 2, 2, players);
+
+        entities.add(new Score(killCount, 20, 20));
+
 
         for (Player player : players) {
             if (player == null) continue;
@@ -63,6 +65,7 @@ public class GameScene extends Scene {
             entities.add(new AmmoBar(player));
 
         }
+
 
     }
 
@@ -79,6 +82,11 @@ public class GameScene extends Scene {
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
 
+        // end game if kills to win reached
+        for (int i : killCount) {
+            if (i >= KILLS_TO_WIN) game.setScene(new EndScene(game));
+        } // for
+
         // respawn dead players
         for(Player p : players) {
             if(p != null && p.isDead && p.getRespawnTime() <= System.currentTimeMillis()){
@@ -89,13 +97,13 @@ public class GameScene extends Scene {
         // add Chest
         if (Math.random() < 0.0001 * delta) {
             entities.add(new Chest(this, "chest.png", (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
-        }
+        } // if
 
         // move each entity
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             e.move(delta);
-        }
+        } // for
 
         // TODO Optimize collisions
         for (int i = 0; i < entities.size(); i++) {
@@ -173,20 +181,20 @@ public class GameScene extends Scene {
         return wall.overlaps(e.hitbox);
     }
 
-    public void removeEntity(Entity e) {
-        removeEntities.add(e);
-    }
+    public void removeEntity(Entity e) { removeEntities.add(e); }
 
-    public void playerDied(Player p, int killCredit) {
+    public void playerDied(Player p, int killCredit, double bulletSpeed) {
         System.out.printf("Player %d died to team %d%n", p.getID(), killCredit);
+        killCount[killCredit]++;
         p.isDead = true;
-        Corpse c = new Corpse((this), ("corpse" + p.getCorpseID() +".png"), (int) p.x, (int) p.y);
+        Corpse c = new Corpse((this), ("corpse" + p.getCorpseID() + ".png"), (int) p.x, (int) p.y);
+        c.setDx(bulletSpeed);
         entities.add(c);
         p.setRespawnTime(System.currentTimeMillis() + 3000);
         p.setCoord(new int[]{100, -100});
         p.setWeapon(0);
 
-    }
+    } // playerDied
 
     private void spawnPlayer(Player p, int[] location) {
         p.isDead = false;

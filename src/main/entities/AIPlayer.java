@@ -28,7 +28,7 @@ public class AIPlayer extends Player {
         findNearestTarget();
 
         if(target != null) { // TODO implement better later?
-            System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), minDistance, theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
+            // System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), minDistance, theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
         }
 
         verticalDistance = theirCoord[1] - myCoord[1];

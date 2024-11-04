@@ -19,8 +19,13 @@ public class Corpse extends Entity {
         else if (System.currentTimeMillis() >= spawntime + 2000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0))); }
 
         applyGravity(delta);
+        takeKnockback();
 
     } // move
+    
+    protected void takeKnockback() {
+
+    }
 
     protected void applyGravity(long delta) {
         update();
@@ -31,10 +36,14 @@ public class Corpse extends Entity {
             while (scene.touchingWall(this)) {
                 y -= dy / 999;
                 update();
-            }
+            } // while
             dy = 0;
-        }
-    }
+        } // if
+    } // applyGravity
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    } // setDx
 
     @Override
     public void collidedWith(Entity o){} // collidedWith

@@ -33,6 +33,9 @@ public class Bullet extends Entity {
         return sprite.getWidth();
     } // getTeam
 
+    public double getDx(){
+        return dx;
+    } // getDx
 
     public void setX(int x) {
         this.x = x;
