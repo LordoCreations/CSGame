@@ -28,12 +28,13 @@ public class GameScene extends Scene {
     private final Color backgroundColor = new Color(30, 32, 35);
     private int[] killCount = new int[4];
     public static final int KILLS_TO_WIN = 30;
+    private Graphics2D g;
 
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
 
     GameScene(Game game) {
         super(game);
-        background = SpriteStore.get().getSprite("city_v2.png");
+        background = SpriteStore.get().getSprite("city.png");
         try {
             URL url = this.getClass().getClassLoader().getResource("main/sprites/" + "city_hitbox" + ".png");
             BufferedImage maskImage = ImageIO.read(url);
@@ -77,7 +78,9 @@ public class GameScene extends Scene {
         lastLoopTime = System.currentTimeMillis();
 
         // get graphics context for the accelerated surface and make it black
-        Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
+        g = (Graphics2D) game.strategy.getDrawGraphics();
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
         g.setColor(backgroundColor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
@@ -187,7 +190,7 @@ public class GameScene extends Scene {
         System.out.printf("Player %d died to team %d%n", p.getID(), killCredit);
         killCount[killCredit]++;
         p.isDead = true;
-        Corpse c = new Corpse((this), ("corpse" + p.getCorpseID() + ".png"), (int) p.x, (int) p.y);
+        Corpse c = new Corpse((this), ("skins/corpse" + p.getCorpseID() + ".png"), (int) p.x, (int) p.y);
         c.setDx(bulletSpeed);
         entities.add(c);
         p.setRespawnTime(System.currentTimeMillis() + 3000);

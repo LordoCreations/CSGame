@@ -23,11 +23,11 @@ public class CustomizationScene extends Scene {
     CustomizationScene(Game game) {
         super(game);
 
-        startButton = new Button("start.png", 136, 735, this::enterGame);
-        menuButton = new Button("menu.png", 895, 735, this::goToMenu);
+        startButton = new Button("buttons/start.png", 136, 735, this::enterGame);
+        menuButton = new Button("buttons/menu.png", 895, 735, this::goToMenu);
 
         for (int i = 0; i < game.skins.length; i++) {
-            Display d = new Display("default.png", 137 + 360 * i, 300, i);
+            Display d = new Display( 137 + 360 * i, 300, i);
             Carousel c = new Carousel(137 + 360 * i, 600, 280, i, skins);
             c.setChoice(i);
             entities.add(d);

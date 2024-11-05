@@ -7,9 +7,9 @@ public class Display extends Entity {
     private int id;
     private int choice;
 
-    public Display(String r, int x, int y, int id){
-        super(r, x, y);
-        this.r = r;
+    public Display(int x, int y, int id){
+        super(getSkinURL(id), x, y);
+        this.r = getSkinURL(id);
         this.id = id;
     } // Display
 
@@ -20,18 +20,13 @@ public class Display extends Entity {
     }
 
     public static String getSkinURL(int i) {
-        switch (i) {
-            case 1:
-                return "locked.png";
-            case 2:
-                return "globey.png";
-            case 3:
-                return "soldier.png";
-            case 4:
-                return "rambo.png";
-            default:
-                return "default.png";
-        }
+        return switch (i) {
+            case 1 -> "skins/locked.png";
+            case 2 -> "skins/globey.png";
+            case 3 -> "skins/soldier.png";
+            case 4 -> "skins/rambo.png";
+            default -> "skins/default.png";
+        };
     }
 
     public String getR() {

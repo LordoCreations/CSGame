@@ -28,13 +28,14 @@ public class Carousel extends Entity {
             e.printStackTrace();
             System.exit(-1);
         }
-        leftButton = new Button("left.png", x, y, this::leftButtonPressed);
-        rightButton = new Button("right.png", x + width, y, this::rightButtonPressed); // TODO minus x of button
+        leftButton = new Button("buttons/left.png", x, y, this::leftButtonPressed);
+        rightButton = new Button("buttons/right.png", x + width, y, this::rightButtonPressed); // TODO minus x of button
 
     }
+
     public void draw(Graphics g) {
         g.setFont(font);
-        drawCenteredString(g, choices[choice], (int) (x + width/2.0), (int) y + 25);
+        drawCenteredString((Graphics2D) g, choices[choice], (int) (x + width/2.0), (int) y + 25);
         leftButton.draw(g);
         rightButton.draw(g);
 
@@ -69,8 +70,9 @@ public class Carousel extends Entity {
         this.choice = choice;
     }
 
-    public void drawCenteredString(Graphics g, String text, int x, int y) {
-        Graphics2D g2d = (Graphics2D) g;
+    public void drawCenteredString(Graphics2D g2d, String text, int x, int y) {
+
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // Get the FontMetrics to calculate the text's width and height
         FontMetrics fm = g2d.getFontMetrics();

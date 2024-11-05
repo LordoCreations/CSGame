@@ -35,6 +35,8 @@ public class Sprite {
         } else {
             g.drawImage(image, x, y, null);
         }
+        ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
     } // draw
 
     public void setDirection(boolean flip) {

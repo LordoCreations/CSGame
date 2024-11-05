@@ -7,16 +7,14 @@ import java.awt.*;
 import java.io.File;
 
 public class Score extends Entity {
-    private int[] scores;
+    private final int[] scores;
     private int leader;
-    private int leaderScore;
-    private boolean contested;
     private Font font;
-    private String message;
-    private int lastLeader;
-    private boolean lastContested;
+    private String display;
 
     public Score(int[] scores, int x, int y) {
+        super("displays/contested.png", x, y);
+
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(24f);
         } catch (Exception e) {
@@ -24,31 +22,32 @@ public class Score extends Entity {
             System.exit(-1);
         }
 
-        super.setSprite("contested.png");
         this.scores = scores;
-        this.x = x;
-        this.y = y;
     }
 
     @Override
     public void collidedWith(Entity other) {
-
     }
 
-    @Override public void draw(Graphics g) {
-        lastLeader = leader;
-        lastContested = contested;
+    @Override
+    public void draw(Graphics g) {
+        int lastLeader = leader;
         getLeader();
 
-        if (contested != lastContested) {
-            super.setSprite("contested.png");
+        if (leader == -1) {
+            display = "displays/contested.png";
+        } else {
+            display = "displays/team" + leader + ".png";
         }
-        if (leader != lastLeader && !contested) super.setSprite("team" + leader + ".png");
+
+        if (lastLeader != leader) super.setSprite(display);
 
         super.draw(g);
 
-        if (contested) message = "Contested!";
-        else message = String.format("Team %d is leading with %d/%d Kills", leader + 1, scores[leader], GameScene.KILLS_TO_WIN);
+        String message;
+        if (leader == -1) message = "Contested!";
+        else
+            message = String.format("Team %d is leading with %d/%d Kills", leader + 1, scores[leader], GameScene.KILLS_TO_WIN);
         g.setColor(Color.white);
         g.setFont(font);
         g.drawString(message, (int) x + 20, (int) y + 40);
@@ -56,13 +55,13 @@ public class Score extends Entity {
     }
 
     private void getLeader() {
-        leaderScore = 0;
+        int leaderScore = 0;
+        leader = -1;
         for (int i = 0; i < scores.length; i++) {
-            if (scores[i] == leaderScore) contested = true;
+            if (scores[i] == leaderScore) leader = -1;
             else if (scores[i] > leaderScore) {
                 leader = i;
                 leaderScore = scores[i];
-                contested = false;
             }
         }
     }

@@ -53,10 +53,9 @@ public class Player extends Entity {
         // assigns corpse id based on skin
         if (r.equals("rambo.png")) {
             corpseID = 4;
-        } // if
-        else {
+        } else {
             corpseID = 0;
-        } // else
+        } // if else
     } // Character
 
     public double getHp() {
@@ -171,14 +170,6 @@ public class Player extends Entity {
             spawnProt = false;
         } // if else
         hp = Math.min(maxHp, hp + 0.005 * delta);
-        moveX(delta);
-        if (scene.touchingWall(this)) {
-            while (scene.touchingWall(this)) {
-                x -= dx / 999;
-                update();
-            }
-            dx = 0;
-        }
 
         if (input.contains(controls[2])) {
             setDirection(false);
@@ -195,6 +186,15 @@ public class Player extends Entity {
             recoilDx = Math.max(0, recoilDx - 1);
         } // if
 
+        moveX(delta);
+        if (scene.touchingWall(this)) {
+            while (scene.touchingWall(this)) {
+                x -= dx / 999;
+                update();
+            }
+            dx = 0;
+        }
+
         if (!spawnProt && input.contains(controls[3])) {
             weapon.tryShoot(scene.entities);
             if (weapon.getAmmo() <= 0) {
@@ -209,9 +209,7 @@ public class Player extends Entity {
         } else if (input.contains(controls[1]) ) {
             dy = -900;
         }
-
         y -= 1;
-        update();
 
         moveY(delta);
         if (scene.touchingWall(this)) {

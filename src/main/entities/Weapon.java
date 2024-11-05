@@ -74,17 +74,17 @@ public class Weapon extends Entity {
     private String getWeaponURL(int id) {
         switch (id) {
             case 1:
-                return "mp5.png";
+                return "weapons/mp5.png";
             case 2:
-                return "ak47.png";
+                return "weapons/ak47.png";
             case 3:
-                return "honeybadger.png";
+                return "weapons/honeybadger.png";
             case 4:
-                return "defriender.png";
+                return "weapons/defriender.png";
             case 5:
-                return "barrettm82.png";
+                return "weapons/barrettm82.png";
             default:
-                return "m9.png";
+                return "weapons/m9.png";
         }
     }
 
@@ -128,22 +128,22 @@ public class Weapon extends Entity {
         // TODO get actual weapon data
         switch (id) {
             case 2:
-                createBullet("762.png", bulletSpeed, entities);
+                createBullet("weapons/762.png", bulletSpeed, entities);
                 break;
             case 3:
-                createBullet("300blk_v2.png", bulletSpeed, entities);
+                createBullet("weapons/300blk_v2.png", bulletSpeed, entities);
                 break;
             case 4: // Shotgun has multiple bullets
                 for(int i = 0; i < 28; i++) {
                     int randomSpeed = (int)((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
-                    createBullet("buckshot.png", randomSpeed, entities);
+                    createBullet("weapons/buckshot.png", randomSpeed, entities);
                 } // for
                 break;
             case 5:
-                createBullet("50bmg.png", bulletSpeed, entities);
+                createBullet("weapons/50bmg.png", bulletSpeed, entities);
                 break;
             default:
-                createBullet("9mm.png", bulletSpeed, entities);
+                createBullet("weapons/9mm.png", bulletSpeed, entities);
         }
     }
 

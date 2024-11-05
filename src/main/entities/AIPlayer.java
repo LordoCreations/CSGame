@@ -7,14 +7,11 @@ import java.util.HashSet;
 
 public class AIPlayer extends Player {
     private Player target;
-    private Player[] players;
+    private final Player[] players;
     private double minDistance;
-    private double[] myCoord = new double[2];
-    private double[] theirCoord = new double[2];
-    private double currentDistance;
-    private double horizontalThreshold;
-    private double horizontalDistance;
-    private double verticalDistance;
+    private final double[] myCoord = new double[2];
+    private final double[] theirCoord = new double[2];
+    private int direction;
 
     public AIPlayer(GameScene s, String r, int newX, int newY, int hp, int team, int id, Player[] players) {
         super(s, r, newX, newY, hp, team, id);
@@ -27,32 +24,37 @@ public class AIPlayer extends Player {
     public void move(long delta) {
         findNearestTarget();
 
-        if(target != null) { // TODO implement better later?
-            // System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), minDistance, theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
+        if (target != null) { // TODO implement better later?
+            System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), Math.min(minDistance, 9999), theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
         }
 
-        verticalDistance = theirCoord[1] - myCoord[1];
+        double verticalDistance = theirCoord[1] - myCoord[1];
 
-        if (Math.random() < 0.001 * delta || verticalDistance > 50 && Math.random() < 0.05) {
+        if (Math.random() < 0.005 * delta || verticalDistance > 50 && Math.random() < 0.05) {
             input.add(KeyEvent.VK_UP);
         } else {
             input.remove(KeyEvent.VK_UP);
         }
 
-        horizontalThreshold = Math.min(input.contains(KeyEvent.VK_UP) || Math.abs(theirCoord[1] - myCoord[1]) > 50 ? 0 : 300, weapon.getFiringDistance() / 2.0);
-        horizontalDistance = theirCoord[0] - myCoord[0];
+        double horizontalThreshold = Math.min(input.contains(KeyEvent.VK_UP) ||
+                Math.abs(theirCoord[1] - myCoord[1]) > 50 ? 0 : 300, weapon.getFiringDistance() / 2.0);
+
+        double minHorizontalThreshold = Math.min(weapon.getFiringDistance(), 80);
+
+        double horizontalDistance = theirCoord[0] - myCoord[0];
 
 
-        if (horizontalDistance > horizontalThreshold) {
+        if (horizontalDistance > horizontalThreshold || (horizontalDistance > -minHorizontalThreshold && horizontalDistance < 0 && Math.random() < 0.005 * delta)) {
             input.remove(KeyEvent.VK_LEFT);
             input.add(KeyEvent.VK_RIGHT);
-        } else if (horizontalDistance < -horizontalThreshold) {
+        } else if (horizontalDistance < -horizontalThreshold || (horizontalDistance < minHorizontalThreshold && horizontalDistance > 0 && Math.random() < 0.005 * delta)) {
             input.remove(KeyEvent.VK_RIGHT);
             input.add(KeyEvent.VK_LEFT);
-        } else {
+        } else if (Math.random() < 0.05 * delta) {
             input.remove(KeyEvent.VK_RIGHT);
             input.remove(KeyEvent.VK_LEFT);
         }
+
 
         if (minDistance > 9999) {
             input.remove(KeyEvent.VK_RIGHT);
@@ -78,6 +80,8 @@ public class AIPlayer extends Player {
     }
 
     private void findNearestTarget() {
+        double currentDistance;
+
         minDistance = Double.MAX_VALUE;
         getCenter(this, myCoord);
         for (Player p : players) {
@@ -90,14 +94,14 @@ public class AIPlayer extends Player {
                 }
             }
         }
-        if(target != null) { // TODO implement better later?
+        if (target != null) { // TODO implement better later?
             getCenter(target, theirCoord);
         }
     }
 
     private double distance(Player other) {
         getCenter(other, theirCoord);
-        return Math.sqrt(Math.pow(myCoord[0] - theirCoord[0], 2) + 16 * Math.pow(myCoord[1] - theirCoord[1], 2));
+        return Math.abs(Math.sqrt(Math.pow(myCoord[0] - theirCoord[0], 2) + 4 * Math.pow(myCoord[1] - theirCoord[1], 2)));
     }
 
     private void getCenter(Player player, double[] destination) {
