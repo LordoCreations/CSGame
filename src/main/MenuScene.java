@@ -17,9 +17,9 @@ public class MenuScene extends Scene {
 
     MenuScene(Game game) {
         super(game);
-        startButton = new Button("start.png", 136, 507, this::startGame);
-        settingsButton = new Button("settings.png", 136, 661, this::openSettings);
-        background = SpriteStore.get().getSprite("background.png");
+        startButton = new Button("start.png", 46, 587, this::startGame);
+        settingsButton = new Button("settings.png", 46, 711, this::openSettings);
+        background = SpriteStore.get().getSprite("main_menu.png");
     }
 
     @Override
