@@ -1,6 +1,7 @@
 package main.entities;
 
 import main.Entity;
+import main.Game;
 import main.GameScene;
 
 import static main.Game.HEIGHT;
@@ -27,8 +28,8 @@ public class Chest extends Corpse {
     @Override
     public void collidedWith(Entity o) {
         if (o instanceof Player) {
-            ((Player) o).setWeapon((int) (Math.random() * 5) + 1);
-        }
+            ((Player) o).setWeapon((int) (Math.random() * Game.weaponCount - 1) + 1);
+        } // if
 
-    }
-}
+    } // collidedWith
+} // class

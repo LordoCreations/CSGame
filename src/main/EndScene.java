@@ -16,10 +16,11 @@ public class EndScene extends Scene {
     private final Button menuButton;
     private final Sprite background;
 
-    EndScene(Game game) {
+    EndScene(Game game, int winner) {
         super(game);
+        System.out.printf("Team %d wins", winner);
         rematchButton = new Button("start.png", 136, 507, this::startGame);
-        menuButton = new Button("menu.png", 136, 661, this::openSettings);
+        menuButton = new Button("menu.png", 136, 661, this::goToMenu);
         background = SpriteStore.get().getSprite("background.png");
     }
 

@@ -86,8 +86,8 @@ public class GameScene extends Scene {
         background.draw(g, 0, 0);
 
         // end game if kills to win reached
-        for (int i : killCount) {
-            if (i >= KILLS_TO_WIN) game.setScene(new EndScene(game));
+        for (int i = 0; i < killCount.length; i++) {
+            if (killCount[i] >= KILLS_TO_WIN) game.setScene(new EndScene(game, i));
         } // for
 
         // respawn dead players
@@ -202,7 +202,7 @@ public class GameScene extends Scene {
     private void spawnPlayer(Player p, int[] location) {
         p.isDead = false;
         p.setDirection(false);
-        p.setWeapon((int) (Math.random() * 6));
+        p.setWeapon((int) (Math.random() * Game.weaponCount));
         p.hp = p.getMaxHp();
         p.setCoord(location);
         p.setSpawntime(System.currentTimeMillis());

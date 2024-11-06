@@ -20,16 +20,16 @@ public class Weapon extends Entity {
     private int weight;
 
     // weapon stats based on id
-    // m9, mp5, ak47, honeybadger, defriender, barrettm82
-    private final static int[] FIRING_INTERVALS = {400, 80, 160, 90, 600, 1500};
-    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 4000};
-    private final static int[] BULLET_LIFE = {550, 500, 1000, 650, 80, 2000};
-    private final static int[] BULLET_SPREAD = {35, 60, 35, 45, 800, 0};
-    private final static int[] BULLET_DAMAGE = {20, 15, 25, 12, 5, 100};
-    private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}};
-    private final static int[] MAX_AMMO = {1, 30, 30, 30, 8, 5};
-    private final static int[] RECOIL = {320, 320, 720, 160, 1280, 1600};
-    private final static int[] WEIGHT = {0, 20, 50, 30, 40, 80};
+    // m9, mp5, ak47, honeybadger, defriender, barrettm82, rpg16, knife
+    private final static int[] FIRING_INTERVALS = {300, 80, 150, 90, 600, 1200, 2000, 400};
+    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 4000, 900, 10};
+    private final static int[] BULLET_LIFE = {550, 500, 1000, 650, 80, 2000, 1000, 200, };
+    private final static int[] BULLET_SPREAD = {35, 60, 35, 45, 800, 0, 0, 0};
+    private final static int[] BULLET_DAMAGE = {20, 15, 25, 12, 5, 100, 80, 25};
+    private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {0, 0}, {13, -1}};
+    private final static int[] MAX_AMMO = {1, 30, 30, 30, 8, 5, 3, 1};
+    private final static int[] RECOIL = {320, 320, 720, 160, 1280, 1600, 0, -200};
+    private final static int[] WEIGHT = {0, 20, 50, 30, 40, 70, 90, 0};
 
     private final GameScene scene;
 
@@ -83,6 +83,10 @@ public class Weapon extends Entity {
                 return "weapons/defriender.png";
             case 5:
                 return "weapons/barrettm82.png";
+            case 6:
+                return "weapons/swing.png"; // TODO replace with RPG16
+            case 7:
+                return "weapons/knife.png";
             default:
                 return "weapons/m9.png";
         }
@@ -103,6 +107,10 @@ public class Weapon extends Entity {
                 return new int[]{-11, 28};
             case 5:
                 return new int[]{-17, 25};
+            case 6:
+                return new int[]{0, 0};
+            case 7:
+                return new int[]{7, 21};
         }
         return new int[]{0, 0};
     } // getOffsets
@@ -118,7 +126,7 @@ public class Weapon extends Entity {
             return;
         } // if
 
-        if (id != 0) ammo -= 1;
+        if (id != 0 && id != 7) ammo -= 1;
 
         following.setRecoilDx(following.getDirection() ? recoil : - recoil);
 
@@ -141,6 +149,9 @@ public class Weapon extends Entity {
                 break;
             case 5:
                 createBullet("weapons/50bmg.png", bulletSpeed, entities);
+                break;
+            case 7:
+                createBullet("weapons/swing.png", bulletSpeed, entities);
                 break;
             default:
                 createBullet("weapons/9mm.png", bulletSpeed, entities);

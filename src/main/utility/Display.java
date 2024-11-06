@@ -29,6 +29,7 @@ public class Display extends Entity {
         };
     }
 
+
     public String getR() {
         return r;
     }
