@@ -114,7 +114,7 @@ public class GameScene extends Scene {
             Entity me = entities.get(i);
             if (me instanceof Bullet) {
                 if (touchingWall(me)) {
-                    removeEntities.add(me);
+                    ((Bullet) me).collidedWith();
                 }
                 for (Player him : players) {
                     if (him == null) continue;

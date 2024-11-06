@@ -27,7 +27,7 @@ public class Weapon extends Entity {
     private final static int[] BULLET_SPREAD = {35, 60, 35, 45, 800, 0, 0, 0};
     private final static int[] BULLET_DAMAGE = {20, 15, 25, 12, 5, 100, 80, 25};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {0, 0}, {13, -1}};
-    private final static int[] MAX_AMMO = {1, 30, 30, 30, 8, 5, 3, 1};
+    private final static int[] MAX_AMMO = {1, 30, 30, 30, 8, 5, 300, 1};
     private final static int[] RECOIL = {320, 320, 720, 160, 1280, 1600, 0, -200};
     private final static int[] WEIGHT = {0, 20, 50, 30, 40, 70, 90, 0};
 
@@ -161,13 +161,18 @@ public class Weapon extends Entity {
         }
     }
 
-    private void createBullet(String r, int speed, ArrayList<Entity> entities) {
+    private void createBullet(String r, int speed, ArrayList<Entity> entities, boolean explosive) {
         int randomSpread = (int)(Math.random() * 2 * bulletSpread + 1) - bulletSpread;
         Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife,
                 (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage);
         bullet.setX((int) x + sprite.getWidth()/2 +(sprite.getDirection() ? -bulletOffsets[0]-bullet.getWidth() : bulletOffsets[0]));
+        bullet.setExplosive(explosive);
         entities.add(bullet);
-    }
+    } // createBullet
+
+    private void createBullet(String r, int speed, ArrayList<Entity> entities){
+        createBullet(r, speed, entities, false);
+    } // createBullet
 
     @Override
     public void collidedWith(Entity o){} // collidedWith

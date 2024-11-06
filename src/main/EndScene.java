@@ -20,8 +20,8 @@ public class EndScene extends Scene {
     EndScene(Game game, int winner) {
         super(game);
         System.out.printf("Team %d wins", winner);
-        rematchButton = new Button("start.png", 136, 507, this::startGame);
-        menuButton = new Button("menu.png", 136, 661, this::goToMenu);
+        rematchButton = new Button("buttons/rematch.png", 136, 507, this::startGame);
+        menuButton = new Button("buttons/menu.png", 136, 661, this::goToMenu);
         background = SpriteStore.get().getSprite("background.png");
     }
 
@@ -57,6 +57,7 @@ public class EndScene extends Scene {
         background.draw(g, 0, 0);
         g.setColor(Color.white);
 
+        drawCenteredString(g, "team x wins", 800, 400);
         rematchButton.draw(g);
         menuButton.draw(g);
 
