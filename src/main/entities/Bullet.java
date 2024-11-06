@@ -33,7 +33,7 @@ public class Bullet extends Entity {
         return sprite.getWidth();
     } // getTeam
 
-    public double getDx(){
+    public double getDx() {
         return dx;
     } // getDx
 
@@ -41,12 +41,14 @@ public class Bullet extends Entity {
         this.x = x;
     }
 
-    public int getDamage() { return damage; } // getDamage
+    public int getDamage() {
+        return damage;
+    } // getDamage
 
     @Override
-    public void move(long delta){
+    public void move(long delta) {
         super.move(delta);
-        if(System.currentTimeMillis() > spawnTime + lifeTime){
+        if (System.currentTimeMillis() > spawnTime + lifeTime) {
             scene.removeEntity(this);
         } // if
     } // move

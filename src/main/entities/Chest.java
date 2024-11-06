@@ -31,5 +31,6 @@ public class Chest extends Corpse {
             ((Player) o).setWeapon((int) (Math.random() * Game.weaponCount - 1) + 1);
         } // if
 
+        scene.removeEntity(this);
     } // collidedWith
 } // class

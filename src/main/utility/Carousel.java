@@ -70,7 +70,7 @@ public class Carousel extends Entity {
         this.choice = choice;
     }
 
-    public void drawCenteredString(Graphics2D g2d, String text, int x, int y) {
+    public static void drawCenteredString(Graphics2D g2d, String text, int x, int y) {
 
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 

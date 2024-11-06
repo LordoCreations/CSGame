@@ -150,6 +150,9 @@ public class Weapon extends Entity {
             case 5:
                 createBullet("weapons/50bmg.png", bulletSpeed, entities);
                 break;
+            case 6:
+                createBullet("weapons/knife.png", bulletSpeed, entities, true);
+                break;
             case 7:
                 createBullet("weapons/swing.png", bulletSpeed, entities);
                 break;

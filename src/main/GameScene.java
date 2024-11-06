@@ -67,6 +67,7 @@ public class GameScene extends Scene {
 
         }
 
+        players[0].setWeapon(6);
 
     }
 
@@ -120,7 +121,6 @@ public class GameScene extends Scene {
                     if (me.collidesWith(him) && ((Bullet) me).getTeam() != him.getTeam()) {
                         me.collidedWith(him);
                         him.collidedWith(me);
-                        removeEntities.add(me);
                     }
                 }
             } else if (me instanceof Chest) {
@@ -129,7 +129,6 @@ public class GameScene extends Scene {
                     if (me.collidesWith(him)) {
                         me.collidedWith(him);
                         him.collidedWith(me);
-                        removeEntities.add(me);
                     }
                 }
             }
