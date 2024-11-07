@@ -27,6 +27,7 @@ public class Player extends Entity {
     private int speed;
     private double recoilDx;
     protected Set<Integer> input;
+    private double kbDx;
 
     // TODO replace with weapon ammo and stuff
     private int ammo;
@@ -98,6 +99,8 @@ public class Player extends Entity {
     public long getRespawnTime() { return respawnTime; }
 
     public void setRecoilDx (double dx) { recoilDx = dx; }
+
+    public void setKbDx (double dx) { kbDx = dx; }
 
     public void setCoord(int[] coord) {
         this.x = coord[0];
@@ -173,18 +176,16 @@ public class Player extends Entity {
 
         if (input.contains(controls[2])) {
             setDirection(false);
-            dx = speed + recoilDx;
+            dx = speed + recoilDx + kbDx;
         } else if (input.contains(controls[0])) {
             setDirection(true);
-            dx = -speed + recoilDx;
+            dx = -speed + recoilDx + kbDx;
         } else {
-            dx = 0 + recoilDx;
+            dx = 0 + recoilDx + kbDx;
         } // if else
 
-        recoilDx *= 0.9;
-        if(recoilDx > 0) {
-            recoilDx = Math.max(0, recoilDx - 1);
-        } // if
+        recoilDx = adjustSpeed(recoilDx);
+        kbDx = adjustSpeed(kbDx);
 
         moveX(delta);
         if (scene.touchingWall(this)) {
@@ -225,6 +226,11 @@ public class Player extends Entity {
             x = Math.min(Math.max(650, x), 950-sprite.getWidth());
         }
     }
+
+    private double adjustSpeed(double s){
+        s *= 0.9;
+        return Math.max(0, s - 1);
+    } // adjustSpeed
 
     @Override
     public void update() {

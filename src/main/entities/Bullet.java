@@ -58,6 +58,9 @@ public class Bullet extends Entity {
 
     @Override
     public void move(long delta) {
+        if(explosive){
+            dx = Math.max(dx *= 0.99, 700);
+        } // if
         super.move(delta);
         if (System.currentTimeMillis() > spawnTime + lifeTime) {
             scene.removeEntity(this);
@@ -68,6 +71,7 @@ public class Bullet extends Entity {
     public void collidedWith(Entity o) {
         if (!((Player) o).spawnProt) {
             ((Player) o).hp -= damage;
+            ((Player) o).setKbDx(-dx / 2);
         }
         collidedWith();
     }  // collidedWith
