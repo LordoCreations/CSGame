@@ -88,11 +88,6 @@ public class Game extends Canvas {
         // keep loop running until game ends
         while (gameRunning) {
             sceneManager.update();
-
-            // pause
-            try {
-                Thread.sleep(1);
-            } catch (Exception e) {}
         } // while
     } // gameLoop
 

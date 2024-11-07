@@ -77,11 +77,11 @@ public class Carousel extends Entity {
         // Get the FontMetrics to calculate the text's width and height
         FontMetrics fm = g2d.getFontMetrics();
 
-        // Calculate the position to start drawing so the text is centered
+        // get text size
         int textWidth = fm.stringWidth(text);
         int textHeight = fm.getAscent() - fm.getDescent();
 
-        // Adjust x and y to center the text
+        // center text
         int centeredX = x - textWidth / 2;
         int centeredY = y + textHeight / 2;
 

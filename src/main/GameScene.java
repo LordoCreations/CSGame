@@ -67,8 +67,6 @@ public class GameScene extends Scene {
 
         }
 
-        players[0].setWeapon(6);
-
     }
 
     @Override

@@ -161,10 +161,10 @@ public class Player extends Entity {
             return;
         } else if (System.currentTimeMillis() <= spawntime + 3000) {
 
-            // TODO overlay shield sprite or other spawn protection effect
             // current implementation is flashing
             sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0)));
             spawnProt = true;
+
         } else {
             sprite.setOpacity(1);
             spawnProt = false;
