@@ -1,4 +1,5 @@
 package main.entities;
+
 import main.Entity;
 import main.GameScene;
 
@@ -33,7 +34,7 @@ public class Weapon extends Entity {
 
     private final GameScene scene;
 
-    public Weapon(int id, Player p, GameScene scene){
+    public Weapon(int id, Player p, GameScene scene) {
         super();
 
         super.setSprite(getWeaponURL(id));
@@ -64,11 +65,12 @@ public class Weapon extends Entity {
     } // getMaxAmmo
 
     public int getFiringDistance() {
-        return bulletLife * bulletSpeed/1000;
+        return bulletLife * bulletSpeed / 1000;
     }
+
     // follows the player
     public void move() {
-        x = following.getX() + 28 +(sprite.getDirection() ? -offsets[0]-sprite.getWidth() : offsets[0]);
+        x = following.getX() + 28 + (sprite.getDirection() ? -offsets[0] - sprite.getWidth() : offsets[0]);
         y = following.getY() + offsets[1];
     } // move
 
@@ -94,8 +96,8 @@ public class Weapon extends Entity {
     }
 
     // get x and y offsets based on the weapon
-    private int[] getOffsets(int id){
-        switch(id){
+    private int[] getOffsets(int id) {
+        switch (id) {
             case 0:
                 return new int[]{8, 32};
             case 1:
@@ -120,7 +122,9 @@ public class Weapon extends Entity {
         this.sprite.setDirection(direction);
     }
 
-    public int getWeight() { return weight; }
+    public int getWeight() {
+        return weight;
+    }
 
     public void tryShoot(ArrayList<Entity> entities) {
         if ((System.currentTimeMillis() - lastFired) < firingInterval) {
@@ -129,11 +133,11 @@ public class Weapon extends Entity {
 
         if (id != 0 && id != 7) ammo -= 1;
 
-        following.setRecoilDx(following.getDirection() ? recoil : - recoil);
+        following.setRecoilDx(following.getDirection() ? recoil : -recoil);
 
         // otherwise add a shot
         lastFired = System.currentTimeMillis();
-        
+
         // TODO get actual weapon data
         switch (id) {
             case 2:
@@ -143,8 +147,8 @@ public class Weapon extends Entity {
                 createBullet("weapons/300blk_v2.png", bulletSpeed, entities);
                 break;
             case 4: // Shotgun has multiple bullets
-                for(int i = 0; i < 28; i++) {
-                    int randomSpeed = (int)((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
+                for (int i = 0; i < 28; i++) {
+                    int randomSpeed = (int) ((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
                     createBullet("weapons/buckshot.png", randomSpeed, entities);
                 } // for
                 break;
@@ -163,18 +167,19 @@ public class Weapon extends Entity {
     }
 
     private void createBullet(String r, int speed, ArrayList<Entity> entities, boolean explosive) {
-        int randomSpread = (int)(Math.random() * 2 * bulletSpread + 1) - bulletSpread;
+        int randomSpread = (int) (Math.random() * 2 * bulletSpread + 1) - bulletSpread;
         Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife,
-                (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage);
-        bullet.setX((int) x + sprite.getWidth()/2 +(sprite.getDirection() ? -bulletOffsets[0]-bullet.getWidth() : bulletOffsets[0]));
+                (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage, (int) (recoil * 0.8));
+        bullet.setX((int) x + sprite.getWidth() / 2 + (sprite.getDirection() ? -bulletOffsets[0] - bullet.getWidth() : bulletOffsets[0]));
         bullet.setExplosive(explosive);
         entities.add(bullet);
     } // createBullet
 
-    private void createBullet(String r, int speed, ArrayList<Entity> entities){
+    private void createBullet(String r, int speed, ArrayList<Entity> entities) {
         createBullet(r, speed, entities, false);
     } // createBullet
 
     @Override
-    public void collidedWith(Entity o){} // collidedWith
+    public void collidedWith(Entity o) {
+    } // collidedWith
 }

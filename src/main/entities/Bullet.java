@@ -11,8 +11,9 @@ public class Bullet extends Entity {
     private boolean explosive;
     private final GameScene scene;
     private boolean ignoreWalls = false;
+    private final int knockback;
 
-    public Bullet(String r, int x, int y, int team, int lifeTime, int speed, int spread, GameScene scene, int damage) {
+    public Bullet(String r, int x, int y, int team, int lifeTime, int speed, int spread, GameScene scene, int damage, int knockback) {
         super(r, x, y);
         this.team = team;
         this.lifeTime = lifeTime;
@@ -22,6 +23,7 @@ public class Bullet extends Entity {
         explosive = false;
         this.damage = damage;
         this.scene = scene;
+        this.knockback = knockback;
 
         if (speed < 0) {
             sprite.setDirection(true);
@@ -72,7 +74,7 @@ public class Bullet extends Entity {
     public void collidedWith(Entity o) {
         if (!((Player) o).spawnProt) {
             ((Player) o).hp -= damage;
-            ((Player) o).setKbDx(dx / 2);
+            ((Player) o).setKbDx(knockback);
         } // if
         collidedWith();
     }  // collidedWith
@@ -83,7 +85,7 @@ public class Bullet extends Entity {
                 double angle = Math.random() * 2 * Math.PI; // Random angle in radians
                 double speed = 300 * (Math.random() * 1.5 + 1); // Random speed within a range
                 Bullet explosion = new Bullet("weapons/explosion.png", (int) x, (int) y, team, 100,
-                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 5);
+                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 5, 0);
                 explosion.canGoThroughWalls(true);
                 scene.entities.add(explosion);
             } // for
