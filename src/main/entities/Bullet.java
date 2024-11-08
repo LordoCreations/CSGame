@@ -59,7 +59,8 @@ public class Bullet extends Entity {
     @Override
     public void move(long delta) {
         if(explosive){
-            dx = dx > 0 ? Math.max(dx *= 0.99, 700) : Math.min(dx *= 0.99, -700); // Rockets gradually slow down
+            dx *= Math.pow(0.95, (delta/3.0));
+            dx = dx > 0 ? Math.max(dx, 700) : Math.min(dx, -700); // Rockets gradually slow down
         } // if
         super.move(delta);
         if (System.currentTimeMillis() > spawnTime + lifeTime) {

@@ -201,8 +201,8 @@ public class Player extends Entity {
             dx = 0 + recoilDx + kbDx;
         } // if else
 
-        recoilDx = adjustSpeed(recoilDx);
-        kbDx = adjustSpeed(kbDx);
+        recoilDx = adjustSpeed(recoilDx, delta);
+        kbDx = adjustSpeed(kbDx, delta);
 
         moveX(delta);
         if (scene.touchingWall(this)) {
@@ -244,8 +244,8 @@ public class Player extends Entity {
         }
     }
 
-    private double adjustSpeed(double s) {
-        s *= 0.9;
+    private double adjustSpeed(double s, long delta) {
+        s *= Math.pow(0.95, (delta/3.0));
         return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);
     } // adjustSpeed
 

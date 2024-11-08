@@ -22,7 +22,12 @@ public class Corpse extends Entity {
         takeKnockback();
 
     } // move
-    
+
+    @Override
+    public void update() {
+        hitbox.setRect(x + 4, y + 8, 48, 48);
+    } // update
+
     protected void takeKnockback() {
 
     }
