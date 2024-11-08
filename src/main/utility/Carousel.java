@@ -32,12 +32,13 @@ public class Carousel extends Entity {
             System.exit(-1);
         }
         leftButton = new Button("buttons/left.png", x, y, this::leftButtonPressed);
-        rightButton = new Button("buttons/right.png", x + width, y, this::rightButtonPressed); // TODO minus x of button
+        rightButton = new Button("buttons/right.png", x + width - 18, y, this::rightButtonPressed);
 
     }
 
     public void draw(Graphics g) {
         g.setFont(font);
+        g.setColor(Color.white);
         drawCenteredString((Graphics2D) g, choices[choice], (int) (x + width/2.0), (int) y + 25);
         leftButton.draw(g);
         rightButton.draw(g);

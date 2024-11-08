@@ -19,6 +19,7 @@ public class CustomizationScene extends Scene {
     private final Sprite background;
 
     private final String[] skins = {"Default", "Locked In", "Stormtrooper", "Soldier", "Rambo"};
+    private final String[] teams = {"Team Blue", "Team Red", "Team Purple", "Team Green"};
     private final String[] types = {"Player", "AI"};
 
     CustomizationScene(Game game) {
@@ -28,14 +29,18 @@ public class CustomizationScene extends Scene {
         menuButton = new Button("buttons/menu.png", 895, 735, this::goToMenu);
 
         for (int i = 0; i < game.skins.length; i++) {
-            Display d = new Display( 137 + 360 * i, 300, i);
-            Carousel skin = new Carousel(137 + 360 * i, 600, 280, i, 0, skins);
+            Display d = new Display(game, 137 + 360 * i, 100, i);
+            Carousel skin = new Carousel(137 + 360 * i, 400, 280, i, 0, skins);
             Carousel type = new Carousel(137 + 360 * i, 500, 280, i, 1, types);
+            Carousel team = new Carousel(137 + 360 * i, 600, 280, i, 2, teams);
+
             skin.setChoice(i);
+            team.setChoice(i);
             type.setChoice(i >= 2 ? 1 : 0);
             entities.add(d);
             entities.add(skin);
             entities.add(type);
+            entities.add(team);
         }
 
         background = SpriteStore.get().getSprite("background.png");
@@ -86,6 +91,8 @@ public class CustomizationScene extends Scene {
             if (entity instanceof Carousel) {
                 if (((Carousel) entity).getPurpose() == 1) {
                     game.types[((Carousel) entity).getID()] = ((Carousel) entity).getChoice() == 0;
+                } else if (((Carousel) entity).getPurpose() == 2) {
+                    game.teams[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
                 } else {
                     game.skins[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
                 }
@@ -93,7 +100,7 @@ public class CustomizationScene extends Scene {
             }
 
             if (entity instanceof Display) {
-                if (((Display) entity).getR() != Display.getSkinURL(game.skins[((Display) entity).getId()])) {
+                if (!((Display) entity).getR().equals(Display.getSkinURL(game.skins[((Display) entity).getId()]))) {
                     ((Display) entity).update(game.skins[((Display) entity).getId()]);
                 }
             }

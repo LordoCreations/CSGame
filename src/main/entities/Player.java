@@ -133,7 +133,7 @@ public class Player extends Entity {
     protected void setControls(int id) {
         switch (id) {
             case 1:
-                controls = new int[]{KeyEvent.VK_LEFT, KeyEvent.VK_UP, KeyEvent.VK_R, KeyEvent.VK_DOWN};
+                controls = new int[]{KeyEvent.VK_LEFT, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN};
                 break;
             case 2:
                 controls = new int[]{KeyEvent.VK_J, KeyEvent.VK_I, KeyEvent.VK_L, KeyEvent.VK_K};

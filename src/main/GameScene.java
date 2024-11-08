@@ -56,9 +56,9 @@ public class GameScene extends Scene {
         for (int i = 0; i < 4; i++) {
             // TODO add player or not
             if (game.types[i])
-                players[i] = new Player(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, i, i);
+                players[i] = new Player(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i);
             else {
-                players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, i, i, players);
+                players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i, players);
             }
 
             spawnPlayer(players[i], SPAWN_POINTS[players[i].getTeam()]);
