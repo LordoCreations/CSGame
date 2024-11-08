@@ -240,6 +240,7 @@ public class Player extends Entity {
 
         if (y > HEIGHT) {
             y = 0;
+            x = Math.max(Math.min(x, 650), 950 - sprite.getWidth());
         }
     }
 
