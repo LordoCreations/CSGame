@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
-import static main.utility.Carousel.drawCenteredString;
+import static main.utility.TextManager.drawCenteredString;
 
 public class EndScene extends Scene {
     private final ArrayList<Entity> entities = new ArrayList<>();

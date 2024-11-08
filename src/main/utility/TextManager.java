@@ -1,0 +1,34 @@
+package main.utility;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+public class TextManager {
+    public static Font getFont(int size) {
+        try {
+            return Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(size);
+        } catch (FontFormatException | IOException e) {
+            return null;
+        }
+    }
+
+    public static void drawCenteredString(Graphics2D g2d, String text, int x, int y) {
+
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        // Get the FontMetrics to calculate the text's width and height
+        FontMetrics fm = g2d.getFontMetrics();
+
+        // get text size
+        int textWidth = fm.stringWidth(text);
+        int textHeight = fm.getAscent() - fm.getDescent();
+
+        // center text
+        int centeredX = x - textWidth / 2;
+        int centeredY = y + textHeight / 2;
+
+        // Draw the string at the centered position
+        g2d.drawString(text, centeredX, centeredY);
+    }
+}

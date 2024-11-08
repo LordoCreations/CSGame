@@ -4,7 +4,9 @@ import main.Entity;
 
 import java.awt.*;
 import java.io.File;
-import java.net.URL;
+
+import static main.utility.TextManager.drawCenteredString;
+import static main.utility.TextManager.getFont;
 
 public class Carousel extends Entity {
     private final Button leftButton;
@@ -25,12 +27,7 @@ public class Carousel extends Entity {
         this.purpose = purpose;
 
         choice = 0;
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(36f);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+        font = getFont(36);
         leftButton = new Button("buttons/left.png", x, y, this::leftButtonPressed);
         rightButton = new Button("buttons/right.png", x + width - 18, y, this::rightButtonPressed);
 
@@ -78,22 +75,5 @@ public class Carousel extends Entity {
         this.choice = choice;
     }
 
-    public static void drawCenteredString(Graphics2D g2d, String text, int x, int y) {
 
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        // Get the FontMetrics to calculate the text's width and height
-        FontMetrics fm = g2d.getFontMetrics();
-
-        // get text size
-        int textWidth = fm.stringWidth(text);
-        int textHeight = fm.getAscent() - fm.getDescent();
-
-        // center text
-        int centeredX = x - textWidth / 2;
-        int centeredY = y + textHeight / 2;
-
-        // Draw the string at the centered position
-        g2d.drawString(text, centeredX, centeredY);
-    }
 }

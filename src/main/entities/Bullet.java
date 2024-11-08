@@ -85,7 +85,7 @@ public class Bullet extends Entity {
                 double angle = Math.random() * 2 * Math.PI; // Random angle in radians
                 double speed = 300 * (Math.random() * 1.5 + 1); // Random speed within a range
                 Bullet explosion = new Bullet("weapons/explosion.png", (int) x, (int) y, team, 100,
-                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 5, 0);
+                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 5, 500);
                 explosion.canGoThroughWalls(true);
                 scene.entities.add(explosion);
             } // for
