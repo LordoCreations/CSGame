@@ -7,20 +7,23 @@ import java.io.File;
 import java.net.URL;
 
 public class Carousel extends Entity {
-    private Button leftButton;
-    private Button rightButton;
+    private final Button leftButton;
+    private final Button rightButton;
     private int choice;
-    private String[] choices;
+    private final String[] choices;
     private Font font;
-    private int width;
-    private int id;
+    private final int width;
+    private final int id;
+    private final int purpose;
 
-    public Carousel(int x, int y, int width, int id, String[] choices) {
+    public Carousel(int x, int y, int width, int id, int purpose, String[] choices) {
         this.choices = choices;
         this.x = x;
         this.y = y;
         this.width = width;
         this.id = id;
+        this.purpose = purpose;
+
         choice = 0;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(36f);
@@ -64,6 +67,10 @@ public class Carousel extends Entity {
 
     public int getID() {
         return id;
+    }
+
+    public int getPurpose() {
+        return purpose;
     }
 
     public void setChoice(int choice) {

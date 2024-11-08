@@ -103,8 +103,6 @@ public abstract class Entity {
      */
     public void draw(Graphics g) {
         sprite.draw(g, (int) x, (int) y);
-        g.setColor(Color.red);
-        g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height); // TODO remove after debug
     }  // draw
 
     /* Do the logic associated with this entity.  This method

@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.ArrayList;
 
 public class Game extends Canvas {
     BufferStrategy strategy;
@@ -15,6 +14,7 @@ public class Game extends Canvas {
     public static int WIDTH =  1600;
     public static int HEIGHT = 900;
     public int[] skins = new int[4];
+    public boolean[] types = new boolean[4];
     public final static int weaponCount = 8;
 
     private final SceneManager sceneManager;

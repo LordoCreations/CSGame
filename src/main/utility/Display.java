@@ -2,6 +2,8 @@ package main.utility;
 
 import main.Entity;
 
+import java.awt.*;
+
 public class Display extends Entity {
     private String r;
     private int id;
@@ -17,6 +19,11 @@ public class Display extends Entity {
     public void update(int i) {
         this.r = getSkinURL(i);
         this.setSprite(r);
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        g.drawImage(this.sprite.image, (int) x, (int) y, sprite.getWidth() * 2, sprite.getHeight() * 2, null);
     }
 
     public static String getSkinURL(int i) {

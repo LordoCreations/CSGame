@@ -19,6 +19,7 @@ public class CustomizationScene extends Scene {
     private final Sprite background;
 
     private final String[] skins = {"Default", "Locked In", "Stormtrooper", "Soldier", "Rambo"};
+    private final String[] types = {"Player", "AI"};
 
     CustomizationScene(Game game) {
         super(game);
@@ -28,10 +29,13 @@ public class CustomizationScene extends Scene {
 
         for (int i = 0; i < game.skins.length; i++) {
             Display d = new Display( 137 + 360 * i, 300, i);
-            Carousel c = new Carousel(137 + 360 * i, 600, 280, i, skins);
-            c.setChoice(i);
+            Carousel skin = new Carousel(137 + 360 * i, 600, 280, i, 0, skins);
+            Carousel type = new Carousel(137 + 360 * i, 500, 280, i, 1, types);
+            skin.setChoice(i);
+            type.setChoice(i >= 2 ? 1 : 0);
             entities.add(d);
-            entities.add(c);
+            entities.add(skin);
+            entities.add(type);
         }
 
         background = SpriteStore.get().getSprite("background.png");
@@ -49,7 +53,6 @@ public class CustomizationScene extends Scene {
                 handleMouseEvent(e);
             }
         });
-
         game.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -81,7 +84,12 @@ public class CustomizationScene extends Scene {
         for (Entity entity : entities) {
             entity.draw(g);
             if (entity instanceof Carousel) {
-                game.skins[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
+                if (((Carousel) entity).getPurpose() == 1) {
+                    game.types[((Carousel) entity).getID()] = ((Carousel) entity).getChoice() == 0;
+                } else {
+                    game.skins[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
+                }
+
             }
 
             if (entity instanceof Display) {

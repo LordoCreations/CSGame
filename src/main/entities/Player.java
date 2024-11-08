@@ -33,7 +33,7 @@ public class Player extends Entity {
     private int ammo;
     private int maxAmmo;
 
-    protected final int[] controls = new int[4];
+    protected int[] controls = new int[4];
 
     public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
@@ -71,7 +71,9 @@ public class Player extends Entity {
         return ammo;
     } // getAmmo
 
-    public double getMaxAmmo() { return maxAmmo; } // getMaxAmmo
+    public double getMaxAmmo() {
+        return maxAmmo;
+    } // getMaxAmmo
 
     public int getWidth() {
         return sprite.getWidth();
@@ -90,17 +92,29 @@ public class Player extends Entity {
         return id;
     }
 
-    public int getCorpseID() { return corpseID; }
+    public int getCorpseID() {
+        return corpseID;
+    }
 
-    public void setSpawntime(long spawntime) { this.spawntime = spawntime; }
+    public void setSpawntime(long spawntime) {
+        this.spawntime = spawntime;
+    }
 
-    public void setRespawnTime(long respawnTime) { this.respawnTime = respawnTime; }
+    public void setRespawnTime(long respawnTime) {
+        this.respawnTime = respawnTime;
+    }
 
-    public long getRespawnTime() { return respawnTime; }
+    public long getRespawnTime() {
+        return respawnTime;
+    }
 
-    public void setRecoilDx (double dx) { recoilDx = dx; }
+    public void setRecoilDx(double dx) {
+        recoilDx = dx;
+    }
 
-    public void setKbDx (double dx) { kbDx = dx; }
+    public void setKbDx(double dx) {
+        kbDx = dx;
+    }
 
     public void setCoord(int[] coord) {
         this.x = coord[0];
@@ -112,21 +126,24 @@ public class Player extends Entity {
         this.weapon.setDirection(dir);
     }
 
-    public boolean getDirection() { return sprite.getDirection(); }
+    public boolean getDirection() {
+        return sprite.getDirection();
+    }
 
     protected void setControls(int id) {
         switch (id) {
             case 1:
-                controls[0] = KeyEvent.VK_A;
-                controls[1] = KeyEvent.VK_W;
-                controls[2] = KeyEvent.VK_D;
-                controls[3] = KeyEvent.VK_S;
+                controls = new int[]{KeyEvent.VK_LEFT, KeyEvent.VK_UP, KeyEvent.VK_R, KeyEvent.VK_DOWN};
+                break;
+            case 2:
+                controls = new int[]{KeyEvent.VK_J, KeyEvent.VK_I, KeyEvent.VK_L, KeyEvent.VK_K};
+                break;
+            case 3:
+                controls = new int[]{KeyEvent.VK_F, KeyEvent.VK_T, KeyEvent.VK_H, KeyEvent.VK_G};
                 break;
             default:
-                controls[0] = KeyEvent.VK_LEFT;
-                controls[1] = KeyEvent.VK_UP;
-                controls[2] = KeyEvent.VK_RIGHT;
-                controls[3] = KeyEvent.VK_DOWN;
+                controls = new int[]{KeyEvent.VK_A, KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_S};
+
         }
     }
 
@@ -207,7 +224,7 @@ public class Player extends Entity {
         update();
         if (!scene.touchingWall(this)) {
             dy += 1.75 * delta;
-        } else if (input.contains(controls[1]) ) {
+        } else if (input.contains(controls[1])) {
             dy = -900;
         }
         y -= 1;
@@ -221,13 +238,12 @@ public class Player extends Entity {
             dy = 0;
         }
 
-        if (y > HEIGHT ) {
-            y = -10;
-            x = Math.min(Math.max(650, x), 950-sprite.getWidth());
+        if (y > HEIGHT) {
+            y = 0;
         }
     }
 
-    private double adjustSpeed(double s){
+    private double adjustSpeed(double s) {
         s *= 0.9;
         return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);
     } // adjustSpeed

@@ -49,23 +49,24 @@ public class GameScene extends Scene {
 
         // Initialize game components, load assets, etc.
         game.addKeyListener(new KeyInputHandler());
-        killCount = new int[] {0, 0, 0, 0};
-        players[0] = new Player(this, Display.getSkinURL(game.skins[0]), 220, 250, 100, 0, 0);
-        players[1] = new Player(this, Display.getSkinURL(game.skins[1]), 220, 250, 100, 1, 1);
-        players[2] = new AIPlayer(this, Display.getSkinURL(game.skins[2]), 220, 250, 100, 2, 2, players);
 
+        killCount = new int[] {0, 0, 0, 0};
         entities.add(new Score(killCount, 20, 20));
 
+        for (int i = 0; i < 4; i++) {
+            // TODO add player or not
+            if (game.types[i])
+                players[i] = new Player(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, i, i);
+            else {
+                players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, i, i, players);
+            }
 
-        for (Player player : players) {
-            if (player == null) continue;
-            spawnPlayer(player, SPAWN_POINTS[player.getID()]);
-            // TODO set player Skin (array in Game.java)
-            entities.add(player);
-            entities.add(new Bar(player));
-            entities.add(new AmmoBar(player));
-
+            spawnPlayer(players[i], SPAWN_POINTS[players[i].getTeam()]);
+            entities.add(players[i]);
+            entities.add(new Bar(players[i]));
+            entities.add(new AmmoBar(players[i]));
         }
+
 
     }
 
