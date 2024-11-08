@@ -29,7 +29,7 @@ public class AIPlayer extends Player {
 
 
         if (target != null) { // TODO implement better later?
-            System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), Math.min(minDistance, 9999), theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
+            // System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), Math.min(minDistance, 9999), theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
         }
 
         double verticalDistance = theirCoord[1] - myCoord[1];

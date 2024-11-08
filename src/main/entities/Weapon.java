@@ -10,7 +10,7 @@ public class Weapon extends Entity {
     protected int id;
     private final int bulletSpeed;
     private final int firingInterval;
-    private long lastFired = -5000;
+    private long lastFired;
     private final int bulletLife;
     private final int bulletSpread;
     private final int bulletDamage;
@@ -29,7 +29,7 @@ public class Weapon extends Entity {
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {21, 0}, {13, -1}};
     private final static int[] MAX_AMMO = {1, 30, 30, 30, 8, 5, 300, 1};
     private final static int[] RECOIL = {320, 320, 720, 160, 1280, 1600, 0, -200};
-    private final static int[] WEIGHT = {0, 20, 50, 30, 40, 70, 90, 0};
+    private final static int[] WEIGHT = {0, 15, 35, 25, 30, 40, 55, 0};
 
     private final GameScene scene;
 
@@ -41,6 +41,7 @@ public class Weapon extends Entity {
         this.id = id;
         offsets = getOffsets(id);
         firingInterval = FIRING_INTERVALS[id];
+        lastFired = -5000;
         bulletSpeed = BULLET_SPEED[id];
         bulletLife = BULLET_LIFE[id];
         bulletSpread = BULLET_SPREAD[id];

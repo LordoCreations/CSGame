@@ -59,7 +59,7 @@ public class Bullet extends Entity {
     @Override
     public void move(long delta) {
         if(explosive){
-            dx = Math.max(dx *= 0.99, 700);
+            dx = dx > 0 ? Math.max(dx *= 0.99, 700) : Math.min(dx *= 0.99, -700); // Rockets gradually slow down
         } // if
         super.move(delta);
         if (System.currentTimeMillis() > spawnTime + lifeTime) {
@@ -71,18 +71,18 @@ public class Bullet extends Entity {
     public void collidedWith(Entity o) {
         if (!((Player) o).spawnProt) {
             ((Player) o).hp -= damage;
-            ((Player) o).setKbDx(-dx / 2);
-        }
+            ((Player) o).setKbDx(dx / 2);
+        } // if
         collidedWith();
     }  // collidedWith
 
     public void collidedWith() {
         if (explosive) {
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 16; i++) {
                 double angle = Math.random() * 2 * Math.PI; // Random angle in radians
-                double speed = 100 * (Math.random() * 1.5 + 1); // Random speed within a range
+                double speed = 300 * (Math.random() * 1.5 + 1); // Random speed within a range
                 Bullet explosion = new Bullet("weapons/explosion.png", (int) x, (int) y, team, 100,
-                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 10);
+                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 5);
                 explosion.canGoThroughWalls(true);
                 scene.entities.add(explosion);
             } // for

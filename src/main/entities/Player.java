@@ -229,7 +229,7 @@ public class Player extends Entity {
 
     private double adjustSpeed(double s){
         s *= 0.9;
-        return Math.max(0, s - 1);
+        return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);
     } // adjustSpeed
 
     @Override
