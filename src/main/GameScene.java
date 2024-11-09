@@ -28,6 +28,7 @@ public class GameScene extends Scene {
     private final Color backgroundColor = new Color(30, 32, 35);
     private int[] killCount = new int[4];
     public static final int KILLS_TO_WIN = 30;
+    private final String[] backgroundTracks = new String[] {"ricochetlove.wav"};
     private Graphics2D g;
 
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
@@ -53,6 +54,8 @@ public class GameScene extends Scene {
         killCount = new int[] {0, 0, 0, 0};
         entities.add(new Score(killCount, 20, 20));
 
+        AudioManager.stopAllSounds();
+
         for (int i = 0; i < 4; i++) {
             // TODO add player or not
             if (game.types[i])
@@ -66,7 +69,6 @@ public class GameScene extends Scene {
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
         }
-
 
     }
 
@@ -84,6 +86,11 @@ public class GameScene extends Scene {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
+
+        // play background track if none playing
+        if (AudioManager.music.size() == 0) {
+            AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], true);
+        } // if
 
         // end game if kills to win reached
         for (int i = 0; i < killCount.length; i++) {
@@ -143,13 +150,17 @@ public class GameScene extends Scene {
         entities.removeAll(removeEntities);
         removeEntities.clear();
 
-        // remove used sounds
-        AudioManager.sounds.removeAll(AudioManager.removeSounds);
-        AudioManager.removeSounds.clear();
+        // clear removed sounds
+        AudioManager.clearRemovedSounds();
 
         // clear graphics and flip buffer
         g.dispose();
         game.strategy.show();
+
+        // TODO remove
+        if(AudioManager.sfx.size() >= 10) {
+            System.out.println("large amount of sounds: " + AudioManager.sfx.size());
+        } // if
     }
 
     /* inner class KeyInputHandler

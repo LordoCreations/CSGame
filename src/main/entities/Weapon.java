@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.AudioManager;
 import main.Entity;
 import main.GameScene;
 
@@ -140,6 +141,7 @@ public class Weapon extends Entity {
 
         // otherwise add a shot
         lastFired = System.currentTimeMillis();
+        AudioManager.playSound("m9.wav", false); // TODO move to id switch statement
 
         // TODO get actual weapon data
         switch (id) {

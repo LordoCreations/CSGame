@@ -1,3 +1,4 @@
+// CREDIT: modified code from spaceinvaderswithsound
 package main;
 
 import javax.sound.sampled.AudioInputStream;
@@ -9,7 +10,8 @@ import java.util.ArrayList;
 
 public class AudioManager {
     // TODO store music and sfx separately if too laggy
-    public static ArrayList sounds = new ArrayList<Clip>();
+    public static ArrayList sfx = new ArrayList<Clip>();
+    public static ArrayList music = new ArrayList<Clip>();
     public static ArrayList removeSounds = new ArrayList<Clip>();
 
     public static synchronized void playSound(final String ref, boolean loop) {
@@ -22,39 +24,52 @@ public class AudioManager {
                     if (url == null) {
                         System.out.println("Failed to load: " + ref);
                         System.exit(0);
-                    }
+                    } // if
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
                     clip.open(inputStream);
-                    sounds.add(clip);
 
                     if(loop) {
+                        music.add(clip);
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
                     } else {
+                        sfx.add(clip);
                         clip.start();
                     } // if else
 
                     // removes finished clips
-                    clip.addLineListener(event -> {
+                    clip.addLineListener (event -> {
                         if (event.getType() == LineEvent.Type.STOP) {
                             removeSounds.add(clip);
-                        }
+                        } // if
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-            }
+                } // try catch
+            } // run
         })).start();
     } // playSound
 
     public static void stopAllSounds() {
-        for(Object o : sounds) {
+        for(Object o : sfx) {
             stopSound((Clip) o);
-            removeSounds.add((Clip) o);
+        } // for
+        for(Object o : music) {
+            stopSound((Clip) o);
         } // for
     } // stopAllSounds
 
+    // TODO useless?
     public static void stopSound(Clip c) {
-        c.stop();
+        removeSounds.add((Clip) c);
     } // stopSound
 
-}
+    public static void clearRemovedSounds() {
+        for (Object o : removeSounds) {
+            ((Clip) o).stop();
+        } // for
+        sfx.removeAll(AudioManager.removeSounds);
+        music.removeAll(AudioManager.removeSounds);
+        removeSounds.clear();
+    } // clearRemovedSounds
+
+} // class

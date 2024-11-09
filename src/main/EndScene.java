@@ -71,7 +71,11 @@ public class EndScene extends Scene {
         game.setScene(new GameScene(game));
     }
 
-    private void goToMenu() { game.setScene(new MenuScene(game)); }
+    private void goToMenu() {
+        AudioManager.stopAllSounds();
+        AudioManager.clearRemovedSounds();
+        game.setScene(new MenuScene(game));
+    } // goToMenu
 
     private void openSettings() {
         System.out.println("Openings Settings");
