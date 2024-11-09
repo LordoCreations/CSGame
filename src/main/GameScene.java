@@ -143,6 +143,10 @@ public class GameScene extends Scene {
         entities.removeAll(removeEntities);
         removeEntities.clear();
 
+        // remove used sounds
+        AudioManager.sounds.removeAll(AudioManager.removeSounds);
+        AudioManager.removeSounds.clear();
+
         // clear graphics and flip buffer
         g.dispose();
         game.strategy.show();
