@@ -7,7 +7,7 @@ import java.io.IOException;
 public class TextManager {
     public static Font getFont(int size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(size);
+            return Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont((float) size);
         } catch (FontFormatException | IOException e) {
             return null;
         }
