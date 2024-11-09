@@ -74,7 +74,7 @@ public class Bullet extends Entity {
     public void collidedWith(Entity o) {
         if (!((Player) o).spawnProt) {
             ((Player) o).hp -= damage;
-            ((Player) o).setKbDx(knockback);
+            ((Player) o).setKbDx(dx > 0 ? knockback : -knockback);
         } // if
         collidedWith();
     }  // collidedWith
