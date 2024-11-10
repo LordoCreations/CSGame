@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
 import static main.utility.TextManager.drawCenteredString;
+import static main.utility.TextManager.getFont;
 
 public class EndScene extends Scene {
     private final ArrayList<Entity> entities = new ArrayList<>();
@@ -28,6 +29,7 @@ public class EndScene extends Scene {
 
     @Override
     public void init() {
+
         // add mouse
         game.addMouseListener(new MouseAdapter() {
             @Override
@@ -35,7 +37,6 @@ public class EndScene extends Scene {
                 handleMouseEvent(e);
             }
         });
-
         game.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -58,6 +59,7 @@ public class EndScene extends Scene {
         background.draw(g, 0, 0);
         g.setColor(Color.white);
 
+        g.setFont(getFont(48));
         drawCenteredString(g, (winMessage), 800, 400);
         rematchButton.draw(g);
         menuButton.draw(g);
@@ -72,8 +74,6 @@ public class EndScene extends Scene {
     }
 
     private void goToMenu() {
-        AudioManager.stopAllSounds();
-        AudioManager.clearRemovedSounds();
         game.setScene(new MenuScene(game));
     } // goToMenu
 

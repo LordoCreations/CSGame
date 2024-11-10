@@ -48,6 +48,7 @@ public class CustomizationScene extends Scene {
 
     @Override
     public void init() {
+
         entities.add(startButton);
         entities.add(menuButton);
 

@@ -24,11 +24,11 @@ public class Bar extends Entity {
 
     public void draw(Graphics g) {
         g.setColor(barColor[1]);
-        g.fillRoundRect(x, y, width, 4, 2, 2);
+        g.fillRect(x, y, width, 4);
         g.setColor(barColor[0]);
-        g.fillRoundRect(x, y, (int) (follow.getHp() / follow.getMaxHp() * width), 4, 2, 2);
+        g.fillRect(x, y, (int) (follow.getHp() / follow.getMaxHp() * width), 4);
         g.setColor(new Color(0, 0, 0, 100));
-        g.drawRoundRect(x, y, width, 4, 2, 2);
+        g.drawRect(x, y, width, 4);
     }
 
     @Override
