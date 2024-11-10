@@ -26,7 +26,7 @@ public class MenuScene extends Scene {
     public void init() {
 
         // play menu theme
-        if (AudioManager.music.size() == 0) { AudioManager.playSound("relentlessrage.wav", true); }
+        if (AudioManager.music.isEmpty()) { AudioManager.playSound("relentlessrage.wav", true); }
 
         // add mouse
         game.addMouseListener(new MouseAdapter() {

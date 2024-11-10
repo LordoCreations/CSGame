@@ -28,9 +28,7 @@ public class Corpse extends Entity {
         hitbox.setRect(x + 4, y + 8, 48, 48);
     } // update
 
-    protected void takeKnockback() {
-
-    }
+    protected void takeKnockback() {}
 
     protected void applyGravity(long delta) {
         update();
@@ -39,7 +37,7 @@ public class Corpse extends Entity {
         moveY(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
-                y -= dy / 999;
+                y += (dy > 0 ? -1 : 1) ;
                 update();
             } // while
             dy = 0;

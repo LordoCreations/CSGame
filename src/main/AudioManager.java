@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class AudioManager {
     // TODO store music and sfx separately if too laggy
-    public static ArrayList sfx = new ArrayList<Clip>();
-    public static ArrayList music = new ArrayList<Clip>();
-    public static ArrayList removeSounds = new ArrayList<Clip>();
+    public static ArrayList<Clip> sfx = new ArrayList<>();
+    public static ArrayList<Clip> music = new ArrayList<>();
+    public static ArrayList<Clip> removeSounds = new ArrayList<>();
 
     public static synchronized void playSound(final String ref, boolean loop) {
         (new Thread(new Runnable() {
@@ -26,9 +26,10 @@ public class AudioManager {
                         System.exit(0);
                     } // if
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
-                    clip.open(inputStream);
 
-                    if(loop) {
+                    clip.open(inputStream);
+                    System.out.println("Playing: " + ref);
+                    if (loop) {
                         music.add(clip);
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
                     } else {
@@ -37,7 +38,7 @@ public class AudioManager {
                     } // if else
 
                     // removes finished clips
-                    clip.addLineListener (event -> {
+                    clip.addLineListener(event -> {
                         if (event.getType() == LineEvent.Type.STOP) {
                             removeSounds.add(clip);
                         } // if
@@ -50,23 +51,24 @@ public class AudioManager {
     } // playSound
 
     public static void stopAllSounds() {
-        for(Object o : sfx) {
+        for (Object o : sfx) {
             stopSound((Clip) o);
         } // for
-        for(Object o : music) {
+        for (Object o : music) {
             stopSound((Clip) o);
         } // for
     } // stopAllSounds
 
     // TODO useless?
     public static void stopSound(Clip c) {
-        removeSounds.add((Clip) c);
+        removeSounds.add(c);
     } // stopSound
 
     public static void clearRemovedSounds() {
-        for (Object o : removeSounds) {
-            ((Clip) o).stop();
+        for (int i = 0; i < removeSounds.size(); i++) {
+            (removeSounds.get(i)).stop();
         } // for
+
         sfx.removeAll(AudioManager.removeSounds);
         music.removeAll(AudioManager.removeSounds);
         removeSounds.clear();

@@ -54,8 +54,6 @@ public class GameScene extends Scene {
         killCount = new int[] {0, 0, 0, 0};
         entities.add(new Score(killCount, 20, 20));
 
-        AudioManager.stopAllSounds();
-
         for (int i = 0; i < 4; i++) {
             // TODO add player or not
             if (game.types[i])
@@ -70,6 +68,8 @@ public class GameScene extends Scene {
             entities.add(new AmmoBar(players[i]));
         }
 
+        AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], true);
+
     }
 
     @Override
@@ -82,15 +82,9 @@ public class GameScene extends Scene {
         // get graphics context for the accelerated surface and make it black
         g = (Graphics2D) game.strategy.getDrawGraphics();
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
         g.setColor(backgroundColor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
-
-        // play background track if none playing
-        if (AudioManager.music.size() == 0) {
-            AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], true);
-        } // if
 
         // end game if kills to win reached
         for (int i = 0; i < killCount.length; i++) {
@@ -214,10 +208,10 @@ public class GameScene extends Scene {
 
     private void spawnPlayer(Player p, int[] location) {
         p.isDead = false;
-        p.setDirection(false);
         p.setWeapon((int) (Math.random() * Game.weaponCount));
         p.hp = p.getMaxHp();
         p.setCoord(location);
         p.setSpawntime(System.currentTimeMillis());
+        p.setDirection(location[0] > WIDTH/2);
     }
 }

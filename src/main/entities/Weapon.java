@@ -24,14 +24,14 @@ public class Weapon extends Entity {
 
     // weapon stats based on id
     // m9, mp5, ak47, honeybadger, defriender, barrettm82, rpg16, knife
-    private final static int[] FIRING_INTERVALS = {300, 80, 150, 90, 600, 1200, 2000, 400};
-    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 4000, 1500, 10};
-    private final static int[] BULLET_LIFE = {550, 500, 1000, 650, 80, 2000, 5000, 200};
-    private final static int[] BULLET_SPREAD = {35, 60, 35, 45, 800, 0, 0, 0};
-    private final static int[] BULLET_DAMAGE = {20, 15, 25, 12, 5, 100, 80, 25};
+    private final static int[] FIRING_INTERVALS = {300, 60, 150, 90, 600, 1200, 2000, 200};
+    private final static int[] BULLET_SPEED = {1400, 1400, 1600, 1200, 2000, 4000, 1400, 10};
+    private final static int[] BULLET_LIFE = {550, 500, 1000, 700, 80, 2000, 5000, 200};
+    private final static int[] BULLET_SPREAD = {35, 150, 35, 80, 800, 0, 0, 0};
+    private final static int[] BULLET_DAMAGE = {20, 15, 25, 18, 5, 100, 70, 40};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {21, 0}, {13, -1}};
-    private final static int[] MAX_AMMO = {1, 30, 30, 30, 8, 5, 300, 1};
-    private final static int[] RECOIL = {320, 320, 720, 160, 1280, 1600, 0, -200};
+    private final static int[] MAX_AMMO = {1, 60, 30, 45, 8, 5, 3, 1};
+    private final static int[] RECOIL = {160, 160, 500, 80, 1280, 1600, 1280, -200};
     private final static int[] KNOCKBACK = {700, 700, 1200, 500, 1000, 2000, 500, 200};
     private final static int[] WEIGHT = {0, 15, 35, 25, 30, 40, 55, 0};
 
@@ -39,13 +39,14 @@ public class Weapon extends Entity {
 
     public Weapon(int id, Player p, GameScene scene) {
         super();
-
         super.setSprite(getWeaponURL(id));
-        following = p;
         this.id = id;
+        this.scene = scene;
+
+        following = p;
+        lastFired = System.currentTimeMillis();
         offsets = getOffsets(id);
         firingInterval = FIRING_INTERVALS[id];
-        lastFired = -5000;
         bulletSpeed = BULLET_SPEED[id];
         bulletLife = BULLET_LIFE[id];
         bulletSpread = BULLET_SPREAD[id];
@@ -54,8 +55,6 @@ public class Weapon extends Entity {
         recoil = RECOIL[id];
         weight = WEIGHT[id];
         knockback = KNOCKBACK[id];
-
-        this.scene = scene;
         ammo = getMaxAmmo();
 
     } // Weapon
@@ -141,34 +140,34 @@ public class Weapon extends Entity {
 
         // otherwise add a shot
         lastFired = System.currentTimeMillis();
-        AudioManager.playSound("m9.wav", false); // TODO move to id switch statement
 
-        // TODO get actual weapon data
-        switch (id) {
-            case 2:
-                createBullet("weapons/762.png", bulletSpeed, entities);
-                break;
-            case 3:
-                createBullet("weapons/300blk_v2.png", bulletSpeed, entities);
-                break;
-            case 4: // Shotgun has multiple bullets
-                for (int i = 0; i < 28; i++) {
-                    int randomSpeed = (int) ((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
-                    createBullet("weapons/buckshot.png", randomSpeed, entities);
-                } // for
-                break;
-            case 5:
-                createBullet("weapons/50bmg.png", bulletSpeed, entities);
-                break;
-            case 6:
-                createBullet("weapons/rocket.png", bulletSpeed, entities, true);
-                break;
-            case 7:
-                createBullet("weapons/swing.png", bulletSpeed, entities);
-                break;
-            default:
-                createBullet("weapons/9mm.png", bulletSpeed, entities);
-        }
+        String bulletName = getBulletName();
+        AudioManager.playSound(bulletName + ".wav", false); // TODO update sounds
+
+        if (id == 4) {
+
+            // Shotgun has multiple bullets
+            for (int i = 0; i < 28; i++) {
+                int randomSpeed = (int) ((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
+                createBullet("buckshot", randomSpeed, entities);
+            } // for
+        } else if (id == 6) {
+            createBullet(bulletName, bulletSpeed, entities, true);
+        } else {
+            createBullet(bulletName, bulletSpeed, entities);
+        } // if else
+    }
+
+    private String getBulletName() {
+        return switch (id) {
+            case 2 -> "762";
+            case 3 -> "300blk";
+            case 4 -> "buckshot";
+            case 5 -> "50bmg";
+            case 6 -> "rocket";
+            case 7 -> "swing";
+            default -> "9mm";
+        };
     }
 
     private void createBullet(String r, int speed, ArrayList<Entity> entities, boolean explosive) {

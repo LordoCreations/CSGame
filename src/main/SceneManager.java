@@ -21,7 +21,8 @@ public class SceneManager {
         }
 
         if (currentScene != null) {
-            // TODO handle exiting the current scene
+            AudioManager.stopAllSounds();
+            AudioManager.clearRemovedSounds();
         }
 
         currentScene = scene;

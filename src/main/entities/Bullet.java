@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.AudioManager;
 import main.Entity;
 import main.GameScene;
 
@@ -14,7 +15,7 @@ public class Bullet extends Entity {
     private final int knockback;
 
     public Bullet(String r, int x, int y, int team, int lifeTime, int speed, int spread, GameScene scene, int damage, int knockback) {
-        super(r, x, y);
+        super("weapons/" + r + ".png", x, y);
         this.team = team;
         this.lifeTime = lifeTime;
         dx = speed;
@@ -60,8 +61,8 @@ public class Bullet extends Entity {
 
     @Override
     public void move(long delta) {
-        if(explosive){
-            dx *= Math.pow(0.95, (delta/3.0));
+        if (explosive) {
+            dx *= Math.pow(0.95, (delta / 3.0));
             dx = dx > 0 ? Math.max(dx, 700) : Math.min(dx, -700); // Rockets gradually slow down
         } // if
         super.move(delta);
@@ -81,11 +82,13 @@ public class Bullet extends Entity {
 
     public void collidedWith() {
         if (explosive) {
+            AudioManager.playSound("explosion.wav", false);
             for (int i = 0; i < 16; i++) {
                 double angle = Math.random() * 2 * Math.PI; // Random angle in radians
                 double speed = 300 * (Math.random() * 1.5 + 1); // Random speed within a range
-                Bullet explosion = new Bullet("weapons/explosion.png", (int) x, (int) y, team, 100,
-                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 5, 500);
+                System.out.println("E");
+                Bullet explosion = new Bullet("explosion", (int) x, (int) y, team, 100,
+                        (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 2, 500);
                 explosion.canGoThroughWalls(true);
                 scene.entities.add(explosion);
             } // for
