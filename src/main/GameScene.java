@@ -93,7 +93,7 @@ public class GameScene extends Scene {
 
         // end game if kills to win reached
         for (int i = 0; i < killCount.length; i++) {
-            if (killCount[i] >= KILLS_TO_WIN) game.setScene(new EndScene(game, i));
+            if (killCount[i] >= KILLS_TO_WIN) game.setScene(new EndScene(game, i, killCount));
         } // for
 
         // respawn dead players

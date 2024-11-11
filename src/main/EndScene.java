@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
@@ -18,13 +20,18 @@ public class EndScene extends Scene {
     private final Button menuButton;
     private final Sprite background;
     private String winMessage;
+    private int[] score;
+    private Integer[] rank;
 
-    EndScene(Game game, int winner) {
+    EndScene(Game game, int winner, int[] killCount) {
         super(game);
-        winMessage = new String("Team " + (winner + 1) + " wins");
+        score = killCount;
+        winMessage = "Team " + (winner + 1) + " wins";
         rematchButton = new Button("buttons/rematch.png", 136, 507, this::rematch);
         menuButton = new Button("buttons/menu.png", 136, 661, this::goToMenu);
         background = SpriteStore.get().getSprite("background.png");
+
+        rank = rank(score);
     }
 
     @Override
@@ -60,7 +67,12 @@ public class EndScene extends Scene {
         g.setColor(Color.white);
 
         g.setFont(getFont(48));
-        drawCenteredString(g, (winMessage), 800, 400);
+        drawCenteredString(g, (winMessage), 800, 100);
+
+        g.setFont(getFont(24));
+        for (int i = 0; i < rank.length; i++) {
+            drawCenteredString(g, String.format("Rank %d: Team %d, %d/30", i + 1, rank[i] + 1, score[rank[i]]), 800, 200 + 50 * i);
+        }
         rematchButton.draw(g);
         menuButton.draw(g);
 
@@ -76,5 +88,14 @@ public class EndScene extends Scene {
     private void goToMenu() {
         game.setScene(new MenuScene(game));
     } // goToMenu
+
+    private Integer[] rank(int[] scores) {
+        Integer[] indexes = new Integer[scores.length];
+        for (int i = 0; i < scores.length; i++) {
+            indexes[i] = i;
+        }
+        Arrays.sort(indexes, (i, j) -> Integer.compare(scores[j], scores[i]));
+        return indexes;
+    }
 
 }
