@@ -32,9 +32,13 @@ public class AudioManager {
                     if (loop) {
                         music.add(clip);
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+                        if (music.size() > 10) removeSounds.add(music.get(0));
+
                     } else {
                         sfx.add(clip);
                         clip.start();
+                        if (sfx.size() > 10) removeSounds.add(sfx.get(0));
                     } // if else
 
                     // removes finished clips
@@ -66,7 +70,7 @@ public class AudioManager {
 
     public static void clearRemovedSounds() {
         for (int i = 0; i < removeSounds.size(); i++) {
-            (removeSounds.get(i)).stop();
+            if (removeSounds.get(i) != null)(removeSounds.get(i)).stop();
         } // for
 
         sfx.removeAll(AudioManager.removeSounds);

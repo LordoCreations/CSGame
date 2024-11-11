@@ -20,12 +20,12 @@ public class SceneManager {
             game.removeMouseListener(k);
         }
 
-        if (currentScene != null && scene instanceof GameScene) {
+        if (currentScene != null && scene instanceof GameScene || currentScene instanceof GameScene) {
             AudioManager.stopAllSounds();
             AudioManager.clearRemovedSounds();
-        } else {
-            if (AudioManager.music.isEmpty()) AudioManager.playSound("relentlessrage.wav", true);
         }
+
+        if (AudioManager.music.isEmpty()) AudioManager.playSound("relentlessrage.wav", true);
 
         currentScene = scene;
         currentScene.init();
