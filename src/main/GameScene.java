@@ -67,9 +67,6 @@ public class GameScene extends Scene {
             entities.add(players[i]);
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
-            players[i].setWeapon(1);
-            entities.add(new Chest(this, (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
-
 
         }
 
