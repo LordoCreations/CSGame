@@ -22,7 +22,7 @@ public class EndScene extends Scene {
     EndScene(Game game, int winner) {
         super(game);
         winMessage = new String("Team " + (winner + 1) + " wins");
-        rematchButton = new Button("buttons/rematch.png", 136, 507, this::startGame);
+        rematchButton = new Button("buttons/rematch.png", 136, 507, this::rematch);
         menuButton = new Button("buttons/menu.png", 136, 661, this::goToMenu);
         background = SpriteStore.get().getSprite("background.png");
     }
@@ -69,7 +69,7 @@ public class EndScene extends Scene {
         game.strategy.show();
     }
 
-    private void startGame() {
+    private void rematch() {
         game.setScene(new GameScene(game));
     }
 
@@ -77,7 +77,4 @@ public class EndScene extends Scene {
         game.setScene(new MenuScene(game));
     } // goToMenu
 
-    private void openSettings() {
-        System.out.println("Openings Settings");
-    }
 }

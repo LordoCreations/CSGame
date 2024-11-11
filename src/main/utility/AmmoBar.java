@@ -13,11 +13,11 @@ public class AmmoBar extends Bar {
 
     public void draw(Graphics g) {
         g.setColor(new Color(113, 76, 22));
-        g.fillRoundRect(x, y, width, 4, 2, 2);
+        g.fillRect(x, y, width, 4);
         g.setColor(new Color(228, 184, 99));
-        g.fillRoundRect(x, y, (int) (follow.getAmmo() / follow.getMaxAmmo() * width), 4, 2, 2);
-        g.setColor(new Color(213, 139, 86));
-        g.drawRoundRect(x, y, width, 4, 2, 2);
+        g.fillRect(x, y, (int) (follow.getAmmo() / follow.getMaxAmmo() * width), 4);
+        g.setColor(new Color(0, 0, 0, 100));
+        g.drawRect(x, y, width, 4);
     }
 
     @Override

@@ -1,10 +1,8 @@
 // CREDIT: modified code from spaceinvaderswithsound
 package main;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -13,53 +11,61 @@ public class AudioManager {
     public static ArrayList<Clip> sfx = new ArrayList<>();
     public static ArrayList<Clip> music = new ArrayList<>();
     public static ArrayList<Clip> removeSounds = new ArrayList<>();
+    private static long lastPlayTime = 0;
+    private static final int THROTTLE_DELAY_MS = 50;  // adjust as needed
 
     public static synchronized void playSound(final String ref, boolean loop) {
-        (new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Clip clip = AudioSystem.getClip();
-                    URL url = getClass().getClassLoader()
-                            .getResource("main/sounds/" + ref);
-                    if (url == null) {
-                        System.out.println("Failed to load: " + ref);
-                        System.exit(0);
+        // run
+        (new Thread(() -> {
+            try {
+                long currentTime = System.currentTimeMillis();
+                if (!loop && currentTime - lastPlayTime < THROTTLE_DELAY_MS) {
+                    return;  // Throttle non-looping sounds
+                }
+                lastPlayTime = currentTime;
+
+                Clip clip = createClip(ref);
+
+                System.out.println("Playing: " + ref);
+
+                if (loop) {
+                    if (music.size() >= 10) {
+                        music.get(0).stop();
+                        music.remove(0);
+                    }
+                    music.add(clip);
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                } else {
+                    if (sfx.size() >= 10 && sfx.get(0) != null) {
+                        sfx.get(0).stop();
+                        sfx.remove(0);
+                    }
+                    sfx.add(clip);
+                    clip.start();
+                } // if else
+
+
+                // removes finished clips
+                clip.addLineListener(event -> {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        clip.stop();
+                        music.remove(clip);
+                        sfx.remove(clip);
+                        //removeSounds.add(clip);
                     } // if
-                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
-
-                    clip.open(inputStream);
-                    System.out.println("Playing: " + ref);
-                    if (loop) {
-                        music.add(clip);
-                        clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-                        if (music.size() > 10) removeSounds.add(music.get(0));
-
-                    } else {
-                        sfx.add(clip);
-                        clip.start();
-                        if (sfx.size() > 10) removeSounds.add(sfx.get(0));
-                    } // if else
-
-                    // removes finished clips
-                    clip.addLineListener(event -> {
-                        if (event.getType() == LineEvent.Type.STOP) {
-                            removeSounds.add(clip);
-                        } // if
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } // try catch
-            } // run
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            } // try catch
         })).start();
     } // playSound
 
     public static void stopAllSounds() {
-        for (Object o : sfx) {
-            stopSound((Clip) o);
+        for (Clip o : sfx) {
+            stopSound(o);
         } // for
-        for (Object o : music) {
-            stopSound((Clip) o);
+        for (Clip o : music) {
+            stopSound(o);
         } // for
     } // stopAllSounds
 
@@ -70,7 +76,7 @@ public class AudioManager {
 
     public static void clearRemovedSounds() {
         for (int i = 0; i < removeSounds.size(); i++) {
-            if (removeSounds.get(i) != null)(removeSounds.get(i)).stop();
+            if (removeSounds.get(i) != null) (removeSounds.get(i)).stop();
         } // for
 
         sfx.removeAll(AudioManager.removeSounds);
@@ -78,4 +84,18 @@ public class AudioManager {
         removeSounds.clear();
     } // clearRemovedSounds
 
+
+    private static Clip createClip(String ref) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+
+        Clip clip = AudioSystem.getClip();
+        URL url = AudioManager.class.getClassLoader().getResource("main/sounds/" + ref);
+        if (url == null) {
+            System.out.println("Failed to load: " + ref);
+            return null;
+        }
+        AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
+        clip.open(inputStream);
+        return clip;
+
+    }
 } // class

@@ -62,10 +62,15 @@ public class GameScene extends Scene {
                 players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i, players);
             }
 
+
             spawnPlayer(players[i], SPAWN_POINTS[players[i].getTeam()]);
             entities.add(players[i]);
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
+            players[i].setWeapon(1);
+            entities.add(new Chest(this, (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
+
+
         }
 
         AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], true);
@@ -100,7 +105,7 @@ public class GameScene extends Scene {
 
         // add Chest
         if (Math.random() < 0.0001 * delta) {
-            entities.add(new Chest(this, "chest.png", (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
+            entities.add(new Chest(this, (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
         } // if
 
         // move each entity
