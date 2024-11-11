@@ -79,7 +79,6 @@ public class AudioManager {
             if (removeSounds.get(i) != null) (removeSounds.get(i)).stop();
         } // for
 
-        sfx.removeAll(AudioManager.removeSounds);
         music.removeAll(AudioManager.removeSounds);
         removeSounds.clear();
     } // clearRemovedSounds
