@@ -62,9 +62,10 @@ public class AIPlayer extends Player {
         boolean allowJump = true;
 
         // Avoid being stuck in top/bottom corner
-        if (Math.abs(verticalDistance - 200) > 500) {
+        if (Math.abs(verticalDistance) > 400 || Math.abs(theirCoord[1] - myCoord[0]) < 50 && Math.abs(verticalDistance) > 200) {
             allowJump = false;
-            theirCoord[0] = WIDTH / 2d;
+            if (Math.abs(myCoord[1] - 375) < 75) theirCoord[0] = Math.round(myCoord[0] / WIDTH) * WIDTH;
+            else theirCoord[0] = WIDTH / 2d;
             theirCoord[1] = HEIGHT;
         } // if
 
@@ -76,7 +77,7 @@ public class AIPlayer extends Player {
         } // if else
 
         // How close to move to the player
-        double horizontalThreshold = Math.min(Math.abs(theirCoord[1] - myCoord[1]) > 150 ? weapon.getLength() * 3 : 100, weapon.getFiringDistance() / 3.0);
+        double horizontalThreshold = Math.min(Math.abs(theirCoord[1] - myCoord[1]) > 150 ? weapon.getLength() * 2 + 30 : 100, weapon.getFiringDistance() / 3.0);
         double horizontalDistance = theirCoord[0] - myCoord[0];
 
         // Left/Right input
