@@ -23,28 +23,12 @@ public class MenuScene extends Scene {
     }
 
     @Override
-    public void init() {
+    public void init() {}
 
-        // add mouse
-        game.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                handleMouseEvent(e);
-            }
-        });
-
-        game.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                handleMouseEvent(e);
-            }
-        });
-    }
-
-    private void handleMouseEvent(MouseEvent e) {
+    @Override
+    protected void handleMouseEvent(MouseEvent e) {
         startButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
         settingsButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
-
     }
 
     @Override

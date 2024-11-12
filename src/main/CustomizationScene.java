@@ -51,23 +51,10 @@ public class CustomizationScene extends Scene {
 
         entities.add(startButton);
         entities.add(menuButton);
-
-        // add mouse
-        game.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                handleMouseEvent(e);
-            }
-        });
-        game.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                handleMouseEvent(e);
-            }
-        });
     }
 
-    private void handleMouseEvent(MouseEvent e) {
+    @Override
+    protected void handleMouseEvent(MouseEvent e) {
         for (Entity entity : entities) {
             if (entity instanceof Carousel) {
                 ((Carousel) entity).update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);

@@ -9,6 +9,15 @@ import java.util.Set;
 import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
 
+/**
+ * <h1>Player</h1>
+ * <hr/>
+ * The player
+ *
+ * @author Anthony and Luke
+ * @since 012-11-2024
+ * @see Entity
+ */
 
 public class Player extends Entity {
     public double hp;
@@ -35,6 +44,16 @@ public class Player extends Entity {
 
     protected int[] controls = new int[4];
 
+    /**
+     * Constructor for a Player
+     * @param s scene the player is created in
+     * @param r reference to sprite image
+     * @param newX x position
+     * @param newY y position
+     * @param hp health points
+     * @param team team of the player
+     * @param id id of the player
+     */
     public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
         skin = r;
@@ -59,6 +78,7 @@ public class Player extends Entity {
         } // if else
     } // Character
 
+    /* Getters and setters */
     public double getHp() {
         return hp;
     } // getHp
@@ -77,58 +97,57 @@ public class Player extends Entity {
 
     public int getWidth() {
         return sprite.getWidth();
-    }
+    } // getWidth
 
     public int getHeight() {
         return sprite.getHeight();
-    }
-
+    } // getHeight
 
     public int getTeam() {
         return team;
-    }
+    } // getTeam
 
     public int getID() {
         return id;
-    }
+    } // getID
 
     public int getCorpseID() {
         return corpseID;
-    }
+    } // getCorpseID
 
     public void setSpawntime(long spawntime) {
         this.spawntime = spawntime;
-    }
+    } // setSpawntime
 
     public void setRespawnTime(long respawnTime) {
         this.respawnTime = respawnTime;
-    }
+    } // setRespawnTime
 
     public long getRespawnTime() {
         return respawnTime;
-    }
+    } // getRespawnTime
 
     public void setRecoilDx(double dx) {
         recoilDx = dx;
-    }
+    } // setRecoilDx
 
     public void setKbDx(double dx) {
         kbDx = dx;
-    }
+    } // setKbDx
 
     public void setCoord(int[] coord) {
         this.x = coord[0];
         this.y = coord[1];
-    }
+    } // setCoord
 
     public void setDirection(boolean dir) {
         this.sprite.setDirection(dir);
         this.weapon.setDirection(dir);
-    }
+    } // setDirection
 
     public boolean getDirection() {
         return sprite.getDirection();
-    }
+    } // getDirection
 
     protected void setControls(int id) {
         switch (id) {
@@ -144,8 +163,8 @@ public class Player extends Entity {
             default:
                 controls = new int[]{KeyEvent.VK_A, KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_S};
 
-        }
-    }
+        } // switch
+    } // setControls
 
     public void setWeapon(int w) {
         weaponID = w;
@@ -157,6 +176,10 @@ public class Player extends Entity {
         setDirection(sprite.getDirection());
     } // setWeapon
 
+    /**
+     * Draws the player
+     * @param g display graphics
+     */
     @Override
     public void draw(Graphics g) {
         super.draw(g);
@@ -165,6 +188,10 @@ public class Player extends Entity {
         weapon.draw(g);
     }
 
+    /**
+     * 
+     * @param o
+     */
     @Override
     public void collidedWith(Entity o) {
         if (o instanceof Bullet) {
@@ -244,6 +271,12 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     *
+     * @param s
+     * @param delta
+     * @return the reduced speed
+     */
     private double adjustSpeed(double s, long delta) {
         s *= Math.pow(0.95, (delta/3.0));
         return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);

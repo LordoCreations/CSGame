@@ -6,6 +6,8 @@ import main.GameScene;
 
 import java.util.ArrayList;
 
+
+
 public class Weapon extends Entity {
     private final int[] offsets;
     private final Player following;

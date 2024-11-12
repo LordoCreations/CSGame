@@ -34,29 +34,16 @@ public class EndScene extends Scene {
         rank = rank(score);
     }
 
+
     @Override
-    public void init() {
-
-        // add mouse
-        game.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                handleMouseEvent(e);
-            }
-        });
-        game.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                handleMouseEvent(e);
-            }
-        });
-    }
-
-    private void handleMouseEvent(MouseEvent e) {
+    protected void handleMouseEvent(MouseEvent e) {
         rematchButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
         menuButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
 
     }
+
+    @Override
+    public void init() {}
 
     @Override
     public void update() {

@@ -11,10 +11,9 @@ public class AudioManager {
     public static ArrayList<Clip> sfx = new ArrayList<>();
     public static ArrayList<Clip> music = new ArrayList<>();
     private static long lastPlayTime = 0;
-    private static final int THROTTLE_DELAY_MS = 50;  // TODO adjust throtle timing
+    private static final int THROTTLE_DELAY_MS = 50;  // TODO adjust throttle timing
 
     public static synchronized void playSound(final String ref, boolean loop) {
-
         (new Thread(() -> {
             try {
                 long currentTime = System.currentTimeMillis();

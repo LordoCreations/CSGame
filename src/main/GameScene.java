@@ -47,33 +47,23 @@ public class GameScene extends Scene {
 
     @Override
     public void init() {
-
-        // Initialize game components, load assets, etc.
-        game.addKeyListener(new KeyInputHandler());
-
-        killCount = new int[]{0, 0, 0, 0};
+        killCount = new int[4];
         entities.add(new Score(killCount, 20, 20));
 
         for (int i = 0; i < 4; i++) {
-            // TODO add player or not
             if (game.types[i])
                 players[i] = new Player(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i);
             else {
                 players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i, players);
             }
 
-
             spawnPlayer(players[i], SPAWN_POINTS[players[i].getTeam()]);
             entities.add(players[i]);
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
-
-            players[i].setWeapon(1);
-
         }
 
         AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], true);
-
     }
 
     @Override
@@ -116,7 +106,6 @@ public class GameScene extends Scene {
             e.move(delta);
         } // for
 
-        // TODO Optimize collisions
         for (int i = 0; i < entities.size(); i++) {
             Entity me = entities.get(i);
             if (me instanceof Bullet) {
@@ -164,35 +153,16 @@ public class GameScene extends Scene {
         } // if
     }
 
-    /* inner class KeyInputHandler
-     * handles keyboard input from the user
-     */
-    private class KeyInputHandler extends KeyAdapter {
 
-        /* The following methods are required
-         * for any class that extends the abstract
-         * class KeyAdapter.  They handle keyPressed,
-         * keyReleased and keyTyped events.
-         */
-        @Override
-        public void keyPressed(KeyEvent e) {
-            keysDown.add(e.getKeyCode());
-        } // keyPressed
+    @Override
+    protected void handleKeyPressed(KeyEvent e) {
+        keysDown.add(e.getKeyCode());
+    } // keyPressed
 
-        @Override
-        public void keyReleased(KeyEvent e) {
-            keysDown.remove(e.getKeyCode());
-        } // keyReleased
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-            // if escape is pressed, end game
-            if (e.getKeyChar() == 27) {
-                System.exit(0);
-            } // if escape pressed
-        } // keyTyped
-
-    } // class KeyInputHandler
+    @Override
+    protected void handleKeyReleased(KeyEvent e) {
+        keysDown.remove(e.getKeyCode());
+    } // keyReleased
 
     public boolean touchingWall(Entity e) {
         return wall.overlaps(e.hitbox);

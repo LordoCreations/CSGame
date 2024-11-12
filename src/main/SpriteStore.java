@@ -1,7 +1,4 @@
-package main;/* main.SpriteStore.java
- * Manages the main.sprites in the game.
- * Caches them for future use.
- */
+package main;
 
 import java.awt.*;
 import java.io.IOException;
@@ -9,6 +6,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+
+/* main.SpriteStore.java
+ * Manages the main.sprites in the game.
+ * Caches them for future use.
+ */
 
 public class SpriteStore {
 

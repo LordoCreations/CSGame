@@ -4,6 +4,16 @@ import main.AudioManager;
 import main.Entity;
 import main.GameScene;
 
+/**
+ * <h1>Bullet</h1>
+ * <hr/>
+ * Weapon bullet
+ *
+ * @author Anthony and Luke
+ * @since 12-11-2024
+ * @see Entity
+ */
+
 public class Bullet extends Entity {
     private final int team;
     private final int lifeTime;
@@ -14,6 +24,19 @@ public class Bullet extends Entity {
     private boolean ignoreWalls = false;
     private final int knockback;
 
+    /**
+     * Constructor for a Bullet
+     * @param r Sprite image reference
+     * @param x x position
+     * @param y y position
+     * @param team team of the player firing the bullet
+     * @param lifeTime time until bullet naturally despawns
+     * @param speed speed of the bullet
+     * @param spread y movement of the bullet
+     * @param scene scene the bullet is created in
+     * @param damage damage inflicted on enemy players
+     * @param knockback knockback inflicted on enemy players
+     */
     public Bullet(String r, int x, int y, int team, int lifeTime, int speed, int spread, GameScene scene, int damage, int knockback) {
         super("weapons/" + r + ".png", x, y);
         this.team = team;
@@ -28,9 +51,10 @@ public class Bullet extends Entity {
 
         if (speed < 0) {
             sprite.setDirection(true);
-        }
+        } // if
     } // Bullet
 
+    /* Getters and Setters */
     public int getTeam() {
         return team;
     } // getTeam
@@ -51,14 +75,14 @@ public class Bullet extends Entity {
         this.explosive = explosive;
     } // setExplosive
 
-    public int getDamage() {
-        return damage;
-    } // getDamage
-
-    public void canGoThroughWalls(boolean value) {
+    public void setIgnoreWalls(boolean value) {
         ignoreWalls = value;
-    }
+    } // setIgnoreWalls
 
+    /**
+     * Moves the bullet
+     * @param delta milliseconds since last call
+     */
     @Override
     public void move(long delta) {
         if (explosive) {
@@ -71,6 +95,10 @@ public class Bullet extends Entity {
         } // if
     } // move
 
+    /**
+     * damage and knockback if collided with player
+     * @param o object that the bullet collided with
+     */
     @Override
     public void collidedWith(Entity o) {
         if (!((Player) o).spawnProt) {
@@ -80,6 +108,10 @@ public class Bullet extends Entity {
         collidedWith();
     }  // collidedWith
 
+    /**
+     * Overloaded to explode on impact if bullet is explosive
+     * Allows for collisions with non-entities such as walls
+     */
     public void collidedWith() {
         if (explosive) {
             AudioManager.playSound("explosion.wav", false);
@@ -88,7 +120,7 @@ public class Bullet extends Entity {
                 double speed = 300 * (Math.random() * 1.5 + 1); // Random speed within a range
                 Bullet explosion = new Bullet("explosion", (int) x, (int) y, team, 100,
                         (int) (speed * Math.cos(angle)), (int) (speed * Math.sin(angle)), scene, 2, 500);
-                explosion.canGoThroughWalls(true);
+                explosion.setIgnoreWalls(true);
                 scene.entities.add(explosion);
             } // for
         } // if

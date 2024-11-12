@@ -61,8 +61,7 @@ public class Game extends Canvas {
         strategy = getBufferStrategy();
 
         // initialize Scenes
-        sceneManager = new SceneManager(this);
-        sceneManager.setScene(new MenuScene(this));
+        sceneManager = new SceneManager(this, new MenuScene(this));
 
         // start the game
         gameLoop();

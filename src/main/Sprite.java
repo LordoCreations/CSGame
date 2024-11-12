@@ -1,11 +1,18 @@
-package main;/* main.Sprite.java
- * March 23, 2006
- * Store no state information, this allows the image to be stored only
- * once, but to be used in many different places.  For example, one
- * copy of alien.gif can be used over and over.
- */
+package main;
 
 import java.awt.*;
+
+/**
+ * <h1>Sprite</h1>
+ * <hr/>
+ * Stores the image of a character which has direction and opacity. The remaining code is from Sprite.java
+ * in the Space Invaders Template Code
+ *
+ * @author Anthony and Luke
+ * @see Image
+ * @see <a href="https://mdinfotech.net/index.php?course=compsci12&unit=3#id37">Space Invaders Exercise</a>
+ * @since 12-11-2024
+ */
 
 public class Sprite {
     private boolean flip;
@@ -34,23 +41,21 @@ public class Sprite {
             g.drawImage(image, x + image.getWidth(null), y, -image.getWidth(null), image.getHeight(null), null);
         } else {
             g.drawImage(image, x, y, null);
-        }
+        } // if else
         ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
     } // draw
+
+    /* Getters and Setters*/
 
     public void setDirection(boolean flip) {
         this.flip = flip;
-    }
+    } // setDirection
+
     public boolean getDirection() {
         return flip;
-    }
+    } // getDirection
 
     public void setOpacity(float opacity) {
         this.opacity = opacity;
-    }
-
-    public float getOpacity() {
-        return opacity;
-    }
+    } // setOpacity
 } // main.Sprite
