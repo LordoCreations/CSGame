@@ -7,7 +7,6 @@ import java.awt.Graphics;
 public class Button extends Entity {
     private final int x;
     private final int y;
-    private boolean hovered = false;
     private final Runnable action;
 
     public Button(String r, int x, int y, Runnable action) {
@@ -18,7 +17,7 @@ public class Button extends Entity {
     }
 
     public void update(int mouseX, int mouseY, boolean mousePressed) {
-        hovered = mouseX >= x && mouseX <= x + sprite.getWidth() && mouseY >= y && mouseY <= y + sprite.getHeight();
+        boolean hovered = mouseX >= x && mouseX <= x + sprite.getWidth() && mouseY >= y && mouseY <= y + sprite.getHeight();
         if (hovered && mousePressed) {
             action.run();
         }

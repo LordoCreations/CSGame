@@ -184,6 +184,9 @@ public class Weapon extends Entity {
     } // createBullet
 
     @Override
-    public void collidedWith(Entity o) {
-    } // collidedWith
+    public void collidedWith(Entity o) {} // collidedWith
+
+    public int getLength() {
+        return bulletOffsets[0];
+    }
 }

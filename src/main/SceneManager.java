@@ -22,7 +22,6 @@ public class SceneManager {
 
         if (currentScene != null && scene instanceof GameScene || currentScene instanceof GameScene) {
             AudioManager.stopAllSounds();
-            AudioManager.clearRemovedSounds();
         }
 
         if (AudioManager.music.isEmpty()) AudioManager.playSound("relentlessrage.wav", true);

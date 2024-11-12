@@ -72,23 +72,6 @@ public abstract class Entity {
         hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
     }
 
-    // get and set velocities
-    public void setHorizontalMovement(double newDX) {
-        dx = newDX;
-    } // setHorizontalMovement
-
-    public void setVerticalMovement(double newDY) {
-        dy = newDY;
-    } // setVerticalMovement
-
-    public double getHorizontalMovement() {
-        return dx;
-    } // getHorizontalMovement
-
-    public double getVerticalMovement() {
-        return dy;
-    } // getVerticalMovement
-
     // get position
     public int getX() {
         return (int) x;
@@ -105,11 +88,6 @@ public abstract class Entity {
         sprite.draw(g, (int) x, (int) y);
     }  // draw
 
-    /* Do the logic associated with this entity.  This method
-     * will be called periodically based on game events.
-     */
-    public void doLogic() {
-    }
 
     /* collidesWith
      * input: the other entity to check collision against

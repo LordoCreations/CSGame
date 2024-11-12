@@ -20,9 +20,6 @@ public class AmmoBar extends Bar {
         g.drawRect(x, y, width, 4);
     }
 
-    @Override
-    public void collidedWith(Entity other) {}
-
     @Override public void move(long delta) {
         this.x = follow.getX() + (follow.getWidth() - width)/2;
         this.y = follow.getY() - 20;

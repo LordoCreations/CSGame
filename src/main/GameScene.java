@@ -28,7 +28,7 @@ public class GameScene extends Scene {
     private final Color backgroundColor = new Color(30, 32, 35);
     private int[] killCount = new int[4];
     public static final int KILLS_TO_WIN = 30;
-    private final String[] backgroundTracks = new String[] {"ricochetlove.wav"};
+    private final String[] backgroundTracks = new String[]{"ricochetlove.wav"};
     private Graphics2D g;
 
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
@@ -51,7 +51,7 @@ public class GameScene extends Scene {
         // Initialize game components, load assets, etc.
         game.addKeyListener(new KeyInputHandler());
 
-        killCount = new int[] {0, 0, 0, 0};
+        killCount = new int[]{0, 0, 0, 0};
         entities.add(new Score(killCount, 20, 20));
 
         for (int i = 0; i < 4; i++) {
@@ -67,6 +67,8 @@ public class GameScene extends Scene {
             entities.add(players[i]);
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
+
+            players[i].setWeapon(1);
 
         }
 
@@ -90,19 +92,22 @@ public class GameScene extends Scene {
 
         // end game if kills to win reached
         for (int i = 0; i < killCount.length; i++) {
-            if (killCount[i] >= KILLS_TO_WIN) game.setScene(new EndScene(game, i, killCount));
+            if (killCount[i] >= KILLS_TO_WIN) {
+                game.setScene(new EndScene(game, i, killCount));
+                return;
+            }
         } // for
 
         // respawn dead players
-        for(Player p : players) {
-            if(p != null && p.isDead && p.getRespawnTime() <= System.currentTimeMillis()){
+        for (Player p : players) {
+            if (p != null && p.isDead && p.getRespawnTime() <= System.currentTimeMillis()) {
                 spawnPlayer(p, SPAWN_POINTS[(int) (Math.random() * SPAWN_POINTS.length)]);
             } // if
         } // for
 
         // add Chest
         if (Math.random() < 0.0001 * delta) {
-            entities.add(new Chest(this, (int) (Math.random() * (WIDTH-400) + 200), (int) (Math.random() * (HEIGHT-400) + 200)));
+            entities.add(new Chest(this, (int) (Math.random() * (WIDTH - 400) + 200), (int) (Math.random() * (HEIGHT - 400) + 200)));
         } // if
 
         // move each entity
@@ -137,7 +142,7 @@ public class GameScene extends Scene {
         }
 
         // draw all entities
-        for (int i = entities.size()-1; i >= 0; i--) {
+        for (int i = entities.size() - 1; i >= 0; i--) {
             Entity e = entities.get(i);
             e.draw(g);
         }
@@ -147,14 +152,14 @@ public class GameScene extends Scene {
         removeEntities.clear();
 
         // clear removed sounds
-        AudioManager.clearRemovedSounds();
+        //AudioManager.clearRemovedSounds();
 
         // clear graphics and flip buffer
         g.dispose();
         game.strategy.show();
 
         // TODO remove
-        if(AudioManager.sfx.size() >= 10) {
+        if (AudioManager.sfx.size() >= 10) {
             System.out.println("large amount of sounds: " + AudioManager.sfx.size());
         } // if
     }
@@ -193,7 +198,9 @@ public class GameScene extends Scene {
         return wall.overlaps(e.hitbox);
     }
 
-    public void removeEntity(Entity e) { removeEntities.add(e); }
+    public void removeEntity(Entity e) {
+        removeEntities.add(e);
+    }
 
     public void playerDied(Player p, int killCredit, double bulletSpeed) {
         System.out.printf("Player %d died to team %d%n", p.getID(), killCredit);
@@ -214,6 +221,6 @@ public class GameScene extends Scene {
         p.hp = p.getMaxHp();
         p.setCoord(location);
         p.setSpawntime(System.currentTimeMillis());
-        p.setDirection(location[0] > WIDTH/2);
+        p.setDirection(location[0] > WIDTH / 2);
     }
 }

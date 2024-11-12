@@ -24,7 +24,6 @@ public class AIPlayer extends Player {
     private double minDistance;
     private final double[] myCoord = new double[2];
     private final double[] theirCoord = new double[2];
-    private boolean allowJump = true;
 
     public AIPlayer(GameScene s, String r, int newX, int newY, int hp, int team, int id, Player[] players) {
         super(s, r, newX, newY, hp, team, id);
@@ -48,10 +47,10 @@ public class AIPlayer extends Player {
 
 
         double verticalDistance = theirCoord[1] - myCoord[1];
-        allowJump = true;
+        boolean allowJump = true;
 
         // Avoid being stuck in top/bottom corner
-        if (theirCoord[1] < 400 && myCoord[1] > 600 || theirCoord[1] > 600 && myCoord[1] < 400) {
+        if (Math.abs(verticalDistance - 100) > 350) {
             allowJump = false;
             theirCoord[0] = WIDTH/2d;
             theirCoord[1] = HEIGHT;
@@ -65,18 +64,15 @@ public class AIPlayer extends Player {
         } // if else
 
         // How close to move to the player
-        double horizontalThreshold = Math.min(input.contains(KeyEvent.VK_UP) ||
-                Math.abs(theirCoord[1] - myCoord[1]) > 100 ? 30 : 300, weapon.getFiringDistance() / 2.0);
+        double horizontalThreshold = Math.min(Math.abs(theirCoord[1] - myCoord[1]) > 150 ? weapon.getLength() * 1.1 : 100, weapon.getFiringDistance() / 3.0);
 
         double horizontalDistance = theirCoord[0] - myCoord[0];
 
         // Left/Right input
-        if (Math.random() < 0.0001 * delta || horizontalDistance > horizontalThreshold) {
-            input.remove(KeyEvent.VK_LEFT);
-            input.add(KeyEvent.VK_RIGHT);
-        } else if (Math.random() < 0.0001 * delta || horizontalDistance < -horizontalThreshold) {
-            input.remove(KeyEvent.VK_RIGHT);
-            input.add(KeyEvent.VK_LEFT);
+        if (Math.random() < 0.0001 * delta || horizontalDistance > horizontalThreshold || horizontalDistance < 0 && horizontalDistance > -horizontalThreshold) {
+            moveInDirection(true);
+        } else if (Math.random() < 0.0001 * delta || horizontalDistance < -horizontalThreshold || horizontalDistance > 0 && horizontalDistance > horizontalThreshold) {
+            moveInDirection(false);
         } else {
             input.remove(KeyEvent.VK_RIGHT);
             input.remove(KeyEvent.VK_LEFT);
@@ -92,6 +88,7 @@ public class AIPlayer extends Player {
         // Shoot if in range
         // TODO reduce probability that bot shoots with sniper and shotgun
         if (Math.abs(verticalDistance) < sprite.getHeight() && Math.random() < 0.05 * delta && horizontalDistance < weapon.getFiringDistance()) {
+            moveInDirection(horizontalDistance > 0);
             input.add(KeyEvent.VK_DOWN);
         } else {
             input.remove(KeyEvent.VK_DOWN);
@@ -145,7 +142,7 @@ public class AIPlayer extends Player {
      */
     private double distance(Player other) {
         getCenter(other, theirCoord);
-        return Math.abs(Math.sqrt(Math.abs(Math.pow(myCoord[0] - theirCoord[0], 2) + Math.pow(myCoord[1] - theirCoord[1], 3))));
+        return Math.sqrt(Math.pow(myCoord[0] - theirCoord[0], 2) + Math.abs(Math.pow(myCoord[1] - theirCoord[1], 3)));
     } // distance
 
     /**
@@ -156,5 +153,15 @@ public class AIPlayer extends Player {
     private void getCenter(Player player, double[] destination) {
         destination[0] = player.getX() + player.getWidth() / 2.0;
         destination[1] = player.getY() + player.getHeight() / 2.0;
+    }
+
+    private void moveInDirection(boolean direction) {
+        if (direction) {
+            input.remove(KeyEvent.VK_LEFT);
+            input.add(KeyEvent.VK_RIGHT);
+        } else {
+            input.remove(KeyEvent.VK_RIGHT);
+            input.add(KeyEvent.VK_LEFT);
+        }
     }
 }
