@@ -5,21 +5,17 @@ import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class AudioManager {
     // TODO store music and sfx separately if too laggy
     public static ArrayList<Clip> sfx = new ArrayList<>();
     public static ArrayList<Clip> music = new ArrayList<>();
-    public static ArrayList<Clip> removeSounds = new ArrayList<>();
     private static long lastPlayTime = 0;
     private static final int THROTTLE_DELAY_MS = 50;  // TODO adjust throtle timing
-    private static final ExecutorService soundExecutor = Executors.newFixedThreadPool(10); // TODO from GPT
 
     public static synchronized void playSound(final String ref, boolean loop) {
 
-        soundExecutor.execute(() -> {
+        (new Thread(() -> {
             try {
                 long currentTime = System.currentTimeMillis();
                 if (!loop && currentTime - lastPlayTime < THROTTLE_DELAY_MS) return;  // Throttle non-looping sounds
@@ -28,14 +24,23 @@ public class AudioManager {
 
                 Clip clip = createClip(ref);
 
-                // TODO remove debug
-                // System.out.println("Playing: " + ref);
+                // Calculate the delay since requested start time
+                long actualStartTime = System.currentTimeMillis();
+                long delayMillis = actualStartTime - currentTime;
+
+                // Calculate frame position to simulate starting at the correct time
+                int frameOffset = (int) ((delayMillis / 1000.0) * clip.getFormat().getFrameRate());
+
+                // Ensure frameOffset is within clip bounds
+                if (frameOffset > clip.getFrameLength()) return;
+
+                clip.setFramePosition(frameOffset);
 
                 if (loop) {
                     music.add(clip);
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
                 } else {
-                    if (sfx.size() >= 10 && sfx.get(0) != null) {
+                    if (sfx.size() >= 15 && sfx.get(0) != null) {
                         sfx.get(0).close();
                         sfx.remove(0);
                     }
@@ -56,7 +61,7 @@ public class AudioManager {
             } catch (Exception e) {
                 e.printStackTrace();
             } // try catch
-        });
+        })).start();
     } // playSound
 
     public static void stopAllSounds() {

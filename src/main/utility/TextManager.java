@@ -3,11 +3,12 @@ package main.utility;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TextManager {
     public static Font getFont(int size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont((float) size);
+            return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(TextManager.class.getClassLoader().getResourceAsStream("main/utility/font.ttf"))).deriveFont((float) size);
         } catch (FontFormatException | IOException e) {
             return null;
         }
