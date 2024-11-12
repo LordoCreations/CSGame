@@ -15,13 +15,7 @@ public class Score extends Entity {
     public Score(int[] scores, int x, int y) {
         super("displays/contested.png", x, y);
 
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/utility/font.ttf")).deriveFont(24f);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-
+        font = TextManager.getFont(24);
         this.scores = scores;
     }
 
