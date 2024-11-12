@@ -64,7 +64,7 @@ public class AIPlayer extends Player {
         // Avoid being stuck in top/bottom corner
         if (Math.abs(verticalDistance) > 400 || Math.abs(theirCoord[1] - myCoord[0]) < 50 && Math.abs(verticalDistance) > 200) {
             allowJump = false;
-            if (Math.abs(myCoord[1] - 375) < 75) theirCoord[0] = Math.round(myCoord[0] / WIDTH) * WIDTH;
+            if (Math.abs(myCoord[1] - 525) < 75) theirCoord[0] = Math.round(myCoord[0] / WIDTH) * WIDTH;
             else theirCoord[0] = WIDTH / 2d;
             theirCoord[1] = HEIGHT;
         } // if
