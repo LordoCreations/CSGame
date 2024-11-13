@@ -82,8 +82,6 @@ public abstract class Entity {
         } // if
     } // fallThrough
 
-
-
     // get position
     public int getX() {
         return (int) x;

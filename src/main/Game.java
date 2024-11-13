@@ -1,16 +1,23 @@
-package main;/* main.Game.java
- * Space Invaders Main Program
- *
- */
+package main;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 
+/**
+ * <h1>Game</h1>
+ * <hr/>
+ * Main Game class, derived from Space Invaders
+ *
+ * @author Anthony and Luke
+ * @see SceneManager
+ * @see <a href="https://mdinfotech.net/index.php?course=compsci12&unit=3#id37">Space Invaders Exercise</a>
+ * @since 13-11-2024
+ */
+
 public class Game extends Canvas {
     BufferStrategy strategy;
-    private final boolean gameRunning = true;
     public static int WIDTH =  1600;
     public static int HEIGHT = 900;
     public int[] skins = new int[4];
@@ -87,7 +94,7 @@ public class Game extends Canvas {
     public void gameLoop() {
 
         // keep loop running until game ends
-        while (gameRunning) {
+        while (true) {
             sceneManager.update();
         } // while
     } // gameLoop

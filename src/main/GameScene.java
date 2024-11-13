@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -223,6 +222,9 @@ public class GameScene extends Scene {
     public void playerDied(Player p, int killCredit) {
         System.out.printf("Player %d died to team %d%n", p.getID(), killCredit);
 
+        // add a Corpse
+        entities.add(new Corpse((this), ("skins/corpse" + p.getCorpseID() + ".png"), (int) p.x, (int) p.y));
+
         // set respawn timer for player
         p.isDead = true;
         p.setRespawnTime(System.currentTimeMillis() + 3000);
@@ -231,9 +233,6 @@ public class GameScene extends Scene {
 
         // give a kill to team that killed player
         killCount[killCredit]++;
-
-        // add a Corpse
-        entities.add(new Corpse((this), ("skins/corpse" + p.getCorpseID() + ".png"), (int) p.x, (int) p.y));
     } // playerDied
 
     /**
@@ -243,6 +242,8 @@ public class GameScene extends Scene {
      */
     private void spawnPlayer(Player p, int[] location) {
         p.isDead = false;
+        p.dx = 0;
+        p.dy = 0;
         p.setWeapon(0);
         p.hp = p.getMaxHp();
         p.setCoord(location);
