@@ -196,7 +196,7 @@ public class Player extends Entity {
     public void collidedWith(Entity o) {
         if (o instanceof Bullet) {
             if (hp <= 0) {
-                scene.playerDied(this, ((Bullet) o).getTeam(), ((Bullet) o).getDx());
+                scene.playerDied(this, ((Bullet) o).getTeam());
             } // if
         } // if
     } // collidedWith
@@ -269,11 +269,7 @@ public class Player extends Entity {
             dy = 0;
         } // if else
 
-        // send player to the top if they fall through the map
-        if (y > HEIGHT) {
-            y = 0;
-            x = Math.max(Math.min(x, 650), 950 - sprite.getWidth());
-        } // if
+        fallThrough();
     } // move
 
     /**

@@ -5,6 +5,8 @@ package main;/* main.Entity.java
 
 import java.awt.*;
 
+import static main.Game.HEIGHT;
+
 public abstract class Entity {
 
     // Java Note: the visibility modifier "protected"
@@ -71,6 +73,16 @@ public abstract class Entity {
     public void update() {
         hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
     }
+
+    // send entity to the top if it falls through the map
+    protected void fallThrough() {
+        if (y > HEIGHT) {
+            y = 0;
+            x = Math.max(Math.min(x, 650), 950 - sprite.getWidth());
+        } // if
+    } // fallThrough
+
+
 
     // get position
     public int getX() {

@@ -39,11 +39,13 @@ public class Chest extends Corpse {
     @Override
     public void move(long delta) {
         super.applyGravity(delta);
-        if (y > HEIGHT) scene.removeEntity(this);
+        if (y > HEIGHT + 100) scene.removeEntity(this);
 
         // TODO fix repeated code from Corpse
         if (System.currentTimeMillis() >= spawntime + 9000) scene.removeEntity(this);
         else if (System.currentTimeMillis() >= spawntime + 7000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0))); }
+
+        fallThrough();
     } // move
 
     /**

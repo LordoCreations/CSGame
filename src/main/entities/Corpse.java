@@ -3,6 +3,10 @@ package main.entities;
 import main.Entity;
 import main.GameScene;
 
+import java.awt.*;
+
+import static main.Game.HEIGHT;
+
 /**
  * <h1>Corpse</h1>
  * <hr/>
@@ -40,6 +44,8 @@ public class Corpse extends Entity {
         else if (System.currentTimeMillis() >= spawntime + 2000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0))); }
 
         applyGravity(delta);
+        fallThrough();
+
     } // move
 
     /**
@@ -67,11 +73,6 @@ public class Corpse extends Entity {
             dy = 0;
         } // if
     } // applyGravity
-
-    /* Getters and setters */
-    public void setDx(double dx) {
-        this.dx = dx;
-    } // setDx
 
     /**
      * Collision detection - unused

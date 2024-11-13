@@ -101,11 +101,12 @@ public class Bullet extends Entity {
      */
     @Override
     public void collidedWith(Entity o) {
-        if (!((Player) o).spawnProt) {
+        if (o != null && !((Player) o).spawnProt && collidesWith(o) && team != ((Player) o).getTeam()) {
             ((Player) o).hp -= damage;
             ((Player) o).setKbDx(dx > 0 ? knockback : -knockback);
+            collidedWith();
+            o.collidedWith(this);
         } // if
-        collidedWith();
     }  // collidedWith
 
     /**

@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -9,7 +8,7 @@ import java.awt.event.*;
  * Finite State Machine that manages the various scenes in the game (ie. menu, game)
  *
  * @author Anthony and Luke
- * @see Image
+ * @see Game
  * @since 12-11-2024
  */
 
@@ -32,23 +31,17 @@ public class SceneManager {
                 currentScene.handleMouseEvent(e);
             }
         });
-
         game.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseMoved(MouseEvent e) {
-                currentScene.handleMouseEvent(e);
-            }
+            public void mouseMoved(MouseEvent e) {currentScene.handleMouseEvent(e);}
         });
-
     } // SceneManager
 
+    /**
+     * Set the Game Scene
+     * @param scene scene to set to
+     */
     public void setScene(Scene scene) {
-
-//        // remove previous listeners
-//        for (KeyListener k : game.getKeyListeners()) game.removeKeyListener(k);
-//        for (MouseListener k : game.getMouseListeners()) game.removeMouseListener(k);
-
-
         if (currentScene != null && scene instanceof GameScene || currentScene instanceof GameScene) {
             AudioManager.stopAllSounds();
         } // if
@@ -57,13 +50,14 @@ public class SceneManager {
 
         currentScene = scene;
         currentScene.init();
-    }
+    } // setScene
 
+    /**
+     * Update the current scene (aka tick), called continuously by Game.java
+     */
     public void update() {
-        if (currentScene != null) {
-            currentScene.update();
-        }
-    }
+        if (currentScene != null) currentScene.update();
+    } // update
 
     /* inner class KeyInputHandler
      * handles keyboard input from the user
@@ -87,10 +81,11 @@ public class SceneManager {
 
         @Override
         public void keyTyped(KeyEvent e) {
+
             // if escape is pressed, end game
             if (e.getKeyChar() == 27) {
                 System.exit(0);
-            } // if escape pressed
+            } // if
 
             currentScene.handleKeyTyped(e);
         } // keyTyped

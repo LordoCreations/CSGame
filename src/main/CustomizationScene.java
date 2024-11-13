@@ -21,7 +21,7 @@ public class CustomizationScene extends Scene {
     private final String[] skins = {"Default", "Locked In", "Stormtrooper", "Soldier", "Rambo"};
     private final String[] teams = {"Team Blue", "Team Red", "Team Purple", "Team Green"};
     private final String[] types = {"Player", "AI"};
-    private final String[] players = {"2", "3", "4"};
+    private final String[] players = {"Players: 2", "Players: 3", "Players: 4"};
 
     CustomizationScene(Game game) {
         super(game);
@@ -42,21 +42,21 @@ public class CustomizationScene extends Scene {
             entities.add(skin);
             entities.add(type);
             entities.add(team);
+
         } // for
+
+        Carousel playerCountSelector = new Carousel(WIDTH / 2 - 140, 700, 280, 0, 3, players);
+        entities.add(playerCountSelector);
 
         background = SpriteStore.get().getSprite("background.png");
     } // CustomizationScene
 
-    Carousel playerCountSelector = new Carousel(900, 800, 280, 1, 2, players);
-    entities.add(playerCountSelector);
-
 
     @Override
     public void init() {
-
         entities.add(startButton);
         entities.add(menuButton);
-    }
+    } // init
 
     @Override
     protected void handleMouseEvent(MouseEvent e) {
@@ -82,12 +82,18 @@ public class CustomizationScene extends Scene {
         for (Entity entity : entities) {
             entity.draw(g);
             if (entity instanceof Carousel) {
-                if (((Carousel) entity).getPurpose() == 1) {
-                    game.types[((Carousel) entity).getID()] = ((Carousel) entity).getChoice() == 0;
-                } else if (((Carousel) entity).getPurpose() == 2) {
-                    game.teams[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
-                } else {
-                    game.skins[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
+                switch (((Carousel) entity).getPurpose()) {
+                    case 1:
+                        game.types[((Carousel) entity).getID()] = ((Carousel) entity).getChoice() == 0;
+                        break;
+                    case 2:
+                        game.teams[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
+                        break;
+                    case 3:
+                        game.playerCount = ((Carousel) entity).getChoice() + 2;
+                        break;
+                    default:
+                        game.skins[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
                 }
 
             }
@@ -105,7 +111,7 @@ public class CustomizationScene extends Scene {
     }
 
     private void enterGame() {
-        game.setScene(new GameScene(game, 4));
+        game.setScene(new GameScene(game));
     }
 
     private void goToMenu() {
