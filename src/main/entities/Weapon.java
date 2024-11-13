@@ -46,7 +46,7 @@ public class Weapon extends Entity {
         this.scene = scene;
 
         following = p;
-        lastFired = System.currentTimeMillis();
+        lastFired = System.currentTimeMillis() - 5000;
         offsets = getOffsets(id);
         firingInterval = FIRING_INTERVALS[id];
         bulletSpeed = BULLET_SPEED[id];

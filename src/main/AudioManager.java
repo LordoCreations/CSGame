@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class AudioManager {
-    // TODO store music and sfx separately if too laggy
     public static ArrayList<Clip> sfx = new ArrayList<>();
     public static ArrayList<Clip> music = new ArrayList<>();
     private static long lastPlayTime = 0;
@@ -38,6 +37,10 @@ public class AudioManager {
                 if (loop) {
                     music.add(clip);
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    if (music.size() > 1 && music.get(0) != null) {
+                        music.get(0).close();
+                        music.remove(0);
+                    }
                 } else {
                     if (sfx.size() >= 15 && sfx.get(0) != null) {
                         sfx.get(0).close();
@@ -46,7 +49,6 @@ public class AudioManager {
                     sfx.add(clip);
                     clip.start();
                 } // if else
-
 
                 // removes finished clips
                 clip.addLineListener(event -> {

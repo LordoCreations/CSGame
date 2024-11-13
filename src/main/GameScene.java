@@ -24,7 +24,7 @@ public class GameScene extends Scene {
     private final Sprite background;
     private Mask wall;
     public Set<Integer> keysDown = new HashSet<>();
-    private final Player[] players = new Player[4];
+    private Player[] players;
     private final Color backgroundColor = new Color(30, 32, 35);
     private int[] killCount = new int[4];
     public static final int KILLS_TO_WIN = 30;
@@ -33,8 +33,9 @@ public class GameScene extends Scene {
 
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
 
-    GameScene(Game game) {
+    GameScene(Game game, int playerCount) {
         super(game);
+        players = new Player[playerCount];
         background = SpriteStore.get().getSprite("city.png");
         try {
             URL url = this.getClass().getClassLoader().getResource("main/sprites/" + "city_hitbox" + ".png");
@@ -55,16 +56,16 @@ public class GameScene extends Scene {
                 players[i] = new Player(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i);
             else {
                 players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i, players);
-            }
+            } // if
 
             spawnPlayer(players[i], SPAWN_POINTS[players[i].getTeam()]);
             entities.add(players[i]);
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
-        }
+        } // for
 
         AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], true);
-    }
+    } // init
 
     @Override
     public void update() {
@@ -96,7 +97,7 @@ public class GameScene extends Scene {
         } // for
 
         // add Chest
-        if (Math.random() < 0.0001 * delta) {
+        if (Math.random() < 0.0001 * players.length * delta) {
             entities.add(new Chest(this, (int) (Math.random() * (WIDTH - 400) + 200), (int) (Math.random() * (HEIGHT - 400) + 200)));
         } // if
 
@@ -151,6 +152,9 @@ public class GameScene extends Scene {
         if (AudioManager.sfx.size() >= 10) {
             System.out.println("large amount of sounds: " + AudioManager.sfx.size());
         } // if
+        if (AudioManager.music.size() >= 2) {
+            System.out.println("oversize music array: " + AudioManager.music.size());
+        } // if
     }
 
 
@@ -187,7 +191,7 @@ public class GameScene extends Scene {
 
     private void spawnPlayer(Player p, int[] location) {
         p.isDead = false;
-        p.setWeapon((int) (Math.random() * Game.weaponCount));
+        p.setWeapon(0);
         p.hp = p.getMaxHp();
         p.setCoord(location);
         p.setSpawntime(System.currentTimeMillis());

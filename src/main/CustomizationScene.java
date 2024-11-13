@@ -100,7 +100,7 @@ public class CustomizationScene extends Scene {
     }
 
     private void enterGame() {
-        game.setScene(new GameScene(game));
+        game.setScene(new GameScene(game, 4));
     }
 
     private void goToMenu() {

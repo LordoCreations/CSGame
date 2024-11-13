@@ -69,7 +69,7 @@ public class EndScene extends Scene {
     }
 
     private void rematch() {
-        game.setScene(new GameScene(game));
+        game.setScene(new GameScene(game, 4));
     }
 
     private void goToMenu() {

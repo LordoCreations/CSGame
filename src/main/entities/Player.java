@@ -206,12 +206,10 @@ public class Player extends Entity {
         if (isDead) {
             spawnProt = true; // players can't be hurt if dead
             return;
-        } else if (System.currentTimeMillis() <= spawntime + 3000) {
-
-            // current implementation is flashing
+        } else if (System.currentTimeMillis() <= spawntime + 1000) {
+            // flash when under spawn prot
             sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0)));
             spawnProt = true;
-
         } else {
             sprite.setOpacity(1);
             spawnProt = false;

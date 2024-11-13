@@ -90,7 +90,7 @@ public class AIPlayer extends Player {
         } else if (Math.random() < 0.05 * delta) {
             input.remove(KeyEvent.VK_RIGHT);
             input.remove(KeyEvent.VK_LEFT);
-        }
+        } // if else
 
         // don't move if no targets
         if (minDistance >= Double.MAX_VALUE) {
