@@ -21,6 +21,7 @@ public class CustomizationScene extends Scene {
     private final String[] skins = {"Default", "Locked In", "Stormtrooper", "Soldier", "Rambo"};
     private final String[] teams = {"Team Blue", "Team Red", "Team Purple", "Team Green"};
     private final String[] types = {"Player", "AI"};
+    private final String[] players = {"2", "3", "4"};
 
     CustomizationScene(Game game) {
         super(game);
@@ -41,10 +42,14 @@ public class CustomizationScene extends Scene {
             entities.add(skin);
             entities.add(type);
             entities.add(team);
-        }
+        } // for
 
         background = SpriteStore.get().getSprite("background.png");
-    }
+    } // CustomizationScene
+
+    Carousel playerCountSelector = new Carousel(900, 800, 280, 1, 2, players);
+    entities.add(playerCountSelector);
+
 
     @Override
     public void init() {

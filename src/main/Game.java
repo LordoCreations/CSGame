@@ -16,6 +16,7 @@ public class Game extends Canvas {
     public int[] skins = new int[4];
     public boolean[] types = new boolean[4];
     public int[] teams = new int[4];
+    public static int playerCount;
     public final static int weaponCount = 8;
 
     private final SceneManager sceneManager;

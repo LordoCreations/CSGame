@@ -24,7 +24,7 @@ public class GameScene extends Scene {
     private final Sprite background;
     private Mask wall;
     public Set<Integer> keysDown = new HashSet<>();
-    private Player[] players;
+    private final Player[] players;
     private final Color backgroundColor = new Color(30, 32, 35);
     private int[] killCount = new int[4];
     public static final int KILLS_TO_WIN = 30;
