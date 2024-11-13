@@ -114,7 +114,7 @@ public class GameScene extends Scene {
                     ((Bullet) me).collidedWith();
                 }
                 for (Player him : players) {
-                    if (him == null) continue;
+                    if (him == null || him.spawnProt) continue;
                     if (me.collidesWith(him) && ((Bullet) me).getTeam() != him.getTeam()) {
                         me.collidedWith(him);
                         him.collidedWith(me);

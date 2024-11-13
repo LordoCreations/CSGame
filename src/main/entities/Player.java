@@ -216,6 +216,7 @@ public class Player extends Entity {
         } // if else
         hp = Math.min(maxHp, hp + 0.005 * delta);
 
+        // move player based on keyboard input
         if (input.contains(controls[2])) {
             setDirection(false);
             dx = speed + recoilDx + kbDx;
@@ -226,48 +227,54 @@ public class Player extends Entity {
             dx = 0 + recoilDx + kbDx;
         } // if else
 
+        // adjust position from recoil and knockback
         recoilDx = adjustSpeed(recoilDx, delta);
         kbDx = adjustSpeed(kbDx, delta);
 
+        // players can't go into walls
         moveX(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
                 x -= dx / 999;
                 update();
-            }
+            } // while
             dx = 0;
-        }
+        } // if
 
+        // fire the weapon
         if (!spawnProt && input.contains(controls[3])) {
             weapon.tryShoot(scene.entities);
             if (weapon.getAmmo() <= 0) {
                 setWeapon(0);
-            }
-        }
+            } // if
+        } // if
 
+        // realistic gravity
         y += 1;
         update();
         if (!scene.touchingWall(this)) {
             dy += 1.75 * delta;
         } else if (input.contains(controls[1])) {
             dy = -900;
-        }
+        } // if else
         y -= 1;
 
+        // players can't fall through floors
         moveY(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
                 y -= dy / 999;
                 update();
-            }
+            } // if
             dy = 0;
-        }
+        } // if else
 
+        // send player to the top if they fall through the map
         if (y > HEIGHT) {
             y = 0;
             x = Math.max(Math.min(x, 650), 950 - sprite.getWidth());
-        }
-    }
+        } // if
+    } // move
 
     /**
      *
@@ -280,6 +287,9 @@ public class Player extends Entity {
         return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);
     } // adjustSpeed
 
+    /**
+     * updates the position of the hitbox
+     */
     @Override
     public void update() {
         hitbox.setRect(x + 4, y + 8, 48, 48);

@@ -6,7 +6,15 @@ import main.GameScene;
 
 import java.util.ArrayList;
 
-
+/**
+ * <h1>Weapon</h1>
+ * <hr/>
+ * Weapon held by players
+ *
+ * @author Anthony and Luke
+ * @since 012-11-2024
+ * @see Entity
+ */
 
 public class Weapon extends Entity {
     private final int[] offsets;
@@ -39,6 +47,12 @@ public class Weapon extends Entity {
 
     private final GameScene scene;
 
+    /**
+     * Constructor for a new Weapon
+     * @param id id of the weapon
+     * @param p player holding the weapon
+     * @param scene scene weapon is created in
+     */
     public Weapon(int id, Player p, GameScene scene) {
         super();
         super.setSprite(getWeaponURL(id));
@@ -61,6 +75,13 @@ public class Weapon extends Entity {
 
     } // Weapon
 
+    // follows the player
+    public void move() {
+        x = following.getX() + 28 + (sprite.getDirection() ? -offsets[0] - sprite.getWidth() : offsets[0]);
+        y = following.getY() + offsets[1];
+    } // move
+
+    /* Getters and setters */
     public int getAmmo() {
         return ammo;
     } // getHp
@@ -71,94 +92,45 @@ public class Weapon extends Entity {
 
     public int getFiringDistance() {
         return bulletLife * bulletSpeed / 1000;
-    }
-
-    // follows the player
-    public void move() {
-        x = following.getX() + 28 + (sprite.getDirection() ? -offsets[0] - sprite.getWidth() : offsets[0]);
-        y = following.getY() + offsets[1];
-    } // move
+    } // getFiringDistance
 
     private String getWeaponURL(int id) {
-        switch (id) {
-            case 1:
-                return "weapons/mp5.png";
-            case 2:
-                return "weapons/ak47.png";
-            case 3:
-                return "weapons/honeybadger.png";
-            case 4:
-                return "weapons/defriender.png";
-            case 5:
-                return "weapons/barrettm82.png";
-            case 6:
-                return "weapons/rpg16.png";
-            case 7:
-                return "weapons/knife.png";
-            default:
-                return "weapons/m9.png";
-        }
-    }
+        return switch (id) {
+            case 1 -> "weapons/mp5.png";
+            case 2 -> "weapons/ak47.png";
+            case 3 -> "weapons/honeybadger.png";
+            case 4 -> "weapons/defriender.png";
+            case 5 -> "weapons/barrettm82.png";
+            case 6 -> "weapons/rpg16.png";
+            case 7 -> "weapons/knife.png";
+            default -> "weapons/m9.png";
+        }; // switch
+    } // getWeaponURL
 
-    // get x and y offsets based on the weapon
     private int[] getOffsets(int id) {
-        switch (id) {
-            case 0:
-                return new int[]{8, 32};
-            case 1:
-                return new int[]{-28, 34};
-            case 2:
-                return new int[]{-26, 35};
-            case 3:
-                return new int[]{-23, 32};
-            case 4:
-                return new int[]{-11, 28};
-            case 5:
-                return new int[]{-17, 25};
-            case 6:
-                return new int[]{-43, 26};
-            case 7:
-                return new int[]{7, 21};
-        }
-        return new int[]{0, 0};
+        return switch (id) {
+            case 1 -> new int[]{-28, 34};
+            case 2 -> new int[]{-26, 35};
+            case 3 -> new int[]{-23, 32};
+            case 4 -> new int[]{-11, 28};
+            case 5 -> new int[]{-17, 25};
+            case 6 -> new int[]{-43, 26};
+            case 7 -> new int[]{7, 21};
+            default -> new int[]{8, 32};
+        }; // switch
     } // getOffsets
 
     public void setDirection(boolean direction) {
         this.sprite.setDirection(direction);
-    }
+    } // setDirection
 
     public int getWeight() {
         return weight;
-    }
+    } // getWeight
 
-    public void tryShoot(ArrayList<Entity> entities) {
-        if ((System.currentTimeMillis() - lastFired) < firingInterval) {
-            return;
-        } // if
-
-        if (id != 0 && id != 7) ammo -= 1;
-
-        following.setRecoilDx(following.getDirection() ? recoil : -recoil);
-
-        // otherwise add a shot
-        lastFired = System.currentTimeMillis();
-
-        String bulletName = getBulletName();
-        AudioManager.playSound(bulletName + ".wav", false); // TODO update sounds
-
-        if (id == 4) {
-
-            // Shotgun has multiple bullets
-            for (int i = 0; i < 28; i++) {
-                int randomSpeed = (int) ((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
-                createBullet("buckshot", randomSpeed, entities);
-            } // for
-        } else if (id == 6) {
-            createBullet(bulletName, bulletSpeed, entities, true);
-        } else {
-            createBullet(bulletName, bulletSpeed, entities);
-        } // if else
-    }
+    public int getLength() {
+        return bulletOffsets[0];
+    } // getLength
 
     private String getBulletName() {
         return switch (id) {
@@ -169,9 +141,48 @@ public class Weapon extends Entity {
             case 6 -> "rocket";
             case 7 -> "swing";
             default -> "9mm";
-        };
+        }; // switch
+    } // getBulletName
+
+    /**
+     * Fires a bullet if possible
+     * @param entities entities arraylist to add the shot to
+     */
+    public void tryShoot(ArrayList<Entity> entities) {
+        if ((System.currentTimeMillis() - lastFired) < firingInterval) {
+            return;
+        } // if
+
+        // otherwise add a shot
+        lastFired = System.currentTimeMillis();
+
+        if (id != 0 && id != 7) ammo -= 1; // m9 and knife have infinite ammo
+
+        following.setRecoilDx(following.getDirection() ? recoil : -recoil); // Player takes recoil
+
+        String bulletName = getBulletName();
+        AudioManager.playSound(bulletName + ".wav", false); // TODO update sounds
+
+        if (id == 4) {
+            // Shotgun has multiple bullets
+            for (int i = 0; i < 28; i++) {
+                int randomSpeed = (int) ((Math.random() * 1.1 * bulletSpeed) + 0.9 * bulletSpeed);
+                createBullet("buckshot", randomSpeed, entities);
+            } // for
+        } else if (id == 6) {
+            createBullet(bulletName, bulletSpeed, entities, true); // RPG-16 rocket explodes
+        } else {
+            createBullet(bulletName, bulletSpeed, entities);
+        } // if else
     }
 
+    /**
+     * Creates a new bullet based on weapon stats
+     * @param r sprite image reference of bullet
+     * @param speed bullet speed
+     * @param entities arraylist of entities the bullet is added to
+     * @param explosive whether the bullet explodes or not
+     */
     private void createBullet(String r, int speed, ArrayList<Entity> entities, boolean explosive) {
         int randomSpread = (int) (Math.random() * 2 * bulletSpread + 1) - bulletSpread;
         Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife,
@@ -181,14 +192,21 @@ public class Weapon extends Entity {
         entities.add(bullet);
     } // createBullet
 
+    /**
+     * Overloaded for non-explosive bullets
+     * @param r sprite image reference of bullet
+     * @param speed bullet speed
+     * @param entities arraylist of entities the bullet is added to
+     */
     private void createBullet(String r, int speed, ArrayList<Entity> entities) {
         createBullet(r, speed, entities, false);
     } // createBullet
 
+    /**
+     * Collision detection - unused
+     * @param o Object the bullet collided with
+     */
     @Override
     public void collidedWith(Entity o) {} // collidedWith
 
-    public int getLength() {
-        return bulletOffsets[0];
-    }
-}
+} // class
