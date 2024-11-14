@@ -36,7 +36,7 @@ public class AudioManager {
                     if (!music.isEmpty() && music.get(0) != null) {
                         music.get(0).close();
                         music.remove(0);
-                    }
+                    } // if
                     music.add(clip);
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
                 } else {

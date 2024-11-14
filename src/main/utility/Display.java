@@ -4,6 +4,16 @@ import main.*;
 
 import java.awt.*;
 
+/**
+ * <h1>Display</h1>
+ * <hr/>
+ * Displays images to the screen
+ *
+ * @author Anthony and Luke
+ * @see Entity
+ * @since 013-11-2024
+ */
+
 public class Display extends Entity {
     private String r;
     private final int id;
@@ -11,6 +21,14 @@ public class Display extends Entity {
     private Sprite unused;
     private boolean inUse;
 
+    /**
+     * Constructor for a new Display
+     *
+     * @param game the game the image is displayed in
+     * @param x    x position
+     * @param y    y position
+     * @param id   id of the display
+     */
     public Display(Game game, int x, int y, int id) {
         super(getSkinURL(id), x, y);
         unused = SpriteStore.get().getSprite("displays/notInUse.png");
@@ -20,26 +38,35 @@ public class Display extends Entity {
         this.inUse = true;
     } // Display
 
-
+    /**
+     * update the display image
+     *
+     * @param i
+     */
     public void update(int i) {
         this.r = getSkinURL(i);
         this.setSprite(r);
-    }
+    } // update
 
-    public void setIfUsing(boolean inUse) {
-        this.inUse = inUse;
-    }
-
+    /**
+     * Draws the display
+     * @param g display graphics
+     */
     @Override
     public void draw(Graphics g) {
-        Color[] colors = {Colors.getTeamColors(game.teams[id])[0], new Color(11,12,15, 0)};
+        Color[] colors = {Colors.getTeamColors(game.teams[id])[0], new Color(11, 12, 15, 0)};
 
         ((Graphics2D) g).setPaint(new LinearGradientPaint(0, 0, 0, 600, new float[]{0.0f, 1.0f}, colors));
 
         g.fillRect((int) (x - 15), (int) (y - 40), 310, 600);
         g.drawImage(this.sprite.image, (int) x + 74, (int) y + 74, sprite.getWidth() * 3, sprite.getHeight() * 3, null);
         if (!inUse) unused.draw(g, (int) x + 31, (int) y + 31);
-    }
+    } // draw
+
+    /* Getters and setters */
+    public void setIfUsing(boolean inUse) {
+        this.inUse = inUse;
+    } // setIfUsing
 
     public static String getSkinURL(int i) {
         return switch (i) {
@@ -49,16 +76,20 @@ public class Display extends Entity {
             case 4 -> "skins/rambo.png";
             default -> "skins/default.png";
         };
-    }
+    } // getSkinURL
 
     public String getR() {
         return r;
-    }
+    } // getR
 
     public int getId() {
         return id;
-    }
+    } // getID
 
+    /**
+     * Collision detection - unused
+     * @param other object the display collided with
+     */
     @Override
     public void collidedWith(Entity other) {}
 }

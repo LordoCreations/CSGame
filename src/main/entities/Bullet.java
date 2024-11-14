@@ -1,5 +1,7 @@
 package main.entities;
 
+import main.Game;
+import main.GameTime;
 import main.utility.AudioManager;
 import main.Entity;
 import main.GameScene;
@@ -17,7 +19,7 @@ import main.GameScene;
 public class Bullet extends Entity {
     private final int team;
     private final int lifeTime;
-    private final long spawnTime = System.currentTimeMillis();
+    private long spawnTime;
     private final int damage;
     private boolean explosive;
     private final GameScene scene;
@@ -41,6 +43,7 @@ public class Bullet extends Entity {
         super("weapons/" + r + ".png", x, y);
         this.team = team;
         this.lifeTime = lifeTime;
+        spawnTime = GameTime.getTime();
         dx = speed;
         dy = spread;
 
@@ -62,10 +65,6 @@ public class Bullet extends Entity {
     public int getWidth() {
         return sprite.getWidth();
     } // getTeam
-
-    public double getDx() {
-        return dx;
-    } // getDx
 
     public void setX(int x) {
         this.x = x;
@@ -90,7 +89,7 @@ public class Bullet extends Entity {
             dx = dx > 0 ? Math.max(dx, 700) : Math.min(dx, -700); // Rockets gradually slow down
         } // if
         super.move(delta);
-        if (System.currentTimeMillis() > spawnTime + lifeTime) {
+        if (GameTime.getTime() > spawnTime + lifeTime) {
             scene.removeEntity(this);
         } // if
     } // move

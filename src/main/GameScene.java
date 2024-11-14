@@ -42,6 +42,8 @@ public class GameScene extends Scene {
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
     private final String[] backgroundTracks = new String[]{"ricochetlove.wav"};
     private Graphics2D g;
+    private boolean paused;
+    private final Sprite pausePrompt;
 
     /**
      * Game Scene Constructor
@@ -52,6 +54,8 @@ public class GameScene extends Scene {
         super(game);
         players = new Player[game.playerCount];
         background = SpriteStore.get().getSprite("city.png");
+        paused = false;
+        pausePrompt = SpriteStore.get().getSprite("paused.png");
 
         // get the wall hitbox
         try {
@@ -70,6 +74,8 @@ public class GameScene extends Scene {
     public void init() {
         killCount = new int[4];
         entities.add(new Score(killCount, 20, 20));
+
+        GameTime.setTime(System.currentTimeMillis());
 
         // Spawn each player and attach ammo and health bar
         for (int i = 0; i < game.playerCount; i++) {
@@ -115,7 +121,7 @@ public class GameScene extends Scene {
 
         // respawn dead players
         for (Player p : players) {
-            if (p != null && p.isDead && p.getRespawnTime() <= System.currentTimeMillis()) {
+            if (p != null && p.isDead && p.getRespawnTime() <= GameTime.getTime()) {
                 spawnPlayer(p, SPAWN_POINTS[(int) (Math.random() * SPAWN_POINTS.length)]);
             } // if
         } // for
@@ -126,10 +132,13 @@ public class GameScene extends Scene {
         } // if
 
         // move each entity
-        for (int i = 0; i < entities.size(); i++) {
-            Entity e = entities.get(i);
-            e.move(delta);
-        } // for
+        if (!paused) {
+            for (int i = 0; i < entities.size(); i++) {
+                Entity e = entities.get(i);
+                e.move(delta);
+            } // for
+            GameTime.update(delta);
+        } // if
 
         // handle entity collisions
         for (int i = 0; i < entities.size(); i++) {
@@ -162,6 +171,9 @@ public class GameScene extends Scene {
             e.draw(g);
         } // for
 
+        // TODO draw prompt if paused
+        if (paused) pausePrompt.draw(g, 0, 0);
+
         // remove destroyed entities
         entities.removeAll(removeEntities);
         removeEntities.clear();
@@ -193,6 +205,16 @@ public class GameScene extends Scene {
     } // keyReleased
 
     /**
+     * Handle key being typed
+     *
+     * @param e key being typed
+     */
+    @Override
+    protected void handleKeyTyped(KeyEvent e) {
+        if (e.getKeyChar() == 'p') paused = !paused;
+    } // handleKeyTyped
+
+    /**
      * Check if hitbox of wall overlaps Entity hitbox
      *
      * @param e Entity to check
@@ -214,7 +236,7 @@ public class GameScene extends Scene {
     /**
      * Handle player deaths
      *
-     * @param p          player who died
+     * @param p player who died
      * @param killCredit team of the bullet that killed the player
      */
     public void playerDied(Player p, int killCredit) {
@@ -225,7 +247,7 @@ public class GameScene extends Scene {
 
         // set respawn timer for player
         p.isDead = true;
-        p.setRespawnTime(System.currentTimeMillis() + 3000);
+        p.setRespawnTime(GameTime.getTime() + 3000);
         p.setCoord(new int[]{100, -100});
 
         // give a kill to team that killed player

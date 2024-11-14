@@ -2,10 +2,7 @@ package main.entities;
 
 import main.Entity;
 import main.GameScene;
-
-import java.awt.*;
-
-import static main.Game.HEIGHT;
+import main.GameTime;
 
 /**
  * <h1>Corpse</h1>
@@ -30,7 +27,7 @@ public class Corpse extends Entity {
      */
     public Corpse(GameScene s, String r, int x, int y) {
         super(r, x, y);
-        spawntime = System.currentTimeMillis();
+        spawntime = GameTime.getTime();
         scene = s;
     } // Corpse
 

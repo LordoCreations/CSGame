@@ -64,8 +64,8 @@ public class Player extends Entity {
         this.weapon = new Weapon(weaponID, this, scene);
         this.team = team;
         this.id = id;
-        spawntime = System.currentTimeMillis();
-        respawnTime = System.currentTimeMillis();
+        spawntime = GameTime.getTime();
+        respawnTime = GameTime.getTime();
         setControls(id);
         input = scene.keysDown;
         isDead = false;
@@ -206,7 +206,7 @@ public class Player extends Entity {
         if (isDead) {
             spawnProt = true; // players can't be hurt if dead
             return;
-        } else if (System.currentTimeMillis() <= spawntime + 1000) {
+        } else if (GameTime.getTime() <= spawntime + 1000) {
             // flash when under spawn prot
             sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0)));
             spawnProt = true;
