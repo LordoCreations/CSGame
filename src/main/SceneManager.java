@@ -95,4 +95,4 @@ public class SceneManager {
             currentScene.handleKeyTyped(e);
         } // keyTyped
     } // class KeyInputHandler
-}
+} // SceneManager

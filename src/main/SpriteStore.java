@@ -1,11 +1,11 @@
 package main;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 /* main.SpriteStore.java
  * Manages the main.sprites in the game.
@@ -73,5 +73,4 @@ public class SpriteStore {
 
         return sprite;
     } // getSprite
-
 } // main.SpriteStore

@@ -109,6 +109,7 @@ public class Game extends Canvas {
      * Main Program
      */
     public static void main(String[] args) {
+
         // instantiate this object
         new Game();
     } // main
