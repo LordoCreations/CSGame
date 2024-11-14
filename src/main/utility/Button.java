@@ -16,6 +16,7 @@ import java.awt.*;
 
 public class Button extends Entity {
     private final Runnable action;
+    private final boolean highlight;
     private boolean hovered;
     private final Color[] hoverGradient = {new Color(255, 255, 255, 80), new Color(255, 255, 255, 0)};
 
@@ -37,7 +38,9 @@ public class Button extends Entity {
             Color temp = hoverGradient[0];
             hoverGradient[0] = hoverGradient[1];
             hoverGradient[1] = temp;
-        }
+        } // if
+
+        highlight = !"buttons/left.png buttons/right.png".contains(r);
     } // Button
 
     /**
@@ -48,7 +51,7 @@ public class Button extends Entity {
     @Override
     public void draw(Graphics g) {
         super.draw(g);
-        if (hovered) {
+        if (highlight && hovered) {
             ((Graphics2D) g).setPaint(new LinearGradientPaint((float) x, (float) y, (float) (x + sprite.getWidth()), (float) y, new float[]{0f, 1f}, hoverGradient));
             g.fillRect((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
         } // if
