@@ -229,14 +229,13 @@ public class GameScene extends Scene {
         p.isDead = true;
         p.setRespawnTime(System.currentTimeMillis() + 3000);
         p.setCoord(new int[]{100, -100});
-        p.setWeapon(0);
 
         // give a kill to team that killed player
         killCount[killCredit]++;
     } // playerDied
 
     /**
-     * Spawn the player
+     * Reset stats and spawn the player
      * @param p player to spawn
      * @param location where to spawn player
      */
@@ -244,6 +243,8 @@ public class GameScene extends Scene {
         p.isDead = false;
         p.dx = 0;
         p.dy = 0;
+        p.setKbDx(0);
+        p.setRecoilDx(0);
         p.setWeapon(0);
         p.hp = p.getMaxHp();
         p.setCoord(location);

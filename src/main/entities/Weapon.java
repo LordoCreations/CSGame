@@ -38,11 +38,11 @@ public class Weapon extends Entity {
     private final static int[] BULLET_SPEED = {1800, 1400, 1600, 1200, 2000, 4000, 1400, 10};
     private final static int[] BULLET_LIFE = {550, 500, 1000, 700, 80, 2000, 5000, 200};
     private final static int[] BULLET_SPREAD = {35, 150, 35, 80, 800, 0, 0, 0};
-    private final static int[] BULLET_DAMAGE = {20, 15, 25, 18, 5, 100, 70, 40};
+    private final static int[] BULLET_DAMAGE = {20, 15, 25, 18, 5, 100, 70, 30};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {21, 0}, {13, -1}};
     private final static int[] MAX_AMMO = {1, 60, 30, 45, 8, 5, 3, 1};
     private final static int[] RECOIL = {320, 160, 500, 80, 1280, 1600, 1280, -400};
-    private final static int[] KNOCKBACK = {700, 700, 1200, 500, 1000, 2000, 500, 200};
+    private final static int[] KNOCKBACK = {700, 700, 1200, 500, 1000, 2000, 500, 300};
     private final static int[] WEIGHT = {0, 15, 35, 25, 30, 40, 55, 0};
 
     private final GameScene scene;
