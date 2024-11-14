@@ -86,12 +86,6 @@ public class SceneManager {
 
         @Override
         public void keyTyped(KeyEvent e) {
-
-            // if escape is pressed, end game
-            if (e.getKeyChar() == 27) {
-                System.exit(0);
-            } // if
-
             currentScene.handleKeyTyped(e);
         } // keyTyped
     } // class KeyInputHandler

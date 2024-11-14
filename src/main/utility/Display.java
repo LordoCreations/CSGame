@@ -59,7 +59,7 @@ public class Display extends Entity {
         ((Graphics2D) g).setPaint(new LinearGradientPaint(0, 0, 0, 600, new float[]{0.0f, 1.0f}, colors));
 
         g.fillRect((int) (x - 15), (int) (y - 40), 310, 600);
-        g.drawImage(this.sprite.image, (int) x + 74, (int) y + 74, sprite.getWidth() * 3, sprite.getHeight() * 3, null);
+        g.drawImage(this.sprite.image, (int) x + 59, (int) y + 59, sprite.getWidth() * 3, sprite.getHeight() * 3, null);
         if (!inUse) unused.draw(g, (int) x + 31, (int) y + 31);
     } // draw
 

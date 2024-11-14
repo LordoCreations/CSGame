@@ -57,7 +57,7 @@ public class GameScene extends Scene {
         super(game);
         players = new Player[game.playerCount];
         background = SpriteStore.get().getSprite("city.png");
-        exitButton = new Button("buttons/exit.png", 570, 536, this::goToMenu);
+        exitButton = new Button("buttons/exit.png", 40, HEIGHT - 146, this::goToMenu);
 
         paused = false;
         pausePrompt = SpriteStore.get().getSprite("paused.png");
@@ -216,7 +216,7 @@ public class GameScene extends Scene {
      */
     @Override
     protected void handleKeyTyped(KeyEvent e) {
-        if (e.getKeyChar() == 'p') paused = !paused;
+        if (e.getKeyChar() == 27) paused = !paused;
     } // handleKeyTyped
 
     /**

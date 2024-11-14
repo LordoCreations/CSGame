@@ -32,7 +32,7 @@ public class MenuScene extends Scene {
     MenuScene(Game game) {
         super(game);
         startButton = new Button("buttons/play.png", 23, 664, this::startGame);
-        settingsButton = new Button("buttons/settings.png", 23, 782, this::openSettings);
+        settingsButton = new Button("buttons/tutorial.png", 23, 782, this::openSettings);
         background = SpriteStore.get().getSprite("menubg.png");
     } // MenuScene
 

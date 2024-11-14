@@ -18,8 +18,8 @@ public class Button extends Entity {
     private final Runnable action;
     private final boolean highlight;
     private boolean hovered;
-    private final Color[] hoverGradient = {new Color(255, 255, 255, 0), new Color(255, 255, 255, 80), new Color(255, 255, 255, 0)};
-    private float[] distribution = {0f, 0.0001f, 1f};
+    private final Color[] hoverGradient = {new Color(255, 255, 255, 80), new Color(255, 255, 255, 0)};
+    private float[] distribution = {0f, 1f};
 
     /**
      * Constructor for a new Button
@@ -39,7 +39,7 @@ public class Button extends Entity {
             Color temp = hoverGradient[0];
             hoverGradient[0] = hoverGradient[1];
             hoverGradient[1] = temp;
-        }
+        } // if
 
         highlight = !"buttons/left.png buttons/right.png".contains(r);
     } // Button
