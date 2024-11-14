@@ -1,5 +1,7 @@
 package main;
 
+import main.utility.AudioManager;
+
 import java.awt.event.*;
 
 /**
@@ -44,9 +46,8 @@ public class SceneManager {
     public void setScene(Scene scene) {
         if (currentScene != null && scene instanceof GameScene || currentScene instanceof GameScene) {
             AudioManager.stopAllSounds();
-        } // if
-
-        if (AudioManager.music.isEmpty()) AudioManager.playSound("relentlessrage.wav", true);
+            System.out.println(AudioManager.music.size());
+        } else if (AudioManager.music.isEmpty()) AudioManager.playSound("relentlessrage.wav", true);
 
         currentScene = scene;
         currentScene.init();

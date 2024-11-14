@@ -14,6 +14,17 @@ import static main.Game.WIDTH;
 import static main.utility.TextManager.drawCenteredString;
 import static main.utility.TextManager.getFont;
 
+/**
+ * <h1>Menu Scene</h1>
+ * <hr/>
+ * Scene after a player wins; displays scores and
+ * offers the option to rematch or go to menu
+ *
+ * @author Anthony and Luke
+ * @see Scene
+ * @since 13-11-2024
+ */
+
 public class EndScene extends Scene {
     private final ArrayList<Entity> entities = new ArrayList<>();
     private final Button rematchButton;

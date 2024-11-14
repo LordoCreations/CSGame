@@ -1,6 +1,6 @@
 package main.entities;
 
-import main.AudioManager;
+import main.utility.AudioManager;
 import main.Entity;
 import main.GameScene;
 

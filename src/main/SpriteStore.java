@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 /* main.SpriteStore.java
  * Manages the main.sprites in the game.
  * Caches them for future use.
+ * Derived from Space Invaders
  */
 
 public class SpriteStore {

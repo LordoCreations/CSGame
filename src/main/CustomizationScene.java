@@ -26,8 +26,8 @@ public class CustomizationScene extends Scene {
     CustomizationScene(Game game) {
         super(game);
 
-        startButton = new Button("buttons/start.png", 136, 735, this::enterGame);
-        menuButton = new Button("buttons/menu.png", 895, 735, this::goToMenu);
+        startButton = new Button("buttons/start.png", WIDTH - 458, 735, this::enterGame);
+        menuButton = new Button("buttons/menu.png", 136, 735, this::goToMenu);
 
         for (int i = 0; i < game.skins.length; i++) {
             Display d = new Display(game, 137 + 360 * i, 100, i);
@@ -42,10 +42,10 @@ public class CustomizationScene extends Scene {
             entities.add(skin);
             entities.add(type);
             entities.add(team);
-
         } // for
 
         Carousel playerCountSelector = new Carousel(WIDTH / 2 - 140, 700, 280, 0, 3, players);
+        playerCountSelector.setChoice(2);
         entities.add(playerCountSelector);
 
         background = SpriteStore.get().getSprite("background.png");
@@ -78,6 +78,7 @@ public class CustomizationScene extends Scene {
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
         g.setColor(Color.white);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
         for (Entity entity : entities) {
             entity.draw(g);
@@ -94,16 +95,17 @@ public class CustomizationScene extends Scene {
                         break;
                     default:
                         game.skins[((Carousel) entity).getID()] = ((Carousel) entity).getChoice();
-                }
-
-            }
+                } // switch
+            } // if
 
             if (entity instanceof Display) {
                 if (!((Display) entity).getR().equals(Display.getSkinURL(game.skins[((Display) entity).getId()]))) {
                     ((Display) entity).update(game.skins[((Display) entity).getId()]);
                 }
+                ((Display) entity).setIfUsing(game.playerCount > ((Display) entity).getId());
             }
         }
+
 
         // clear graphics and flip buffer
         g.dispose();

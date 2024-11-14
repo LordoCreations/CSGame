@@ -168,14 +168,6 @@ public class GameScene extends Scene {
         // clear graphics and flip buffer
         g.dispose();
         game.strategy.show();
-
-        // TODO remove
-        if (AudioManager.sfx.size() >= 10) {
-            //System.out.println("large amount of sounds: " + AudioManager.sfx.size());
-        } // if
-        if (AudioManager.music.size() >= 2) {
-            //System.out.println("oversize music array: " + AudioManager.music.size());
-        } // if
     } // update
 
 

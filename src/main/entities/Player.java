@@ -250,14 +250,11 @@ public class Player extends Entity {
         } // if
 
         // realistic gravity
-        y += 1;
-        update();
-        if (!scene.touchingWall(this)) {
+        if (!onGround()) {
             dy += 1.75 * delta;
         } else if (input.contains(controls[1])) {
             dy = -900;
         } // if else
-        y -= 1;
 
         // players can't fall through floors
         moveY(delta);
@@ -282,6 +279,20 @@ public class Player extends Entity {
         s *= Math.pow(0.95, (delta/3.0));
         return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);
     } // adjustSpeed
+
+    /**
+     * checks if the player is on the ground
+     * @return if player is on the ground
+     */
+    protected boolean onGround() {
+        boolean condition;
+        y += 1;
+        update();
+        condition = scene.touchingWall(this);
+        y -= 1;
+        update();
+        return condition;
+    } // inAir
 
     /**
      * updates the position of the hitbox

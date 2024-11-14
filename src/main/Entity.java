@@ -1,11 +1,15 @@
-package main;/* main.Entity.java
- * An entity is any object that appears in the game.
- * It is responsible for resolving collisions and movement.
- */
+package main;
 
 import java.awt.*;
 
 import static main.Game.HEIGHT;
+
+/* main.Entity.java
+ * An entity is any object that appears in the game.
+ * It is responsible for resolving collisions and movement.
+ * Derived from Space Invaders
+ */
+
 
 public abstract class Entity {
 
@@ -21,11 +25,9 @@ public abstract class Entity {
     protected double dx; // horizontal speed (px/s)  + -> right
     protected double dy; // vertical speed (px/s) + -> down
 
-    private final Rectangle me = new Rectangle(); // bounding rectangle of
-    // this entity
-    private final Rectangle him = new Rectangle(); // bounding rect. of other
-    // entities
-    protected Rectangle hitbox = new Rectangle();
+    private final Rectangle me = new Rectangle(); // bounding rectangle of this entity
+    private final Rectangle him = new Rectangle(); // bounding rect. of other entities
+    protected Rectangle hitbox = new Rectangle(); // hitbox of entity
 
     /* Constructor
      * input: reference to the image for this entity,
@@ -43,15 +45,19 @@ public abstract class Entity {
         y = 0;
     } // constructor
 
+    /**
+     * Sets the sprite image
+     * @param r Path to new sprite image
+     */
     public void setSprite(String r) {
         this.sprite = (SpriteStore.get()).getSprite(r);
         hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
-    }
+    } // setSprite
 
     /* move
      * input: delta - the amount of time passed in ms
      * output: none
-     * purpose: after a certain amout of time has passed,
+     * purpose: after a certain amount of time has passed,
      *          update the location
      */
     public void move(long delta) {
@@ -60,19 +66,31 @@ public abstract class Entity {
         moveY(delta);
     } // move
 
+    /**
+     * X component of moving
+     * @param delta milliseconds since last tick
+     */
     public void moveX(double delta) {
         x += (delta * dx) / 1000;
         update();
-    }
+    } // moveX
 
+    /**
+     * Y component of moving
+     * @param delta milliseconds since last tick
+     */
     public void moveY(double delta) {
         y += (delta * dy) / 1000;
         update();
-    }
+    } // moveY
 
+    /**
+     * Update hitbox of sprite
+     * By default is the image bounding rectangle, can be overridden (e.g. in Player.java)
+     */
     public void update() {
         hitbox.setRect(x, y, sprite.getWidth(), sprite.getHeight());
-    }
+    } // update
 
     // send entity to the top if it falls through the map
     protected void fallThrough() {

@@ -75,10 +75,6 @@ public class Game extends Canvas {
         gameLoop();
     } // constructor
 
-    public void setScene(Scene scene) {
-        sceneManager.setScene(scene);
-    }
-
     /*
      * gameLoop
      * input: none
@@ -98,6 +94,14 @@ public class Game extends Canvas {
             sceneManager.update();
         } // while
     } // gameLoop
+
+    /**
+     * Sets the scene of the scene manager
+     * @param scene Scene game is set to
+     */
+    public void setScene(Scene scene) {
+        sceneManager.setScene(scene);
+    } // setScene
 
 
     /**

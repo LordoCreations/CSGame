@@ -1,28 +1,33 @@
 package main.utility;
 
-import main.Colors;
-import main.Entity;
-import main.Game;
+import main.*;
 
 import java.awt.*;
 
 public class Display extends Entity {
     private String r;
-    private int id;
-    private int choice;
-    private Game game;
+    private final int id;
+    private final Game game;
+    private Sprite unused;
+    private boolean inUse;
 
     public Display(Game game, int x, int y, int id) {
         super(getSkinURL(id), x, y);
+        unused = SpriteStore.get().getSprite("displays/notInUse.png");
         this.game = game;
         this.r = getSkinURL(id);
         this.id = id;
+        this.inUse = true;
     } // Display
 
 
     public void update(int i) {
         this.r = getSkinURL(i);
         this.setSprite(r);
+    }
+
+    public void setIfUsing(boolean inUse) {
+        this.inUse = inUse;
     }
 
     @Override
@@ -32,7 +37,8 @@ public class Display extends Entity {
         ((Graphics2D) g).setPaint(new LinearGradientPaint(0, 0, 0, 600, new float[]{0.0f, 1.0f}, colors));
 
         g.fillRect((int) (x - 15), (int) (y - 40), 310, 600);
-        g.drawImage(this.sprite.image, (int) x + 84, (int) y + 84, sprite.getWidth() * 2, sprite.getHeight() * 2, null);
+        g.drawImage(this.sprite.image, (int) x + 74, (int) y + 74, sprite.getWidth() * 3, sprite.getHeight() * 3, null);
+        if (!inUse) unused.draw(g, (int) x + 31, (int) y + 31);
     }
 
     public static String getSkinURL(int i) {
@@ -45,7 +51,6 @@ public class Display extends Entity {
         };
     }
 
-
     public String getR() {
         return r;
     }
@@ -55,6 +60,5 @@ public class Display extends Entity {
     }
 
     @Override
-    public void collidedWith(Entity other) {
-    }
+    public void collidedWith(Entity other) {}
 }

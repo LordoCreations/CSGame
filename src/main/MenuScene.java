@@ -15,7 +15,6 @@ import static main.Game.WIDTH;
  *
  * @author Anthony and Luke
  * @see Scene
- * @see CustomizationScene
  * @since 13-11-2024
  */
 

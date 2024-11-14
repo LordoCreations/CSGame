@@ -35,6 +35,7 @@ public class Sprite {
     } // getHeight
 
     // draw the sprite in the graphics object provided at location (x,y)
+    // with a certain direction and opacity
     public void draw(Graphics g, int x, int y) {
         ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         if (flip) {
