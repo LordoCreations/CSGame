@@ -1,13 +1,9 @@
 package main.entities;
 
 import main.*;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Set;
-
-import static main.Game.HEIGHT;
-import static main.Game.WIDTH;
 
 /**
  * <h1>Player</h1>
@@ -31,14 +27,11 @@ public class Player extends Entity {
     private long respawnTime;
     private long spawntime;
     public boolean spawnProt;
-    private String skin;
     public boolean isDead;
     private int speed;
     private double recoilDx;
     protected Set<Integer> input;
     private double kbDx;
-
-    // TODO replace with weapon ammo and stuff
     private int ammo;
     private int maxAmmo;
 
@@ -56,7 +49,6 @@ public class Player extends Entity {
      */
     public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
-        skin = r;
         this.hp = hp;
         this.maxHp = hp;
         this.weaponID = 0;
@@ -186,18 +178,16 @@ public class Player extends Entity {
         ammo = weapon.getAmmo();
         weapon.move();
         weapon.draw(g);
-    }
+    } // draw
 
     /**
-     * 
-     * @param o
+     * Collided with bullet
+     * @param o Entity collided with
      */
     @Override
     public void collidedWith(Entity o) {
         if (o instanceof Bullet) {
-            if (hp <= 0) {
-                scene.playerDied(this, ((Bullet) o).getTeam());
-            } // if
+            if (hp <= 0) scene.playerDied(this, ((Bullet) o).getTeam());
         } // if
     } // collidedWith
 
@@ -207,8 +197,9 @@ public class Player extends Entity {
             spawnProt = true; // players can't be hurt if dead
             return;
         } else if (GameTime.getTime() <= spawntime + 1000) {
-            // flash when under spawn prot
-            sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0)));
+
+            // flash when under spawn protection
+            sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((GameTime.getTime() - spawntime) / 150.0)));
             spawnProt = true;
         } else {
             sprite.setOpacity(1);

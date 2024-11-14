@@ -2,10 +2,12 @@ package main;
 
 import main.entities.*;
 import main.utility.*;
+import main.utility.Button;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class GameScene extends Scene {
     private Graphics2D g;
     private boolean paused;
     private final Sprite pausePrompt;
+    private final Button exitButton;
 
     /**
      * Game Scene Constructor
@@ -54,6 +57,8 @@ public class GameScene extends Scene {
         super(game);
         players = new Player[game.playerCount];
         background = SpriteStore.get().getSprite("city.png");
+        exitButton = new Button("buttons/exit.png", 570, 536, this::goToMenu);
+
         paused = false;
         pausePrompt = SpriteStore.get().getSprite("paused.png");
 
@@ -127,7 +132,7 @@ public class GameScene extends Scene {
         } // for
 
         // add chests every few seconds, frequency increases if there are more player
-        if (Math.random() < 0.00005 * game.playerCount * delta) {
+        if (!paused && Math.random() < 0.00005 * game.playerCount * delta) {
             entities.add(new Chest(this, (int) (Math.random() * (WIDTH - 400) + 200), (int) (Math.random() * (HEIGHT - 400) + 200)));
         } // if
 
@@ -146,13 +151,11 @@ public class GameScene extends Scene {
 
             if (me instanceof Bullet) {
 
-                // handle bullet and player collisions
+                // handle bullet and wall collisions
                 if (touchingWall(me)) ((Bullet) me).collidedWith();
 
-                // handle bullet and wall collisions
-                for (Player him : players) {
-                    me.collidedWith(him);
-                } // for
+                // handle bullet and player collisions
+                for (Player him : players) me.collidedWith(him);
             } else if (me instanceof Chest) {
 
                 // handle chest collisions
@@ -171,8 +174,10 @@ public class GameScene extends Scene {
             e.draw(g);
         } // for
 
-        // TODO draw prompt if paused
-        if (paused) pausePrompt.draw(g, 0, 0);
+        if (paused) {
+            pausePrompt.draw(g, 0, 0);
+            exitButton.draw(g);
+        }
 
         // remove destroyed entities
         entities.removeAll(removeEntities);
@@ -213,6 +218,23 @@ public class GameScene extends Scene {
     protected void handleKeyTyped(KeyEvent e) {
         if (e.getKeyChar() == 'p') paused = !paused;
     } // handleKeyTyped
+
+    /**
+     * Handles the mouse input for clicking on buttons
+     *
+     * @param e the mouse action (i.e. click, move)
+     */
+    @Override
+    protected void handleMouseEvent(MouseEvent e) {
+        if (paused) exitButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
+    } // handleMouseEvent
+
+    /**
+     * Button action called by menuButton, returns to menu
+     */
+    private void goToMenu() {
+        game.setScene(new MenuScene(game));
+    } // goToMenu
 
     /**
      * Check if hitbox of wall overlaps Entity hitbox
@@ -269,7 +291,7 @@ public class GameScene extends Scene {
         p.setWeapon(0);
         p.hp = p.getMaxHp();
         p.setCoord(location);
-        p.setSpawntime(System.currentTimeMillis());
+        p.setSpawntime(GameTime.getTime());
         p.setDirection(location[0] > WIDTH / 2);
     } // spawnPlayer
 } // GameScene

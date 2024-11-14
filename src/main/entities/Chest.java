@@ -44,7 +44,7 @@ public class Chest extends Corpse {
 
         // TODO fix repeated code from Corpse
         if (GameTime.getTime() >= spawntime + 9000) scene.removeEntity(this);
-        else if (GameTime.getTime() >= spawntime + 7000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((System.currentTimeMillis() - spawntime) / 150.0))); }
+        else if (GameTime.getTime() >= spawntime + 7000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((GameTime.getTime() - spawntime) / 150.0))); }
 
         fallThrough();
     } // move

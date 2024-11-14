@@ -68,10 +68,6 @@ public class AIPlayer extends Player {
             allowJump = !onGround() || Math.abs(verticalDistance) > 50;
         }
 
-        if (target != null) { // TODO remove after debugging
-            // System.out.printf("Tracking %d, Distance %.2f, Delta X: %.2f Delta Y: %.2f%n", target.getID(), Math.min(minDistance, 9999), theirCoord[0] - myCoord[0], theirCoord[1] - myCoord[1]);
-        } // if
-
         // Jump if target is above player, or randomly
         if (allowJump && (Math.random() < 0.005 * delta || verticalDistance < -100 && Math.random() < 0.003 * delta)) {
             input.add(KeyEvent.VK_UP);
@@ -126,7 +122,7 @@ public class AIPlayer extends Player {
     } // setControls
 
     /**
-     * Find nearest target and set their Coord to the center of their sprite
+     * Find nearest target and set their coordinates to the center of their sprite
      */
     private void findNearestTarget() {
         double currentDistance;

@@ -1,5 +1,7 @@
 package main.entities;
 
+import main.Game;
+import main.GameTime;
 import main.utility.AudioManager;
 import main.Entity;
 import main.GameScene;
@@ -60,7 +62,7 @@ public class Weapon extends Entity {
         this.scene = scene;
 
         following = p;
-        lastFired = System.currentTimeMillis() - 5000;
+        lastFired = GameTime.getTime() - 5000;
         offsets = getOffsets(id);
         firingInterval = FIRING_INTERVALS[id];
         bulletSpeed = BULLET_SPEED[id];
@@ -149,19 +151,19 @@ public class Weapon extends Entity {
      * @param entities entities arraylist to add the shot to
      */
     public void tryShoot(ArrayList<Entity> entities) {
-        if ((System.currentTimeMillis() - lastFired) < firingInterval) {
+        if ((GameTime.getTime() - lastFired) < firingInterval) {
             return;
         } // if
 
         // otherwise add a shot
-        lastFired = System.currentTimeMillis();
+        lastFired = GameTime.getTime();
 
         if (id != 0 && id != 7) ammo -= 1; // m9 and knife have infinite ammo
 
         following.setRecoilDx(following.getDirection() ? recoil : -recoil); // Player takes recoil
 
         String bulletName = getBulletName();
-        AudioManager.playSound(bulletName + ".wav", false); // TODO update sounds
+        AudioManager.playSound(bulletName + ".wav", false);
 
         if (id == 4) {
             // Shotgun has multiple bullets
