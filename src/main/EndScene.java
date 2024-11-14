@@ -3,11 +3,9 @@ package main;
 import main.utility.Button;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
@@ -30,9 +28,9 @@ public class EndScene extends Scene {
     private final Button rematchButton;
     private final Button menuButton;
     private final Sprite background;
-    private String winMessage;
-    private int[] score;
-    private Integer[] rank;
+    private final String winMessage;
+    private final int[] score;
+    private final Integer[] rank;
 
     EndScene(Game game, int winner, int[] killCount) {
         super(game);
@@ -50,11 +48,11 @@ public class EndScene extends Scene {
     protected void handleMouseEvent(MouseEvent e) {
         rematchButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
         menuButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
-
     }
 
     @Override
-    public void init() {}
+    public void init() {
+    }
 
     @Override
     public void update() {

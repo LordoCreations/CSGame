@@ -18,6 +18,7 @@ public abstract class Scene {
 
     /**
      * Constructor for Scene
+     *
      * @param game Game
      */
     Scene(Game game) {
@@ -28,14 +29,22 @@ public abstract class Scene {
     The following four functions are called to handle keyboard and mouse input,
     they are overridden by each scene depending on what is needed
      */
-    protected void handleMouseEvent(MouseEvent e) {} // handleMouseEvent
-    protected void handleKeyPressed(KeyEvent e) {} // handleKeyPressed
-    protected void handleKeyReleased(KeyEvent e) {} // handleKeyReleased
-    protected void handleKeyTyped(KeyEvent e) {} // handleKeyTyped
+    protected void handleMouseEvent(MouseEvent e) {
+    } // handleMouseEvent
+
+    protected void handleKeyPressed(KeyEvent e) {
+    } // handleKeyPressed
+
+    protected void handleKeyReleased(KeyEvent e) {
+    } // handleKeyReleased
+
+    protected void handleKeyTyped(KeyEvent e) {
+    } // handleKeyTyped
 
     /*
     The following two functions are called by SceneManager upon initialization and during each tick
      */
     public abstract void init();
+
     public abstract void update();
 } // Scene

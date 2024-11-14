@@ -3,6 +3,7 @@ package main;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+
 import main.utility.Button;
 
 import static main.Game.HEIGHT;
@@ -25,6 +26,7 @@ public class MenuScene extends Scene {
 
     /**
      * Menu Scene Constructor
+     *
      * @param game Game object
      */
     MenuScene(Game game) {
@@ -38,10 +40,12 @@ public class MenuScene extends Scene {
      * The menu scene does not need to initialize anything
      */
     @Override
-    public void init() {} // init
+    public void init() {
+    } // init
 
     /**
      * Handles the mouse input for clicking on buttons
+     *
      * @param e the mouse action (i.e. click, move)
      */
     @Override

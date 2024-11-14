@@ -18,7 +18,7 @@ import java.awt.image.*;
 
 public class Game extends Canvas {
     BufferStrategy strategy;
-    public static int WIDTH =  1600;
+    public static int WIDTH = 1600;
     public static int HEIGHT = 900;
     public int[] skins = new int[4];
     public boolean[] types = new boolean[4];
@@ -97,6 +97,7 @@ public class Game extends Canvas {
 
     /**
      * Sets the scene of the scene manager
+     *
      * @param scene Scene game is set to
      */
     public void setScene(Scene scene) {

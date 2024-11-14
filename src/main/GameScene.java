@@ -45,6 +45,7 @@ public class GameScene extends Scene {
 
     /**
      * Game Scene Constructor
+     *
      * @param game Game object
      */
     GameScene(Game game) {
@@ -173,6 +174,7 @@ public class GameScene extends Scene {
 
     /**
      * Handle key being pressed by adding to keysDown
+     *
      * @param e key being pressed
      */
     @Override
@@ -182,6 +184,7 @@ public class GameScene extends Scene {
 
     /**
      * Handle key being released by removing from keysDown
+     *
      * @param e key being released
      */
     @Override
@@ -191,6 +194,7 @@ public class GameScene extends Scene {
 
     /**
      * Check if hitbox of wall overlaps Entity hitbox
+     *
      * @param e Entity to check
      * @return if hitbox touches Entity hitbox
      */
@@ -200,6 +204,7 @@ public class GameScene extends Scene {
 
     /**
      * Removes an entity from the game
+     *
      * @param e Entity to remove
      */
     public void removeEntity(Entity e) {
@@ -208,7 +213,8 @@ public class GameScene extends Scene {
 
     /**
      * Handle player deaths
-     * @param p player who died
+     *
+     * @param p          player who died
      * @param killCredit team of the bullet that killed the player
      */
     public void playerDied(Player p, int killCredit) {
@@ -228,7 +234,8 @@ public class GameScene extends Scene {
 
     /**
      * Reset stats and spawn the player
-     * @param p player to spawn
+     *
+     * @param p        player to spawn
      * @param location where to spawn player
      */
     private void spawnPlayer(Player p, int[] location) {

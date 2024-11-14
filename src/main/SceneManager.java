@@ -20,6 +20,7 @@ public class SceneManager {
 
     /**
      * Constructor
+     *
      * @param game Game object that everything is drawn from
      */
     SceneManager(Game game, Scene s) {
@@ -35,12 +36,15 @@ public class SceneManager {
         });
         game.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseMoved(MouseEvent e) {currentScene.handleMouseEvent(e);}
+            public void mouseMoved(MouseEvent e) {
+                currentScene.handleMouseEvent(e);
+            }
         });
     } // SceneManager
 
     /**
      * Set the Game Scene
+     *
      * @param scene scene to set to
      */
     public void setScene(Scene scene) {
