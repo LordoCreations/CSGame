@@ -67,6 +67,7 @@ public class SceneManager {
      */
     public void update() {
         if (currentScene != null) currentScene.update();
+        AudioManager.clearRemovedSounds();
     } // update
 
     /* inner class KeyInputHandler

@@ -6,6 +6,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * <h1>Audio Manager</h1>
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 public class AudioManager {
     private static final int THROTTLE_DELAY_MS = 50;
+    public static ArrayList<Clip> removeSounds = new ArrayList<>();
     public static ArrayList<Clip> sfx = new ArrayList<>();
     public static ArrayList<Clip> music = new ArrayList<>();
     private static long lastPlayTime = 0;
@@ -54,17 +56,15 @@ public class AudioManager {
 
                 if (isMusic) {
                     if (!music.isEmpty() && music.get(0) != null) {
-                        music.get(0).close();
-                        music.remove(0);
+                        removeSounds.add(music.get(0));
                     } // if
                     music.add(clip);
                     if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
                     else clip.start();
                 } else {
                     if (sfx.size() >= 15 && sfx.get(0) != null) {
-                        sfx.get(0).close();
-                        sfx.remove(0);
-                    }
+                        removeSounds.add(sfx.get(0));
+                    } // if
                     sfx.add(clip);
                     clip.start();
                 } // if else
@@ -72,9 +72,7 @@ public class AudioManager {
                 // removes finished clips
                 clip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
-                        clip.close();
-                        music.remove(clip);
-                        sfx.remove(clip);
+                        removeSounds.add(clip);
                     } // if
                 });
             } catch (Exception e) {
@@ -96,11 +94,28 @@ public class AudioManager {
      * Stops all sounds
      */
     public static synchronized void stopAllSounds() {
-        for (int i = 0; i < sfx.size(); i++) if (sfx.get(i) != null) sfx.get(i).close();
-        for (int i = 0; i < music.size(); i++) if (music.get(i) != null) music.get(i).close();
+        for (int i = 0; i < sfx.size(); i++) if (sfx.get(i) != null) removeSounds.add(sfx.get(i));
+        for (int i = 0; i < music.size(); i++) if (music.get(i) != null) removeSounds.add(music.get(i));
+
         sfx.clear();
         music.clear();
+        clearRemovedSounds();
     } // stopAllSounds
+
+    /**
+     * Clear removed sounds
+     */
+    public static void clearRemovedSounds() {
+        Iterator<Clip> it = removeSounds.iterator();
+        while (it.hasNext()) {
+            Clip clip = it.next();
+            clip.close();
+            music.remove(clip);
+            sfx.remove(clip);
+        } // while
+
+        removeSounds.clear();
+    } // clearRemovedSounds
 
     /**
      * Creates a clip given URL
