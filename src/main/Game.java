@@ -1,10 +1,12 @@
 package main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.util.Objects;
 
 /**
  * <h1>Game</h1>
@@ -35,6 +37,15 @@ public class Game extends Canvas {
      */
     public Game() {
         JFrame container = new JFrame("Cube Force");
+
+        // Set the window icon
+        try {
+            Image icon = ImageIO.read(Objects.requireNonNull(
+                    this.getClass().getClassLoader().getResource("main/sprites/game.ico")));
+            container.setIconImage(icon);
+        } catch (Exception e) {
+            System.err.println("Icon not found: " + e.getMessage());
+        }
 
         JPanel panel = (JPanel) container.getContentPane();
 

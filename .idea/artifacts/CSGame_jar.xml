@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CSGame:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CSGame_jar</output-path>
+    <root id="archive" name="CSGame.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/out/production/CSGame" />
+    </root>
+  </artifact>
+</component>
