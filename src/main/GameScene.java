@@ -45,7 +45,7 @@ public class GameScene extends Scene {
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
     private final String[] backgroundTracks = new String[]{"ricochetlove.wav", "iamtheking.wav", "killingmachine.wav"};
     private int trackIndex;
-    private int trackDirection;
+    private final int trackDirection;
     private boolean paused;
     private final Sprite pausePrompt;
     private final Button exitButton;
