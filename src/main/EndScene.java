@@ -82,7 +82,7 @@ public class EndScene extends Scene {
 
         g.setFont(getFont(24));
         for (int i = 0; i < rank.length; i++) {
-            drawCenteredString(g, String.format("Rank %d: Team %d, %d/30", i + 1, rank[i] + 1, score[rank[i]]), 800, 200 + 50 * i);
+            drawCenteredString(g, String.format("Rank %d: Team %d, %d/30 Kills", i + 1, rank[i] + 1, score[rank[i]]), 800, 200 + 50 * i);
         } // for
         rematchButton.draw(g);
         menuButton.draw(g);

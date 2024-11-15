@@ -57,15 +57,15 @@ public class AIPlayer extends Player {
         boolean allowJump = false;
 
         // Avoid being stuck in corners
-        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 50) {
+        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 70) {
             allowJump = true;
             theirCoord[0] = Math.round(theirCoord[0] / WIDTH) * WIDTH;
             theirCoord[1] = HEIGHT;
-        } else if (Math.abs(verticalDistance) > 300 && onGround()) {
+        } else if (Math.abs(verticalDistance) > 300 - (target != null && target.onGround() ? 250 : 0) && onGround()) {
             theirCoord[0] = WIDTH / 2d;
             theirCoord[1] = HEIGHT;
         } else {
-            allowJump = !onGround() || Math.abs(verticalDistance) > 50 || Math.random() < 0.5 * delta;
+            allowJump = !onGround() || Math.abs(verticalDistance) > 30 || Math.random() < 0.5 * delta;
         } // if else
 
         // Jump if target is above player, or randomly
@@ -80,7 +80,7 @@ public class AIPlayer extends Player {
         double horizontalDistance = theirCoord[0] - myCoord[0];
 
         // Left/Right input
-        if (Math.abs(horizontalDistance) < horizontalThreshold && Math.abs(verticalDistance) < 50) {
+        if (Math.abs(horizontalDistance) < horizontalThreshold && Math.abs(verticalDistance) < 30) {
             input.remove(KeyEvent.VK_RIGHT);
             input.remove(KeyEvent.VK_LEFT);
         } else if (horizontalDistance > horizontalThreshold) {
