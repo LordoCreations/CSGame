@@ -44,6 +44,8 @@ public class GameScene extends Scene {
     public static final int KILLS_TO_WIN = 30;
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
     private final String[] backgroundTracks = new String[]{"ricochetlove.wav", "iamtheking.wav", "killingmachine.wav"};
+    private int trackIndex;
+    private int trackDirection;
     private boolean paused;
     private final Sprite pausePrompt;
     private final Button exitButton;
@@ -96,6 +98,9 @@ public class GameScene extends Scene {
             entities.add(new AmmoBar(players[i]));
         } // for
 
+        // randomize music track and rotation direction
+        trackIndex = (int) (Math.random() * backgroundTracks.length);
+        trackDirection = Math.random() < 0.5 ? 1 : -1;
     } // init
 
     /**
@@ -110,7 +115,8 @@ public class GameScene extends Scene {
 
         // adds a random track if none are playing
         if(AudioManager.music.isEmpty()) {
-            AudioManager.playSound(backgroundTracks[(int) (Math.random() * backgroundTracks.length)], false, true);
+            trackIndex = (trackIndex + trackDirection + backgroundTracks.length) % backgroundTracks.length; // cycles to the next track in list
+            AudioManager.playSound(backgroundTracks[trackIndex], false, true);
         } // if
 
         // get graphics context for the accelerated surface and draw background image

@@ -26,8 +26,8 @@ public class AudioManager {
     /**
      * Adds a sound to play as music or sfx
      *
-     * @param ref  sound url
-     * @param loop loop or play once
+     * @param ref     sound url
+     * @param loop    loop or play once
      * @param isMusic whether the sound is classified as music or sfx
      */
     public static synchronized void playSound(final String ref, boolean loop, boolean isMusic) {
@@ -53,20 +53,22 @@ public class AudioManager {
 
                 clip.setFramePosition(frameOffset);
 
-                if (isMusic) {
-                    if (!music.isEmpty() && music.get(0) != null) {
-                        removeSounds.add(music.get(0));
-                    } // if
-                    music.add(clip);
-                    if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
-                    else clip.start();
-                } else {
-                    if (sfx.size() >= 15 && sfx.get(0) != null) {
-                        removeSounds.add(sfx.get(0));
-                    } // if
-                    sfx.add(clip);
-                    clip.start();
-                } // if else
+                synchronized (AudioManager.class) {
+                    if (isMusic) {
+                        if (!music.isEmpty() && music.get(0) != null) {
+                            removeSounds.add(music.get(0));
+                        } // if
+                        music.add(clip);
+                        if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
+                        else clip.start();
+                    } else {
+                        if (sfx.size() >= 15 && sfx.get(0) != null) {
+                            removeSounds.add(sfx.get(0));
+                        } // if
+                        sfx.add(clip);
+                        clip.start();
+                    } // if else
+                } // synchronized
 
                 // removes finished clips
                 clip.addLineListener(event -> {
@@ -82,7 +84,8 @@ public class AudioManager {
 
     /**
      * Overloaded so anything looping is classified as music
-     * @param ref sound url
+     *
+     * @param ref  sound url
      * @param loop loop or play once
      */
     public static void playSound(final String ref, boolean loop) {
@@ -104,7 +107,7 @@ public class AudioManager {
     /**
      * Clear removed sounds
      */
-    public static void clearRemovedSounds() {
+    public static synchronized void clearRemovedSounds() {
         for (int i = 0; i < removeSounds.size(); i++) {
             Clip clip = removeSounds.get(i);
             clip.close();
