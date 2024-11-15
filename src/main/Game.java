@@ -38,15 +38,6 @@ public class Game extends Canvas {
     public Game() {
         JFrame container = new JFrame("Cube Force");
 
-        // Set the window icon
-        try {
-            Image icon = ImageIO.read(Objects.requireNonNull(
-                    this.getClass().getClassLoader().getResource("main/sprites/game.ico")));
-            container.setIconImage(icon);
-        } catch (Exception e) {
-            System.err.println("Icon not found: " + e.getMessage());
-        }
-
         JPanel panel = (JPanel) container.getContentPane();
 
         // set up the resolution of the game
