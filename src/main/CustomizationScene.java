@@ -43,6 +43,11 @@ public class CustomizationScene extends Scene {
         startButton = new Button("buttons/start.png", WIDTH - 458, 735, this::enterGame);
         menuButton = new Button("buttons/menu.png", 136, 735, this::goToMenu);
 
+        // Create carousel for player count selection
+        Carousel playerCountSelector = new Carousel(WIDTH / 2 - 140, 700, 280, 0, 3, players);
+        playerCountSelector.setChoice(2);
+        entities.add(playerCountSelector);
+
         // Create a carousel for skin, team, control-type selection
         for (int i = 0; i < game.skins.length; i++) {
             Display d = new Display(game, 137 + 360 * i, 100, i);
@@ -58,11 +63,6 @@ public class CustomizationScene extends Scene {
             entities.add(type);
             entities.add(team);
         } // for
-
-        // Create carousel for player count selection
-        Carousel playerCountSelector = new Carousel(WIDTH / 2 - 140, 700, 280, 0, 3, players);
-        playerCountSelector.setChoice(2);
-        entities.add(playerCountSelector);
 
         background = SpriteStore.get().getSprite("background.png");
     } // CustomizationScene
