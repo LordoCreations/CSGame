@@ -23,9 +23,9 @@ public class Weapon extends Entity {
     // m9, mp5, ak47, honeybadger, defriender, barrettm82, rpg16, knife
     private final static int[] FIRING_INTERVALS = {300, 60, 150, 90, 600, 1200, 2000, 200};
     private final static int[] BULLET_SPEED = {1800, 1400, 1600, 1200, 2000, 4000, 1400, 10};
-    private final static int[] BULLET_LIFE = {550, 500, 1000, 800, 80, 2000, 5000, 200};
+    private final static int[] BULLET_LIFE = {550, 500, 1000, 600, 80, 2000, 5000, 200};
     private final static int[] BULLET_SPREAD = {35, 150, 35, 40, 800, 0, 0, 0};
-    private final static int[] BULLET_DAMAGE = {20, 7, 25, 18, 5, 100, 70, 30};
+    private final static int[] BULLET_DAMAGE = {20, 15, 25, 18, 5, 100, 70, 30};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {21, 0}, {13, -1}};
     private final static int[] MAX_AMMO = {1, 60, 30, 45, 8, 5, 3, 1};
     private final static int[] RECOIL = {320, 160, 500, 80, 1280, 1600, 1280, -400};

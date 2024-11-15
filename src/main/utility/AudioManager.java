@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * <h1>Audio Manager</h1>
  * <hr/>
- * Derived form Space Invaders with Sound
+ * Derived from Space Invaders with Sound
  *
  * @author Anthony and Luke
  * @since 13-11-2024
@@ -27,8 +27,9 @@ public class AudioManager {
      *
      * @param ref  sound url
      * @param loop loop or play once
+     * @param isMusic whether the sound is classified as music or sfx
      */
-    public static synchronized void playSound(final String ref, boolean loop) {
+    public static synchronized void playSound(final String ref, boolean loop, boolean isMusic) {
         (new Thread(() -> {
             try {
                 long currentTime = System.currentTimeMillis();
@@ -51,13 +52,15 @@ public class AudioManager {
 
                 clip.setFramePosition(frameOffset);
 
-                if (loop) {
+                if (isMusic) {
                     if (!music.isEmpty() && music.get(0) != null) {
                         music.get(0).close();
                         music.remove(0);
                     } // if
                     music.add(clip);
-                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    else clip.start();
+
                 } else {
                     if (sfx.size() >= 15 && sfx.get(0) != null) {
                         sfx.get(0).close();
@@ -82,6 +85,18 @@ public class AudioManager {
         })).start();
     } // playSound
 
+    /**
+     * Overloaded so anything looping is classified as music
+     * @param ref sound url
+     * @param loop loop or play once
+     */
+    public static void playSound(final String ref, boolean loop) {
+        playSound(ref, loop, loop);
+    } // playSound
+
+    /**
+     * Stops all sounds
+     */
     public static void stopAllSounds() {
         for (int i = 0; i < sfx.size(); i++) if (sfx.get(i) != null) sfx.get(i).close();
         for (int i = 0; i < music.size(); i++) if (music.get(i) != null) music.get(i).close();
