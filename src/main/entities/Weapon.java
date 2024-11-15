@@ -62,7 +62,6 @@ public class Weapon extends Entity {
         this.scene = scene;
 
         following = p;
-        lastFired = GameTime.getTime();
         offsets = getOffsets(id);
         firingInterval = FIRING_INTERVALS[id];
         bulletSpeed = BULLET_SPEED[id];
@@ -74,6 +73,7 @@ public class Weapon extends Entity {
         weight = WEIGHT[id];
         knockback = KNOCKBACK[id];
         ammo = getMaxAmmo();
+        lastFired = GameTime.getTime() - Math.max(firingInterval/2, 100);
 
     } // Weapon
 

@@ -56,17 +56,20 @@ public class AIPlayer extends Player {
      */
     @Override
     public void move(long delta) {
-        findNearestTarget();
+        if (Math.random() < 0.005 * delta) findNearestTarget();
+        if (target != null) getCenter(target, theirCoord);
+
         double verticalDistance = theirCoord[1] - myCoord[1];
         boolean allowJump = false;
 
         // Avoid being stuck in corners
-        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 70) {
+        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 60) {
             allowJump = true;
             theirCoord[0] = Math.round(theirCoord[0] / WIDTH) * WIDTH;
             theirCoord[1] = HEIGHT;
             target = null;
-        } else if (Math.abs(verticalDistance) > 300 - (target != null && target instanceof Player && ((Player) target).onGround() ? 250 : 0) && onGround()) {
+        } else if (Math.abs(verticalDistance) > 300 -
+                (target != null && target instanceof Player && ((Player) target).onGround() ? 0 : 250) && onGround()) {
             theirCoord[0] = WIDTH / 2d;
             theirCoord[1] = HEIGHT;
             target = null;
@@ -82,11 +85,13 @@ public class AIPlayer extends Player {
         } // if else
 
         // How close to move to the player
-        double horizontalThreshold = target instanceof Player ? Math.min(Math.abs(verticalDistance) < 70 ? 400 * Math.random() : 50, weapon.getFiringDistance() / 3.0) : 0;
+        double horizontalThreshold = target instanceof Player ?
+                Math.min(Math.abs(verticalDistance) < 70 ? 400 * Math.random() : 50, weapon.getFiringDistance() / 3.0) : 0;
         double horizontalDistance = theirCoord[0] - myCoord[0];
 
         // Left/Right input
-        if (Math.abs(horizontalDistance) < horizontalThreshold && Math.abs(verticalDistance) < 30) {
+        if (target instanceof Player &&
+                Math.abs(horizontalDistance) < horizontalThreshold && Math.abs(verticalDistance) < 30) {
             input.remove(KeyEvent.VK_RIGHT);
             input.remove(KeyEvent.VK_LEFT);
         } else if (horizontalDistance > horizontalThreshold) {
@@ -143,11 +148,6 @@ public class AIPlayer extends Player {
         for (Chest c : chests) {
             evalTarget(c, 1.2);
         } // for
-
-        // if no targets don't try to call on null value
-        if (target != null) {
-            getCenter(target, theirCoord);
-        } // if
     } // findNearestTarget
 
     /**
