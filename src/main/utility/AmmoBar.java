@@ -1,7 +1,7 @@
 package main.utility;
 
-import main.Entity;
 import main.entities.Player;
+
 import java.awt.*;
 
 /**
@@ -10,14 +10,15 @@ import java.awt.*;
  * Bar showing how much ammo a player has left
  *
  * @author Anthony and Luke
- * @since 013-11-2024
  * @see Bar
+ * @since 013-11-2024
  */
 
 public class AmmoBar extends Bar {
 
     /**
      * Constructor for a new Ammo Bar
+     *
      * @param follow Player the ammo bar is attached to
      */
     public AmmoBar(Player follow) {
@@ -26,6 +27,7 @@ public class AmmoBar extends Bar {
 
     /**
      * Draws the ammo bar filled to the proper amount
+     *
      * @param g display graphics
      */
     public void draw(Graphics g) {
@@ -39,10 +41,12 @@ public class AmmoBar extends Bar {
 
     /**
      * Follows the player
+     *
      * @param delta milliseconds since last update
      */
-    @Override public void move(long delta) {
-        this.x = follow.getX() + (follow.getWidth() - width)/2;
+    @Override
+    public void move(long delta) {
+        this.x = follow.getX() + (follow.getWidth() - width) / 2;
         this.y = follow.getY() - 20;
     } // move
 } // class

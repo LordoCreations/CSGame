@@ -43,7 +43,6 @@ public class GameScene extends Scene {
     public static final int KILLS_TO_WIN = 30;
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
     private final String[] backgroundTracks = new String[]{"ricochetlove.wav"};
-    private Graphics2D g;
     private boolean paused;
     private final Sprite pausePrompt;
     private final Button exitButton;
@@ -68,7 +67,7 @@ public class GameScene extends Scene {
                     this.getClass().getClassLoader().getResource("main/sprites/" + "city_hitbox" + ".png")));
             wall = new Mask(maskImage);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         } // try catch
     } // GameScene
 
@@ -110,7 +109,7 @@ public class GameScene extends Scene {
         lastLoopTime = System.currentTimeMillis();
 
         // get graphics context for the accelerated surface and draw background image
-        g = (Graphics2D) game.strategy.getDrawGraphics();
+        Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setColor(backgroundColor);
         g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -262,7 +261,6 @@ public class GameScene extends Scene {
      * @param killCredit team of the bullet that killed the player
      */
     public void playerDied(Player p, int killCredit) {
-        System.out.printf("Player %d died to team %d%n", p.getID(), killCredit);
 
         // add a Corpse
         entities.add(new Corpse((this), ("skins/corpse" + p.getCorpseID() + ".png"), (int) p.x, (int) p.y));

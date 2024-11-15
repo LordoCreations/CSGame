@@ -2,7 +2,10 @@ package main;
 
 import main.utility.AudioManager;
 
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * <h1>Scene Manager</h1>
@@ -16,7 +19,6 @@ import java.awt.event.*;
 
 public class SceneManager {
     private Scene currentScene;
-    private final Game game;
 
     /**
      * Constructor
@@ -24,21 +26,21 @@ public class SceneManager {
      * @param game Game object that everything is drawn from
      */
     SceneManager(Game game, Scene s) {
-        this.game = game;
         setScene(s);
 
+        // add Keyboard and Mouse Listeners
         game.addKeyListener(new KeyInputHandler());
         game.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 currentScene.handleMouseEvent(e);
-            }
+            } // mousePressed
         });
         game.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 currentScene.handleMouseEvent(e);
-            }
+            } // mouseMoved
         });
     } // SceneManager
 
@@ -48,10 +50,13 @@ public class SceneManager {
      * @param scene scene to set to
      */
     public void setScene(Scene scene) {
-        if (currentScene != null && scene instanceof GameScene || currentScene instanceof GameScene) {
+        if (scene instanceof GameScene || currentScene instanceof EndScene) {
             AudioManager.stopAllSounds();
-            System.out.println(AudioManager.music.size());
-        } else if (AudioManager.music.isEmpty()) AudioManager.playSound("relentlessrage.wav", true);
+        } // if
+
+        if (!(scene instanceof GameScene) && AudioManager.music.isEmpty()) {
+            AudioManager.playSound("relentlessrage.wav", true);
+        } // if
 
         currentScene = scene;
         currentScene.init();

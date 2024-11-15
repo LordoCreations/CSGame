@@ -19,14 +19,13 @@ public abstract class Entity {
     // "private" - this class only
     // "public" - any class can see it
 
+    private final Rectangle me = new Rectangle(); // bounding rectangle of this entity
+    private final Rectangle him = new Rectangle(); // bounding rect. of other entities
     protected double x;   // current x location
     protected double y;   // current y location
     protected Sprite sprite; // this entity's sprite
     protected double dx; // horizontal speed (px/s)  + -> right
     protected double dy; // vertical speed (px/s) + -> down
-
-    private final Rectangle me = new Rectangle(); // bounding rectangle of this entity
-    private final Rectangle him = new Rectangle(); // bounding rect. of other entities
     protected Rectangle hitbox = new Rectangle(); // hitbox of entity
 
     /* Constructor
@@ -47,6 +46,7 @@ public abstract class Entity {
 
     /**
      * Sets the sprite image
+     *
      * @param r Path to new sprite image
      */
     public void setSprite(String r) {
@@ -68,6 +68,7 @@ public abstract class Entity {
 
     /**
      * X component of moving
+     *
      * @param delta milliseconds since last tick
      */
     public void moveX(double delta) {
@@ -77,6 +78,7 @@ public abstract class Entity {
 
     /**
      * Y component of moving
+     *
      * @param delta milliseconds since last tick
      */
     public void moveY(double delta) {
@@ -124,8 +126,7 @@ public abstract class Entity {
      */
     public boolean collidesWith(Entity other) {
         me.setBounds((int) x, (int) y, (int) hitbox.getWidth(), (int) hitbox.getHeight());
-        him.setBounds(other.getX(), other.getY(),
-                other.sprite.getWidth(), other.sprite.getHeight());
+        him.setBounds(other.getX(), other.getY(), other.sprite.getWidth(), other.sprite.getHeight());
         return me.intersects(him);
     } // collidesWith
 
@@ -136,5 +137,4 @@ public abstract class Entity {
      *       that extends this class
      */
     public abstract void collidedWith(Entity other);
-
 } // main.Entity class

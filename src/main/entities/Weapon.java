@@ -1,10 +1,9 @@
 package main.entities;
 
-import main.Game;
-import main.GameTime;
-import main.utility.AudioManager;
 import main.Entity;
 import main.GameScene;
+import main.GameTime;
+import main.utility.AudioManager;
 
 import java.util.ArrayList;
 
@@ -14,45 +13,46 @@ import java.util.ArrayList;
  * Weapon held by players
  *
  * @author Anthony and Luke
- * @since 012-11-2024
  * @see Entity
+ * @since 012-11-2024
  */
 
 public class Weapon extends Entity {
-    private final int[] offsets;
-    private final Player following;
-    protected int id;
-    private final int bulletSpeed;
-    private final int firingInterval;
-    private long lastFired;
-    private final int bulletLife;
-    private final int bulletSpread;
-    private final int bulletDamage;
-    private final int[] bulletOffsets;
-    private int ammo;
-    private int recoil;
-    private int weight;
-    private int knockback;
 
     // weapon stats based on id
     // m9, mp5, ak47, honeybadger, defriender, barrettm82, rpg16, knife
     private final static int[] FIRING_INTERVALS = {300, 60, 150, 90, 600, 1200, 2000, 200};
     private final static int[] BULLET_SPEED = {1800, 1400, 1600, 1200, 2000, 4000, 1400, 10};
-    private final static int[] BULLET_LIFE = {550, 500, 1000, 700, 80, 2000, 5000, 200};
-    private final static int[] BULLET_SPREAD = {35, 150, 35, 80, 800, 0, 0, 0};
-    private final static int[] BULLET_DAMAGE = {20, 15, 25, 18, 5, 100, 70, 30};
+    private final static int[] BULLET_LIFE = {550, 500, 1000, 800, 80, 2000, 5000, 200};
+    private final static int[] BULLET_SPREAD = {35, 150, 35, 40, 800, 0, 0, 0};
+    private final static int[] BULLET_DAMAGE = {20, 7, 25, 18, 5, 100, 70, 30};
     private final static int[][] BULLET_OFFSETS = {{12, 5}, {40, 2}, {48, 6}, {48, 5}, {48, 7}, {68, 6}, {21, 0}, {13, -1}};
     private final static int[] MAX_AMMO = {1, 60, 30, 45, 8, 5, 3, 1};
     private final static int[] RECOIL = {320, 160, 500, 80, 1280, 1600, 1280, -400};
     private final static int[] KNOCKBACK = {700, 700, 1200, 500, 1000, 2000, 500, 300};
     private final static int[] WEIGHT = {0, 15, 35, 25, 30, 40, 55, 0};
 
+    private final int[] offsets;
+    private final Player following;
+    private final int bulletSpeed;
+    private final int firingInterval;
+    private final int bulletLife;
+    private final int bulletSpread;
+    private final int bulletDamage;
+    private final int[] bulletOffsets;
     private final GameScene scene;
+    protected int id;
+    private long lastFired;
+    private int ammo;
+    private final int recoil;
+    private final int weight;
+    private final int knockback;
 
     /**
      * Constructor for a new Weapon
-     * @param id id of the weapon
-     * @param p player holding the weapon
+     *
+     * @param id    id of the weapon
+     * @param p     player holding the weapon
      * @param scene scene weapon is created in
      */
     public Weapon(int id, Player p, GameScene scene) {
@@ -130,10 +130,6 @@ public class Weapon extends Entity {
         return weight;
     } // getWeight
 
-    public int getLength() {
-        return bulletOffsets[0];
-    } // getLength
-
     private String getBulletName() {
         return switch (id) {
             case 2 -> "762";
@@ -148,6 +144,7 @@ public class Weapon extends Entity {
 
     /**
      * Fires a bullet if possible
+     *
      * @param entities entities arraylist to add the shot to
      */
     public void tryShoot(ArrayList<Entity> entities) {
@@ -163,7 +160,8 @@ public class Weapon extends Entity {
         following.setRecoilDx(following.getDirection() ? recoil : -recoil); // Player takes recoil
 
         String bulletName = getBulletName();
-        AudioManager.playSound(bulletName + ".wav", false);
+
+        if (id != 7) AudioManager.playSound(bulletName + ".wav", false);
 
         if (id == 4) {
             // Shotgun has multiple bullets
@@ -180,15 +178,15 @@ public class Weapon extends Entity {
 
     /**
      * Creates a new bullet based on weapon stats
-     * @param r sprite image reference of bullet
-     * @param speed bullet speed
-     * @param entities arraylist of entities the bullet is added to
+     *
+     * @param r         sprite image reference of bullet
+     * @param speed     bullet speed
+     * @param entities  arraylist of entities the bullet is added to
      * @param explosive whether the bullet explodes or not
      */
     private void createBullet(String r, int speed, ArrayList<Entity> entities, boolean explosive) {
         int randomSpread = (int) (Math.random() * 2 * bulletSpread + 1) - bulletSpread;
-        Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife,
-                (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage, knockback);
+        Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife, (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage, knockback);
         bullet.setX((int) x + sprite.getWidth() / 2 + (sprite.getDirection() ? -bulletOffsets[0] - bullet.getWidth() : bulletOffsets[0]));
         bullet.setExplosive(explosive);
         entities.add(bullet);
@@ -196,8 +194,9 @@ public class Weapon extends Entity {
 
     /**
      * Overloaded for non-explosive bullets
-     * @param r sprite image reference of bullet
-     * @param speed bullet speed
+     *
+     * @param r        sprite image reference of bullet
+     * @param speed    bullet speed
      * @param entities arraylist of entities the bullet is added to
      */
     private void createBullet(String r, int speed, ArrayList<Entity> entities) {
@@ -206,9 +205,10 @@ public class Weapon extends Entity {
 
     /**
      * Collision detection - unused
+     *
      * @param o Object the bullet collided with
      */
     @Override
-    public void collidedWith(Entity o) {} // collidedWith
-
-} // class
+    public void collidedWith(Entity o) {
+    } // collidedWith
+} // Weapon

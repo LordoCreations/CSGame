@@ -15,8 +15,8 @@ import java.awt.*;
  */
 
 public class Sprite {
-    private boolean flip;
     public Image image;  // the image to be drawn for this sprite
+    private boolean flip;
     private float opacity = 1f;
 
     // constructor
@@ -48,13 +48,13 @@ public class Sprite {
 
     /* Getters and Setters*/
 
-    public void setDirection(boolean flip) {
-        this.flip = flip;
-    } // setDirection
-
     public boolean getDirection() {
         return flip;
     } // getDirection
+
+    public void setDirection(boolean flip) {
+        this.flip = flip;
+    } // setDirection
 
     public void setOpacity(float opacity) {
         this.opacity = opacity;

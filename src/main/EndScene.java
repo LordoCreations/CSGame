@@ -4,7 +4,6 @@ import main.utility.Button;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static main.Game.HEIGHT;
@@ -24,7 +23,6 @@ import static main.utility.TextManager.getFont;
  */
 
 public class EndScene extends Scene {
-    private final ArrayList<Entity> entities = new ArrayList<>();
     private final Button rematchButton;
     private final Button menuButton;
     private final Sprite background;

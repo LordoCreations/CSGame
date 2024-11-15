@@ -11,7 +11,7 @@ import java.awt.*;
  *
  * @author Anthony and Luke
  * @see Entity
- * @since 013-11-2024
+ * @since 13-11-2024
  */
 
 public class Button extends Entity {
@@ -19,7 +19,7 @@ public class Button extends Entity {
     private final boolean highlight;
     private boolean hovered;
     private final Color[] hoverGradient = {new Color(255, 255, 255, 80), new Color(255, 255, 255, 0)};
-    private float[] distribution = {0f, 1f};
+    private final float[] distribution = {0f, 1f};
 
     /**
      * Constructor for a new Button
@@ -78,4 +78,4 @@ public class Button extends Entity {
     public void collidedWith(Entity other) {
     } // collidedWith
 
-} // class
+} // Button

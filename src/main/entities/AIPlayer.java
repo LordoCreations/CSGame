@@ -19,11 +19,11 @@ import static main.Game.WIDTH;
  */
 
 public class AIPlayer extends Player {
-    private Player target;
     private final Player[] players;
-    private double minDistance;
     private final double[] myCoord = new double[2];
     private final double[] theirCoord = new double[2];
+    private Player target;
+    private double minDistance;
 
     /**
      * Constructor for an AI controlled player
@@ -53,20 +53,20 @@ public class AIPlayer extends Player {
     @Override
     public void move(long delta) {
         findNearestTarget();
-
         double verticalDistance = theirCoord[1] - myCoord[1];
         boolean allowJump = false;
 
         // Avoid being stuck in corners
-        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 75) {
+        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 50) {
             allowJump = true;
             theirCoord[0] = Math.round(theirCoord[0] / WIDTH) * WIDTH;
+            theirCoord[1] = HEIGHT;
         } else if (Math.abs(verticalDistance) > 300 && onGround()) {
             theirCoord[0] = WIDTH / 2d;
             theirCoord[1] = HEIGHT;
         } else {
-            allowJump = !onGround() || Math.abs(verticalDistance) > 50;
-        }
+            allowJump = !onGround() || Math.abs(verticalDistance) > 50 || Math.random() < 0.5 * delta;
+        } // if else
 
         // Jump if target is above player, or randomly
         if (allowJump && (Math.random() < 0.005 * delta || verticalDistance < -100 && Math.random() < 0.003 * delta)) {
@@ -76,7 +76,7 @@ public class AIPlayer extends Player {
         } // if else
 
         // How close to move to the player
-        double horizontalThreshold = Math.min(Math.abs(verticalDistance) < 50 ? 400 + 70 * Math.random() : 50, weapon.getFiringDistance() / 3.0);
+        double horizontalThreshold = Math.min(Math.abs(verticalDistance) < 70 ? 400 * Math.random() : 50, weapon.getFiringDistance() / 3.0);
         double horizontalDistance = theirCoord[0] - myCoord[0];
 
         // Left/Right input
@@ -98,7 +98,7 @@ public class AIPlayer extends Player {
 
         // Shoot if in range
         if (Math.abs(verticalDistance) < sprite.getHeight() && Math.random() < 0.05 * delta && horizontalDistance < weapon.getFiringDistance()) {
-            if (Math.random() < 0.005 * delta) moveInDirection(horizontalDistance > 0);
+            if (Math.random() < 0.05 * delta) moveInDirection(horizontalDistance > 0);
             input.add(KeyEvent.VK_DOWN);
         } else {
             input.remove(KeyEvent.VK_DOWN);

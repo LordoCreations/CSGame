@@ -1,21 +1,40 @@
-// CREDIT: modified code from spaceinvaderswithsound
 package main.utility;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * <h1>Audio Manager</h1>
+ * <hr/>
+ * Derived form Space Invaders with Sound
+ *
+ * @author Anthony and Luke
+ * @since 13-11-2024
+ */
+
 public class AudioManager {
+    private static final int THROTTLE_DELAY_MS = 50;
     public static ArrayList<Clip> sfx = new ArrayList<>();
     public static ArrayList<Clip> music = new ArrayList<>();
     private static long lastPlayTime = 0;
-    private static final int THROTTLE_DELAY_MS = 50;
 
+    /**
+     * Adds a sound to play as music or sfx
+     *
+     * @param ref  sound url
+     * @param loop loop or play once
+     */
     public static synchronized void playSound(final String ref, boolean loop) {
         (new Thread(() -> {
             try {
                 long currentTime = System.currentTimeMillis();
-                if (!loop && currentTime - lastPlayTime < THROTTLE_DELAY_MS) return;  // Throttle non-looping sounds
+
+                // Throttle non-looping sounds
+                if (!loop && currentTime - lastPlayTime < THROTTLE_DELAY_MS) return;
 
                 lastPlayTime = currentTime;
                 Clip clip = createClip(ref);
@@ -70,6 +89,13 @@ public class AudioManager {
         music.clear();
     } // stopAllSounds
 
+    /**
+     * Creates a clip given URL
+     *
+     * @param ref URL to audio clip
+     * @return Clip
+     * @throws Exception URL invalid or problems with loading Audio
+     */
     private static Clip createClip(String ref) throws Exception {
         Clip clip = AudioSystem.getClip();
         URL url = AudioManager.class.getClassLoader().getResource("main/sounds/" + ref);
@@ -77,4 +103,4 @@ public class AudioManager {
         clip.open(inputStream);
         return clip;
     } // createClip
-} // class
+} // AudioManager

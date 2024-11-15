@@ -2,6 +2,16 @@ package main;
 
 import java.awt.*;
 
+/**
+ * <h1>Colors</h1>
+ * <hr/>
+ * Holds all team colors
+ *
+ * @author Anthony and Luke
+ * @see Scene
+ * @since 14-11-2024
+ */
+
 public class Colors {
 
     private static final Color blue = Color.decode("#35A2E7");
@@ -20,13 +30,18 @@ public class Colors {
     private static final Color[] greens = new Color[]{green, darkGreen};
 
 
+    /**
+     * Get the colors of a team
+     *
+     * @param id team ID
+     * @return array of dark and light version of team color
+     */
     public static Color[] getTeamColors(int id) {
         return switch (id) {
             case 1 -> reds;
             case 2 -> purples;
             case 3 -> greens;
             default -> blues;
-        };
-    }
-
-}
+        }; // switch
+    } // getTeamColors
+} // Colors

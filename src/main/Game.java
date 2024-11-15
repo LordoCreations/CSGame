@@ -2,8 +2,9 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 
 /**
  * <h1>Game</h1>
@@ -17,16 +18,15 @@ import java.awt.image.*;
  */
 
 public class Game extends Canvas {
-    BufferStrategy strategy;
+    public final static int weaponCount = 8;
     public static int WIDTH = 1600;
     public static int HEIGHT = 900;
+    private final SceneManager sceneManager;
     public int[] skins = new int[4];
     public boolean[] types = new boolean[4];
     public int[] teams = new int[4];
     public int playerCount;
-    public final static int weaponCount = 8;
-
-    private final SceneManager sceneManager;
+    BufferStrategy strategy;
 
     /*
      * Construct our game and set it running.
@@ -75,6 +75,15 @@ public class Game extends Canvas {
         gameLoop();
     } // constructor
 
+    /**
+     * Main Program
+     */
+    public static void main(String[] args) {
+
+        // instantiate this object
+        new Game();
+    } // main
+
     /*
      * gameLoop
      * input: none
@@ -103,14 +112,4 @@ public class Game extends Canvas {
     public void setScene(Scene scene) {
         sceneManager.setScene(scene);
     } // setScene
-
-
-    /**
-     * Main Program
-     */
-    public static void main(String[] args) {
-
-        // instantiate this object
-        new Game();
-    } // main
 } // main.Game

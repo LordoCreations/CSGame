@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * <h1>Display</h1>
  * <hr/>
- * Displays images to the screen
+ * Displays skin previews to the screen
  *
  * @author Anthony and Luke
  * @see Entity
@@ -15,10 +15,10 @@ import java.awt.*;
  */
 
 public class Display extends Entity {
-    private String r;
     private final int id;
     private final Game game;
-    private Sprite unused;
+    private final Sprite unused;
+    private String r;
     private boolean inUse;
 
     /**
@@ -39,9 +39,25 @@ public class Display extends Entity {
     } // Display
 
     /**
+     * Get skin URL given skin ID
+     *
+     * @param i skin ID
+     * @return skin URL
+     */
+    public static String getSkinURL(int i) {
+        return switch (i) {
+            case 1 -> "skins/locked.png";
+            case 2 -> "skins/globey.png";
+            case 3 -> "skins/soldier.png";
+            case 4 -> "skins/rambo.png";
+            default -> "skins/default.png";
+        }; // switch
+    } // getSkinURL
+
+    /**
      * update the display image
      *
-     * @param i
+     * @param i id of new skin
      */
     public void update(int i) {
         this.r = getSkinURL(i);
@@ -50,6 +66,7 @@ public class Display extends Entity {
 
     /**
      * Draws the display
+     *
      * @param g display graphics
      */
     @Override
@@ -68,16 +85,6 @@ public class Display extends Entity {
         this.inUse = inUse;
     } // setIfUsing
 
-    public static String getSkinURL(int i) {
-        return switch (i) {
-            case 1 -> "skins/locked.png";
-            case 2 -> "skins/globey.png";
-            case 3 -> "skins/soldier.png";
-            case 4 -> "skins/rambo.png";
-            default -> "skins/default.png";
-        };
-    } // getSkinURL
-
     public String getR() {
         return r;
     } // getR
@@ -88,8 +95,10 @@ public class Display extends Entity {
 
     /**
      * Collision detection - unused
+     *
      * @param other object the display collided with
      */
     @Override
-    public void collidedWith(Entity other) {}
+    public void collidedWith(Entity other) {
+    } // collidedWith
 }

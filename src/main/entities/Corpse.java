@@ -10,8 +10,8 @@ import main.GameTime;
  * Corpse that spawns on player death
  *
  * @author Anthony and Luke
- * @since 012-11-2024
  * @see Entity
+ * @since 012-11-2024
  */
 
 public class Corpse extends Entity {
@@ -20,6 +20,7 @@ public class Corpse extends Entity {
 
     /**
      * Constructor for a new Corpse
+     *
      * @param s scene the corpse is spawned in
      * @param r reference to the sprite image
      * @param x x position
@@ -33,12 +34,16 @@ public class Corpse extends Entity {
 
     /**
      * Moves the corpse
+     *
      * @param delta milliseconds since last call
      */
     @Override
-    public void move(long delta){
-        if (GameTime.getTime() >= spawntime + 3000) { scene.removeEntity(this); }
-        else if (GameTime.getTime() >= spawntime + 2000) { sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((GameTime.getTime() - spawntime) / 150.0))); }
+    public void move(long delta) {
+        if (GameTime.getTime() >= spawntime + 3000) {
+            scene.removeEntity(this);
+        } else if (GameTime.getTime() >= spawntime + 2000) {
+            sprite.setOpacity((float) (0.5 - 0.3 * Math.sin((GameTime.getTime() - spawntime) / 150.0)));
+        }
 
         applyGravity(delta);
         fallThrough();
@@ -54,6 +59,7 @@ public class Corpse extends Entity {
 
     /**
      * Applies gravity to the corpse
+     *
      * @param delta milliseconds since last call
      */
     protected void applyGravity(long delta) {
@@ -63,7 +69,7 @@ public class Corpse extends Entity {
         moveY(delta);
         if (scene.touchingWall(this)) {
             while (scene.touchingWall(this)) {
-                y += (dy > 0 ? -1 : 1) ;
+                y += (dy > 0 ? -1 : 1);
                 update();
             } // while
             dy = 0;
@@ -72,8 +78,10 @@ public class Corpse extends Entity {
 
     /**
      * Collision detection - unused
+     *
      * @param o Object the corpse collided with
      */
     @Override
-    public void collidedWith(Entity o){} // collidedWith
-} // class
+    public void collidedWith(Entity o) {
+    } // collidedWith
+} // Corpse

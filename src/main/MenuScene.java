@@ -2,7 +2,6 @@ package main;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import main.utility.Button;
 
@@ -21,7 +20,8 @@ import static main.Game.WIDTH;
 
 public class MenuScene extends Scene {
     private final Button startButton;
-    private final Button settingsButton;
+    private final Button tutorialButton;
+    private final Button quitButton;
     private final Sprite background;
 
     /**
@@ -31,9 +31,10 @@ public class MenuScene extends Scene {
      */
     MenuScene(Game game) {
         super(game);
-        startButton = new Button("buttons/play.png", 23, 664, this::startGame);
-        settingsButton = new Button("buttons/tutorial.png", 23, 782, this::openSettings);
-        background = SpriteStore.get().getSprite("menubg.png");
+        startButton = new Button("buttons/play.png", 23, 546, this::startGame);
+        tutorialButton = new Button("buttons/instructions.png", 23, 664, this::openInstructions);
+        quitButton = new Button("buttons/quit.png", 23, 782, this::quitGame);
+        background = SpriteStore.get().getSprite("menuBG.png");
     } // MenuScene
 
     /**
@@ -51,7 +52,8 @@ public class MenuScene extends Scene {
     @Override
     protected void handleMouseEvent(MouseEvent e) {
         startButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
-        settingsButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
+        tutorialButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
+        quitButton.update(e.getX(), e.getY(), e.getButton() == MouseEvent.BUTTON1);
     } // handleMouseEvent
 
     /**
@@ -66,7 +68,8 @@ public class MenuScene extends Scene {
         g.setColor(Color.white);
 
         startButton.draw(g);
-        settingsButton.draw(g);
+        tutorialButton.draw(g);
+        quitButton.draw(g);
 
         // clear graphics and flip buffer
         g.dispose();
@@ -80,8 +83,17 @@ public class MenuScene extends Scene {
         game.setScene(new CustomizationScene(game));
     } // startGame
 
-    // TODO change to tutorial
-    private void openSettings() {
-        System.out.println("Openings Settings");
-    }
+    /**
+     * Button action called by tutorialButton, opens instructions
+     */
+    private void openInstructions() {
+        game.setScene(new InstructionsScene(game));
+    } // openInstructions
+
+    /**
+     * Button action called by quitButton, quits game
+     */
+    private void quitGame() {
+        System.exit(0);
+    } // quitGame
 } // MenuScene

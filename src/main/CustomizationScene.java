@@ -5,7 +5,6 @@ import main.utility.Carousel;
 import main.utility.Display;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import static main.Game.HEIGHT;
 import static main.Game.WIDTH;
 
 /**
- * <h1>End Scene</h1>
+ * <h1>Customization Scene</h1>
  * <hr/>
  * Scene before game, allows players to customize player count,
  * teams, skins, and if players are AI or user controlled.
@@ -107,7 +106,6 @@ public class CustomizationScene extends Scene {
         g.fillRect(0, 0, WIDTH, HEIGHT);
         background.draw(g, 0, 0);
         g.setColor(Color.white);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
         for (Entity entity : entities) {
             entity.draw(g);

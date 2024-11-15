@@ -1,6 +1,9 @@
 package main.entities;
 
-import main.*;
+import main.Entity;
+import main.GameScene;
+import main.GameTime;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Set;
@@ -11,41 +14,40 @@ import java.util.Set;
  * The player
  *
  * @author Anthony and Luke
- * @since 012-11-2024
  * @see Entity
+ * @since 012-11-2024
  */
 
 public class Player extends Entity {
-    public double hp;
     private final double maxHp;
-    private int corpseID;
+    private final int corpseID;
+    public double hp;
+    public boolean spawnProt;
+    public boolean isDead;
     protected int weaponID;
     protected Weapon weapon;
     protected GameScene scene;
     protected int team;
-    private final int id;
+    protected Set<Integer> input;
+    protected int[] controls = new int[4];
     private long respawnTime;
     private long spawntime;
-    public boolean spawnProt;
-    public boolean isDead;
     private int speed;
     private double recoilDx;
-    protected Set<Integer> input;
     private double kbDx;
     private int ammo;
     private int maxAmmo;
 
-    protected int[] controls = new int[4];
-
     /**
      * Constructor for a Player
-     * @param s scene the player is created in
-     * @param r reference to sprite image
+     *
+     * @param s    scene the player is created in
+     * @param r    reference to sprite image
      * @param newX x position
      * @param newY y position
-     * @param hp health points
+     * @param hp   health points
      * @param team team of the player
-     * @param id id of the player
+     * @param id   id of the player
      */
     public Player(GameScene s, String r, int newX, int newY, int hp, int team, int id) {
         super(r, newX, newY);
@@ -55,7 +57,6 @@ public class Player extends Entity {
         this.scene = s;
         this.weapon = new Weapon(weaponID, this, scene);
         this.team = team;
-        this.id = id;
         spawntime = GameTime.getTime();
         respawnTime = GameTime.getTime();
         setControls(id);
@@ -99,10 +100,6 @@ public class Player extends Entity {
         return team;
     } // getTeam
 
-    public int getID() {
-        return id;
-    } // getID
-
     public int getCorpseID() {
         return corpseID;
     } // getCorpseID
@@ -111,13 +108,13 @@ public class Player extends Entity {
         this.spawntime = spawntime;
     } // setSpawntime
 
-    public void setRespawnTime(long respawnTime) {
-        this.respawnTime = respawnTime;
-    } // setRespawnTime
-
     public long getRespawnTime() {
         return respawnTime;
     } // getRespawnTime
+
+    public void setRespawnTime(long respawnTime) {
+        this.respawnTime = respawnTime;
+    } // setRespawnTime
 
     public void setRecoilDx(double dx) {
         recoilDx = dx;
@@ -132,14 +129,14 @@ public class Player extends Entity {
         this.y = coord[1];
     } // setCoord
 
+    public boolean getDirection() {
+        return sprite.getDirection();
+    } // getDirection
+
     public void setDirection(boolean dir) {
         this.sprite.setDirection(dir);
         this.weapon.setDirection(dir);
     } // setDirection
-
-    public boolean getDirection() {
-        return sprite.getDirection();
-    } // getDirection
 
     protected void setControls(int id) {
         switch (id) {
@@ -170,6 +167,7 @@ public class Player extends Entity {
 
     /**
      * Draws the player
+     *
      * @param g display graphics
      */
     @Override
@@ -182,6 +180,7 @@ public class Player extends Entity {
 
     /**
      * Collided with bullet
+     *
      * @param o Entity collided with
      */
     @Override
@@ -261,18 +260,21 @@ public class Player extends Entity {
     } // move
 
     /**
+     * Reduce speed altering effects exponentially
+     * (e.g. knockback, recoil)
      *
-     * @param s
-     * @param delta
+     * @param s     current speed
+     * @param delta time since last call
      * @return the reduced speed
      */
     private double adjustSpeed(double s, long delta) {
-        s *= Math.pow(0.95, (delta/3.0));
+        s *= Math.pow(0.95, (delta / 3.0));
         return s > 0 ? Math.max(0, s - 1) : Math.min(0, s + 1);
     } // adjustSpeed
 
     /**
      * checks if the player is on the ground
+     *
      * @return if player is on the ground
      */
     protected boolean onGround() {
@@ -292,4 +294,4 @@ public class Player extends Entity {
     public void update() {
         hitbox.setRect(x + 4, y + 8, 48, 48);
     } // update
-} // class
+} // Player
