@@ -64,6 +64,13 @@ public class GameScene extends Scene {
         paused = false;
         pausePrompt = SpriteStore.get().getSprite("paused.png");
 
+        // randomize music track and rotation direction
+        trackIndex = (int) (Math.random() * backgroundTracks.length);
+        trackDirection = Math.random() < 0.5 ? 1 : -1;
+
+        // start music
+        AudioManager.playSound(backgroundTracks[trackIndex], false, true);
+
         // get the wall hitbox
         try {
             BufferedImage maskImage = ImageIO.read(Objects.requireNonNull(
@@ -97,10 +104,6 @@ public class GameScene extends Scene {
             entities.add(new Bar(players[i]));
             entities.add(new AmmoBar(players[i]));
         } // for
-
-        // randomize music track and rotation direction
-        trackIndex = (int) (Math.random() * backgroundTracks.length);
-        trackDirection = Math.random() < 0.5 ? 1 : -1;
     } // init
 
     /**
@@ -114,10 +117,12 @@ public class GameScene extends Scene {
         lastLoopTime = System.currentTimeMillis();
 
         // adds a random track if none are playing
-        if(AudioManager.music.isEmpty()) {
-            trackIndex = (trackIndex + trackDirection + backgroundTracks.length) % backgroundTracks.length; // cycles to the next track in list
-            AudioManager.playSound(backgroundTracks[trackIndex], false, true);
-        } // if
+        synchronized (this) {
+            if (AudioManager.music.isEmpty()) {
+                trackIndex = (trackIndex + trackDirection + backgroundTracks.length) % backgroundTracks.length; // cycles to the next track in list
+                AudioManager.playSound(backgroundTracks[trackIndex], false, true);
+            } // if
+        } // synchronized
 
         // get graphics context for the accelerated surface and draw background image
         Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
