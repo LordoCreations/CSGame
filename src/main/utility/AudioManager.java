@@ -6,7 +6,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * <h1>Audio Manager</h1>
@@ -106,9 +105,8 @@ public class AudioManager {
      * Clear removed sounds
      */
     public static void clearRemovedSounds() {
-        Iterator<Clip> it = removeSounds.iterator();
-        while (it.hasNext()) {
-            Clip clip = it.next();
+        for (int i = 0; i < removeSounds.size(); i++) {
+            Clip clip = removeSounds.get(i);
             clip.close();
             music.remove(clip);
             sfx.remove(clip);
