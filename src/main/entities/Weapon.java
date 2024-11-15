@@ -62,7 +62,7 @@ public class Weapon extends Entity {
         this.scene = scene;
 
         following = p;
-        lastFired = GameTime.getTime() - 5000;
+        lastFired = GameTime.getTime();
         offsets = getOffsets(id);
         firingInterval = FIRING_INTERVALS[id];
         bulletSpeed = BULLET_SPEED[id];
@@ -186,7 +186,8 @@ public class Weapon extends Entity {
      */
     private void createBullet(String r, int speed, ArrayList<Entity> entities, boolean explosive) {
         int randomSpread = (int) (Math.random() * 2 * bulletSpread + 1) - bulletSpread;
-        Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife, (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage, knockback);
+        Bullet bullet = new Bullet(r, 0, (int) y + bulletOffsets[1], following.getTeam(), bulletLife,
+                (sprite.getDirection() ? -speed : speed), randomSpread, scene, bulletDamage, knockback);
         bullet.setX((int) x + sprite.getWidth() / 2 + (sprite.getDirection() ? -bulletOffsets[0] - bullet.getWidth() : bulletOffsets[0]));
         bullet.setExplosive(explosive);
         entities.add(bullet);
