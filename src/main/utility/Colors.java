@@ -1,4 +1,6 @@
-package main;
+package main.utility;
+
+import main.Scene;
 
 import java.awt.*;
 

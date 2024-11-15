@@ -1,6 +1,5 @@
 package main.utility;
 
-import main.Colors;
 import main.Entity;
 import main.entities.Player;
 
