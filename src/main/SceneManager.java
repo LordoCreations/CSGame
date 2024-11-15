@@ -50,8 +50,7 @@ public class SceneManager {
      * @param scene scene to set to
      */
     public void setScene(Scene scene) {
-        if (scene instanceof GameScene || currentScene instanceof EndScene
-                || currentScene instanceof GameScene && scene instanceof MenuScene) {
+        if (scene instanceof GameScene || currentScene instanceof EndScene || currentScene instanceof GameScene && scene instanceof MenuScene) {
             AudioManager.stopAllSounds();
         } // if
 

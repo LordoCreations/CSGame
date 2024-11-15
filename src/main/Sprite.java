@@ -59,4 +59,4 @@ public class Sprite {
     public void setOpacity(float opacity) {
         this.opacity = opacity;
     } // setOpacity
-} // main.Sprite
+} // Sprite

@@ -63,7 +63,7 @@ public class AIPlayer extends Player {
         boolean allowJump = false;
 
         // Avoid being stuck in corners
-        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) < 60) {
+        if (Math.abs(verticalDistance) > 100 && Math.abs(myCoord[1] - 525) <= 75) {
             allowJump = true;
             theirCoord[0] = Math.round(theirCoord[0] / WIDTH) * WIDTH;
             theirCoord[1] = HEIGHT;

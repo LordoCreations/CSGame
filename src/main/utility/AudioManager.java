@@ -60,7 +60,6 @@ public class AudioManager {
                     music.add(clip);
                     if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
                     else clip.start();
-
                 } else {
                     if (sfx.size() >= 15 && sfx.get(0) != null) {
                         sfx.get(0).close();
@@ -76,7 +75,6 @@ public class AudioManager {
                         clip.close();
                         music.remove(clip);
                         sfx.remove(clip);
-                        //removeSounds.add(clip);
                     } // if
                 });
             } catch (Exception e) {
@@ -97,7 +95,7 @@ public class AudioManager {
     /**
      * Stops all sounds
      */
-    public static void stopAllSounds() {
+    public static synchronized void stopAllSounds() {
         for (int i = 0; i < sfx.size(); i++) if (sfx.get(i) != null) sfx.get(i).close();
         for (int i = 0; i < music.size(); i++) if (music.get(i) != null) music.get(i).close();
         sfx.clear();

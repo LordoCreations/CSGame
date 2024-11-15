@@ -9,6 +9,8 @@ import java.awt.image.BufferStrategy;
 /**
  * <h1>Game</h1>
  * <hr/>
+ * A 2D platformer-shooter game where players can compete with AI or friends to be the first to reach 30 kills.
+ * Weapons can be obtained from crates and the game supports up to 4 players.
  * Main Game class, derived from Space Invaders
  *
  * @author Anthony and Luke

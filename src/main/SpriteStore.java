@@ -73,4 +73,4 @@ public class SpriteStore {
 
         return sprite;
     } // getSprite
-} // main.SpriteStore
+} // SpriteStore
