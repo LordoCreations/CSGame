@@ -102,7 +102,7 @@ public abstract class Entity {
         } // if
     } // fallThrough
 
-    // get position
+    // get position and size
     public int getX() {
         return (int) x;
     } // getX
@@ -110,6 +110,14 @@ public abstract class Entity {
     public int getY() {
         return (int) y;
     } // getY
+
+    public int getWidth() {
+        return sprite.getWidth();
+    } // getWidth
+
+    public int getHeight() {
+        return sprite.getHeight();
+    } // getHeight
 
     /*
      * Draw this entity to the graphics object provided at (x,y)

@@ -39,6 +39,7 @@ public class GameScene extends Scene {
     private Mask wall;
     public Set<Integer> keysDown = new HashSet<>();
     private final Player[] players;
+    private final ArrayList<Chest> chests = new ArrayList<>();
     private int[] killCount = new int[4];
     public static final int KILLS_TO_WIN = 30;
     private static final int[][] SPAWN_POINTS = {{220, 250}, {1380, 250}, {220, 550}, {1380, 550}};
@@ -86,7 +87,7 @@ public class GameScene extends Scene {
             if (game.types[i])
                 players[i] = new Player(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i);
             else {
-                players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i, players);
+                players[i] = new AIPlayer(this, Display.getSkinURL(game.skins[i]), 0, 0, 100, game.teams[i], i, players, chests);
             } // if
 
             spawnPlayer(players[i], SPAWN_POINTS[players[i].getTeam()]);
@@ -136,7 +137,9 @@ public class GameScene extends Scene {
 
         // add chests every few seconds, frequency increases if there are more player
         if (!paused && Math.random() < 0.00005 * game.playerCount * delta) {
-            entities.add(new Chest(this, (int) (Math.random() * (WIDTH - 400) + 200), (int) (Math.random() * (HEIGHT - 400) + 200)));
+            Chest c = new Chest(this, (int) (Math.random() * (WIDTH - 400) + 200), (int) (Math.random() * (HEIGHT - 400) + 200));
+            entities.add(c);
+            chests.add(c);
         } // if
 
         // move each entity
@@ -151,7 +154,6 @@ public class GameScene extends Scene {
         // handle entity collisions
         for (int i = 0; i < entities.size(); i++) {
             Entity me = entities.get(i);
-
             if (me instanceof Bullet) {
 
                 // handle bullet and wall collisions
@@ -166,6 +168,7 @@ public class GameScene extends Scene {
                     if (him != null && me.collidesWith(him)) {
                         me.collidedWith(him);
                         him.collidedWith(me);
+                        chests.remove(me);
                     } // if
                 } // for
             } // if else

@@ -1,8 +1,10 @@
 package main.entities;
 
+import main.Entity;
 import main.GameScene;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static main.Game.HEIGHT;
@@ -20,9 +22,10 @@ import static main.Game.WIDTH;
 
 public class AIPlayer extends Player {
     private final Player[] players;
+    private final ArrayList<Chest> chests;
     private final double[] myCoord = new double[2];
     private final double[] theirCoord = new double[2];
-    private Player target;
+    private Entity target;
     private double minDistance;
 
     /**
@@ -37,12 +40,13 @@ public class AIPlayer extends Player {
      * @param id      id of the player
      * @param players list of all players
      */
-    public AIPlayer(GameScene s, String r, int newX, int newY, int hp, int team, int id, Player[] players) {
+    public AIPlayer(GameScene s, String r, int newX, int newY, int hp, int team, int id, Player[] players, ArrayList<Chest> chests) {
         super(s, r, newX, newY, hp, team, id);
 
         // Set player input to be controlled via computer instead of via keyboard input
         input = new HashSet<>();
         this.players = players;
+        this.chests = chests;
     } // AIPlayer
 
     /**
@@ -61,9 +65,11 @@ public class AIPlayer extends Player {
             allowJump = true;
             theirCoord[0] = Math.round(theirCoord[0] / WIDTH) * WIDTH;
             theirCoord[1] = HEIGHT;
-        } else if (Math.abs(verticalDistance) > 300 - (target != null && target.onGround() ? 250 : 0) && onGround()) {
+            target = null;
+        } else if (Math.abs(verticalDistance) > 300 - (target != null && target instanceof Player && ((Player) target).onGround() ? 250 : 0) && onGround()) {
             theirCoord[0] = WIDTH / 2d;
             theirCoord[1] = HEIGHT;
+            target = null;
         } else {
             allowJump = !onGround() || Math.abs(verticalDistance) > 30 || Math.random() < 0.5 * delta;
         } // if else
@@ -76,7 +82,7 @@ public class AIPlayer extends Player {
         } // if else
 
         // How close to move to the player
-        double horizontalThreshold = Math.min(Math.abs(verticalDistance) < 70 ? 400 * Math.random() : 50, weapon.getFiringDistance() / 3.0);
+        double horizontalThreshold = target instanceof Player ? Math.min(Math.abs(verticalDistance) < 70 ? 400 * Math.random() : 50, weapon.getFiringDistance() / 3.0) : 0;
         double horizontalDistance = theirCoord[0] - myCoord[0];
 
         // Left/Right input
@@ -87,7 +93,7 @@ public class AIPlayer extends Player {
             moveInDirection(true);
         } else if (horizontalDistance < -horizontalThreshold) {
             moveInDirection(false);
-        }
+        } // if else
 
         // don't move if no targets
         if (minDistance >= Double.MAX_VALUE) {
@@ -97,7 +103,8 @@ public class AIPlayer extends Player {
         } // if else
 
         // Shoot if in range
-        if (Math.abs(verticalDistance) < sprite.getHeight() && Math.random() < 0.05 * delta && horizontalDistance < weapon.getFiringDistance()) {
+        if (target instanceof Player && Math.abs(verticalDistance) < sprite.getHeight() &&
+                Math.random() < 0.05 * delta && horizontalDistance < weapon.getFiringDistance()) {
             if (Math.random() < 0.05 * delta) moveInDirection(horizontalDistance > 0);
             input.add(KeyEvent.VK_DOWN);
         } else {
@@ -125,18 +132,16 @@ public class AIPlayer extends Player {
      * Find nearest target and set their coordinates to the center of their sprite
      */
     private void findNearestTarget() {
-        double currentDistance;
-
         minDistance = Double.MAX_VALUE;
         getCenter(this, myCoord);
         for (Player p : players) {
             if (p != null && p.team != this.team && !p.spawnProt && !p.isDead) {
-                currentDistance = distance(p);
-                if (currentDistance < minDistance) {
-                    minDistance = currentDistance;
-                    target = p;
-                } // if
+                evalTarget(p, 1);
             } // if
+        } // for
+
+        for (Chest c : chests) {
+            evalTarget(c, 1.2);
         } // for
 
         // if no targets don't try to call on null value
@@ -146,12 +151,26 @@ public class AIPlayer extends Player {
     } // findNearestTarget
 
     /**
+     * Evaluate if a target is better than current target
+     *
+     * @param target Target Entity
+     * @param weight Target importance weighting
+     */
+    private void evalTarget(Entity target, double weight) {
+        double currentDistance = distance(target) * weight;
+        if (currentDistance < minDistance) {
+            minDistance = currentDistance;
+            this.target = target;
+        } // if
+    } // evalTarget
+
+    /**
      * Find weighted distance to a coordinate (Down < Up, Left/Right < Up/Down in distance)
      *
      * @param other Target Player
      * @return Weighted distance to other
      */
-    private double distance(Player other) {
+    private double distance(Entity other) {
         getCenter(other, theirCoord);
         return Math.sqrt(Math.pow(myCoord[0] - theirCoord[0], 2) + Math.abs(Math.pow(myCoord[1] - theirCoord[1], 3)));
     } // distance
@@ -159,12 +178,12 @@ public class AIPlayer extends Player {
     /**
      * Get the center of the player
      *
-     * @param player      player center
+     * @param other       player center
      * @param destination integer array to write to
      */
-    private void getCenter(Player player, double[] destination) {
-        destination[0] = player.getX() + player.getWidth() / 2.0;
-        destination[1] = player.getY() + player.getHeight() / 2.0;
+    private void getCenter(Entity other, double[] destination) {
+        destination[0] = other.getX() + other.getWidth() / 2.0;
+        destination[1] = other.getY() + other.getHeight() / 2.0;
     }
 
     /**

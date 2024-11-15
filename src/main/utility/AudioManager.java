@@ -53,16 +53,22 @@ public class AudioManager {
                 clip.setFramePosition(frameOffset);
 
                 if (isMusic) {
+                    if (!music.isEmpty() && music.get(0) != null) {
+                        music.get(0).close();
+                        music.remove(0);
+                    } // if
                     music.add(clip);
                     if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
                     else clip.start();
 
                 } else {
+                    if (sfx.size() >= 15 && sfx.get(0) != null) {
+                        sfx.get(0).close();
+                        sfx.remove(0);
+                    }
                     sfx.add(clip);
                     clip.start();
                 } // if else
-
-                cullMusic();
 
                 // removes finished clips
                 clip.addLineListener(event -> {
@@ -97,21 +103,6 @@ public class AudioManager {
         sfx.clear();
         music.clear();
     } // stopAllSounds
-
-    /**
-     * Remove extra music clips
-     */
-    public static void cullMusic() {
-        while (music.size() > 1 && music.get(0) != null) {
-            music.get(0).close();
-            music.remove(0);
-        } // while
-
-        while (sfx.size() >= 15 && sfx.get(0) != null) {
-            sfx.get(0).close();
-            sfx.remove(0);
-        } // while
-    } // cullMusic
 
     /**
      * Creates a clip given URL

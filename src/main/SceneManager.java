@@ -50,8 +50,8 @@ public class SceneManager {
      * @param scene scene to set to
      */
     public void setScene(Scene scene) {
-        if (scene instanceof GameScene || (scene instanceof MenuScene && !(currentScene instanceof InstructionsScene))) {
-            AudioManager.stopAllSounds(); // stop all sounds when switching back to the menu, excluding instructions
+        if (scene instanceof GameScene || currentScene instanceof EndScene) {
+            AudioManager.stopAllSounds();
         } // if
 
         if (!(scene instanceof GameScene) && AudioManager.music.isEmpty()) {
@@ -67,7 +67,6 @@ public class SceneManager {
      */
     public void update() {
         if (currentScene != null) currentScene.update();
-        AudioManager.cullMusic();
     } // update
 
     /* inner class KeyInputHandler

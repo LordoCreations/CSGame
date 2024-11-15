@@ -88,14 +88,6 @@ public class Player extends Entity {
         return maxAmmo;
     } // getMaxAmmo
 
-    public int getWidth() {
-        return sprite.getWidth();
-    } // getWidth
-
-    public int getHeight() {
-        return sprite.getHeight();
-    } // getHeight
-
     public int getTeam() {
         return team;
     } // getTeam
