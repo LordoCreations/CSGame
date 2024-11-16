@@ -62,6 +62,12 @@ public class Game extends Canvas {
             } // windowClosing
         });
 
+        try {
+            Image icon = Toolkit.getDefaultToolkit().getImage(getClass()
+                    .getClassLoader().getResource("main/sprites/icon.png"));
+            container.setIconImage(icon);
+            Taskbar.getTaskbar().setIconImage(icon);
+        } catch (Exception ignored) {} // try catch
 
         // request focus so key events are handled by this canvas
         requestFocus();
