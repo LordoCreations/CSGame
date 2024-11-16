@@ -65,7 +65,7 @@ public class SceneManager {
     /**
      * Update the current scene (aka tick), called continuously by Game.java
      */
-    public void update() {
+    public synchronized void update() {
         if (currentScene != null) currentScene.update();
         AudioManager.clearRemovedSounds();
     } // update

@@ -117,12 +117,10 @@ public class GameScene extends Scene {
         lastLoopTime = System.currentTimeMillis();
 
         // adds a random track if none are playing
-        synchronized (this) {
-            if (AudioManager.music.isEmpty()) {
-                trackIndex = (trackIndex + trackDirection + backgroundTracks.length) % backgroundTracks.length; // cycles to the next track in list
-                AudioManager.playSound(backgroundTracks[trackIndex], false, true);
-            } // if
-        } // synchronized
+        if (AudioManager.music.isEmpty()) {
+            trackIndex = (trackIndex + trackDirection + backgroundTracks.length) % backgroundTracks.length; // cycles to the next track in list
+            AudioManager.playSound(backgroundTracks[trackIndex], false, true);
+        } // if
 
         // get graphics context for the accelerated surface and draw background image
         Graphics2D g = (Graphics2D) game.strategy.getDrawGraphics();
