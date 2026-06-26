@@ -1,7 +1,8 @@
 # Cube Force
 <hr/>
-An arena shooter game supporting up to 4 players. Written entirely in Java for a school project 
-Written and maintained by Luke and Anthony
+An arena shooter game supporting up to 4 players. Written entirely in Java for a school project.
+<hr/>
+Created and maintained by Luke and Anthony
 
 ### Directory
 `entities` - game entities that interact with each other, e.g. players and guns
